@@ -1044,6 +1044,83 @@
   }
   #clear-pantry-btn { background: rgba(220, 80, 80, 0.25); border-color: rgba(255, 150, 150, 0.5); }
   #clear-pantry-btn:hover { background: rgba(220, 80, 80, 0.45); }
+  .pantry-data-actions .feedback-link {
+    background: rgba(110, 200, 110, 0.28);
+    color: white;
+    border: 1px solid rgba(150, 230, 150, 0.55);
+    padding: 5px 12px;
+    font-size: 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .pantry-data-actions .feedback-link:hover {
+    background: rgba(110, 200, 110, 0.5);
+    border-color: rgba(180, 240, 180, 0.7);
+    text-decoration: none;
+  }
+  /* Telemetry 同意 banner */
+  .telemetry-banner {
+    background: linear-gradient(135deg, #fff8e1 0%, #ffe9bf 100%);
+    border: 1px solid #f5b888;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 0 0 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    align-items: center;
+    font-size: 13px;
+    color: var(--text);
+  }
+  .telemetry-banner.agreed {
+    background: rgba(110, 155, 110, 0.10);
+    border-color: #6e9b6e;
+  }
+  .telemetry-text { flex: 1 1 280px; line-height: 1.55; }
+  .telemetry-text strong { color: var(--accent-dark); }
+  .telemetry-detail {
+    display: block;
+    font-size: 11.5px;
+    color: var(--text-soft);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .telemetry-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+  .telemetry-actions button {
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    font-size: 13px;
+    border-radius: 14px;
+    cursor: pointer;
+    background: white;
+    color: var(--text);
+    transition: all 0.15s;
+  }
+  .telemetry-actions .telemetry-yes {
+    background: var(--accent-dark);
+    color: white;
+    border-color: var(--accent-dark);
+    font-weight: 700;
+  }
+  .telemetry-actions .telemetry-yes:hover { background: #2a1815; }
+  .telemetry-actions .telemetry-no:hover { background: var(--bg-soft); }
+  .telemetry-banner.agreed .telemetry-yes,
+  .telemetry-banner.agreed .telemetry-no { display: none; }
+  .telemetry-banner.agreed .telemetry-disable {
+    display: inline-block;
+    background: transparent;
+    border: 1px solid #6e9b6e;
+    color: #2d6b2d;
+  }
+  .telemetry-banner.agreed .telemetry-text::before {
+    content: '✓ ';
+    color: #2d6b2d;
+    font-weight: 700;
+  }
   /* 今天狀態輸入（hero 下方） */
   .today-state-bar {
     background: var(--card);
@@ -1705,7 +1782,20 @@
         <button id="export-pantry-btn" type="button">📥 匯出備份</button>
         <button id="import-pantry-btn" type="button">📤 匯入備份</button>
         <button id="clear-pantry-btn"  type="button">🗑 清除全部</button>
+        <a id="feedback-link" class="feedback-link" href="https://docs.google.com/forms/d/e/1FAIpQLSepvQh0_5d4vNliDg3A-tY9Rdu4WoMDwKgJJXN2RhyrRhBuOA/viewform" target="_blank" rel="noopener">💬 給意見 / 分享豆袋</a>
         <input type="file" id="import-pantry-file" accept="application/json,.json" hidden>
+      </div>
+    </div>
+    <div class="telemetry-banner" id="telemetry-banner" hidden>
+      <div class="telemetry-text">
+        ☕ <strong>想幫忙改進這個工具嗎？</strong>
+        匿名分享你新增的豆子規格 + 沖煮選擇，幫助優化推薦邏輯。
+        <span class="telemetry-detail">（只送：豆名/烘焙度/處理法/風味/食譜/評價　❌ 不送：店家/剩餘量/購買價/備註/聯絡方式）</span>
+      </div>
+      <div class="telemetry-actions">
+        <button type="button" data-act="telemetry-agree" class="telemetry-yes">✓ 同意分享</button>
+        <button type="button" data-act="telemetry-decline" class="telemetry-no">不要</button>
+        <button type="button" data-act="telemetry-disable" class="telemetry-disable" hidden>已同意 ・ 關閉</button>
       </div>
     </div>
     <div class="today-state-bar" id="today-state-bar">
@@ -5721,6 +5811,65 @@ const DIAGNOSIS = {
   good:       { label:'😋 剛好', fixes:['記錄為基準參數，下次照做'] },
 };
 
+// ===== Telemetry（匿名統計，POST 到 Google Apps Script Web App）=====
+// 隱私邊界：只送豆子規格 + 沖煮選項，不送 name 之外的個資、不送 notes/shopName/gramRemaining/pricePerBag
+const TELEMETRY_URL = 'https://script.google.com/macros/s/AKfycbwlc5-AK0AeXum0nYVERYlvPjGyLBq-WLX4vkAjZmDDVTrQC2Xi1wNwTvZL06rU7-1oYA/exec';
+const TELEMETRY_KEY = 'coffee-telemetry-v1';
+
+function loadTelemetry() {
+  try { return JSON.parse(localStorage.getItem(TELEMETRY_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveTelemetry(s) {
+  try { localStorage.setItem(TELEMETRY_KEY, JSON.stringify(s)); } catch(e) {}
+}
+function getOrCreateUserId() {
+  const s = loadTelemetry();
+  if (!s.userId) {
+    s.userId = 'u-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+    saveTelemetry(s);
+  }
+  return s.userId;
+}
+function isTelemetryEnabled() { return loadTelemetry().enabled === true; }
+function setTelemetryEnabled(enabled) {
+  const s = loadTelemetry();
+  s.enabled = enabled;
+  if (enabled && !s.userId) {
+    s.userId = 'u-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+  }
+  saveTelemetry(s);
+  updateTelemetryBanner();
+}
+function sendTelemetry(payload) {
+  if (!isTelemetryEnabled() || !TELEMETRY_URL) return;
+  try {
+    fetch(TELEMETRY_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      body: JSON.stringify({ ...payload, userId: getOrCreateUserId() }),
+    }).catch(() => {});  // 靜默失敗，不擾人
+  } catch(e) {}
+}
+// banner（首次顯示 → 等使用者選擇 → 之後變成小提示）
+function updateTelemetryBanner() {
+  const banner = document.getElementById('telemetry-banner');
+  if (!banner) return;
+  if (!TELEMETRY_URL) { banner.hidden = true; return; }  // 沒設 URL 就不顯示
+  const s = loadTelemetry();
+  banner.classList.remove('agreed','declined','undecided');
+  if (s.enabled === true) {
+    banner.classList.add('agreed');
+    banner.hidden = false;
+  } else if (s.enabled === false) {
+    banner.classList.add('declined');
+    banner.hidden = true;  // 不要打擾、隱藏
+  } else {
+    banner.classList.add('undecided');
+    banner.hidden = false;
+  }
+}
+
 // ===== 豆櫃資料層（localStorage）=====
 const PANTRY_KEY = 'coffee-pantry-v1';
 
@@ -5737,6 +5886,22 @@ function addBean(spec) {
   spec.brewProfile = spec.brewProfile || deriveBrewProfile(spec);
   p.beans.unshift(spec);
   savePantry(p);
+  // 匿名統計（不送 notes / shopName / gramRemaining / pricePerBag 等個資）
+  sendTelemetry({
+    type: 'bean',
+    action: 'add',
+    bean: {
+      name: spec.name,
+      roast: spec.roast,
+      process: spec.process,
+      density: spec.density,
+      variety: spec.variety,
+      brewProfile: spec.brewProfile,
+      blendFlavors: spec.blendFlavors,
+      blendOrigins: spec.blendOrigins,
+      weightTotal: spec.weightTotal,
+    },
+  });
   return spec;
 }
 function deleteBean(id) {
@@ -5807,6 +5972,18 @@ function addBrewLogEntry(beanId, entry) {
     b.gramRemaining = Math.max(0, b.gramRemaining - entry.dose);
   }
   savePantry(p);
+  // 匿名統計：送沖煮選項（不送 notes）+ 今天狀態
+  const state = (typeof getTodayState === 'function') ? getTodayState() : {};
+  sendTelemetry({
+    type: 'brewlog',
+    beanName: b.name,
+    brewProfile: b.brewProfile,
+    recipe: entry.recipe,
+    dose: entry.dose,
+    rating: entry.rating,
+    mood: state.mood,
+    schedule: state.schedule,
+  });
   return { deducted, remaining: b.gramRemaining };
 }
 
@@ -6696,6 +6873,18 @@ function handleBeanFormSubmit(form) {
 function bindPantryEvents() {
   document.getElementById('add-bean-btn')?.addEventListener('click', () => openBeanDialog());
 
+  // Telemetry 同意 banner 三顆按鈕
+  const telemetryBanner = document.getElementById('telemetry-banner');
+  if (telemetryBanner) {
+    telemetryBanner.addEventListener('click', e => {
+      const btn = e.target.closest('button[data-act]');
+      if (!btn) return;
+      if (btn.dataset.act === 'telemetry-agree')   setTelemetryEnabled(true);
+      if (btn.dataset.act === 'telemetry-decline') setTelemetryEnabled(false);
+      if (btn.dataset.act === 'telemetry-disable') setTelemetryEnabled(false);
+    });
+  }
+
   // 匯出 / 匯入 / 清除 三個資料管理按鈕
   document.getElementById('export-pantry-btn')?.addEventListener('click', exportPantry);
   document.getElementById('clear-pantry-btn')?.addEventListener('click', clearPantry);
@@ -6930,6 +7119,7 @@ window.addEventListener('DOMContentLoaded', () => {
   loadPrefs();  // 先還原偏好，再 showSection
   renderPantry();    // 豆櫃初始 render
   bindPantryEvents(); // 豆櫃事件委派
+  updateTelemetryBanner();  // 隱私同意 banner 初始化
   showSection(location.hash.slice(1));
   document.getElementById('recommend-btn')?.addEventListener('click', () => { recommend(); savePrefs(true); });
   document.getElementById('reset-prefs-btn')?.addEventListener('click', clearPrefs);

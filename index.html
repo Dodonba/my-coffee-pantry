@@ -1740,6 +1740,26 @@
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;
   }
   .bean-dialog .single-pick-grid > .full { grid-column: 1 / -1; }
+  /* 摺疊式「其他手填」區（產區 / 品種 / 莊園 手填）*/
+  .bean-dialog .pick-other-fold {
+    margin-top: 10px;
+    border: 1px dashed var(--border);
+    border-radius: 5px;
+    padding: 2px 12px;
+    background: rgba(255,255,255,0.5);
+  }
+  .bean-dialog .pick-other-fold > summary {
+    cursor: pointer; font-size: 12.5px; color: var(--text-soft);
+    padding: 7px 0; user-select: none;
+    font-weight: 600; list-style: none;
+  }
+  .bean-dialog .pick-other-fold > summary::-webkit-details-marker { display: none; }
+  .bean-dialog .pick-other-fold > summary:hover { color: var(--accent-dark); }
+  .bean-dialog .pick-other-fold[open] > summary {
+    border-bottom: 1px dashed var(--border);
+    margin-bottom: 8px; padding-bottom: 8px;
+  }
+  .bean-dialog .pick-other-grid { display: grid; gap: 8px; padding-bottom: 8px; }
   .bean-dialog .mode-hint {
     margin: 8px 0 0; font-size: 12px; color: var(--text-soft);
     font-weight: 400; line-height: 1.5;
@@ -2080,14 +2100,14 @@
         <div class="tool-step">
           <h3>3. 你有哪些沖煮器材？（複選；全選 = 不挑器材）</h3>
           <div class="flavor-grid">
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="v60-family" checked> <span>🫖 V60 / Origami</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="kalita-family" checked> <span>💧 Kalita 平底</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="switch" checked> <span>🎚 Hario Switch</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="aeropress" checked> <span>🪐 Aeropress</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="french-press" checked> <span>🪴 French Press</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="moka" checked> <span>⚗ Moka 摩卡壺</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="espresso" checked> <span>☕ Espresso 義式機</span></label>
-            <label class="flavor-tag"><input type="checkbox" name="equipment" value="cold" checked> <span>🧊 冷萃／急冷</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="v60-family" checked> <span>V60 / Origami 濾杯</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="kalita-family" checked> <span>Kalita 平底濾杯</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="switch" checked> <span>Hario Switch 浸泡濾杯</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="aeropress" checked> <span>Aeropress 愛樂壓</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="french-press" checked> <span>French Press 法壓壺</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="moka" checked> <span>Moka 摩卡壺</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="espresso" checked> <span>Espresso 義式機</span></label>
+            <label class="flavor-tag"><input type="checkbox" name="equipment" value="cold" checked> <span>冷萃 / 急冷壺</span></label>
           </div>
         </div>
       </div>
@@ -2096,25 +2116,49 @@
       <div id="advanced-mode" style="display: none;">
         <div class="tool-step">
           <h3>1. 細選風味與口感（複選）</h3>
-          <h4 style="font-size:14px; color:var(--accent); margin:14px 0 8px; letter-spacing:1.5px;">▸ 風味調性（香氣 / 風味描述）</h4>
+          <h4 style="font-size:14px; color:var(--accent); margin:14px 0 8px; letter-spacing:1.5px;">▸ 果香類</h4>
           <div class="flavor-grid">
-            <label class="flavor-tag"><input type="checkbox" value="floral"> <span>🌸 花香</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="berry"> <span>🫐 莓果</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="berry"> <span>🫐 莓果（廣義）</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="strawberry"> <span>🍓 草莓</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="blueberry"> <span>🫐 藍莓</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="raspberry"> <span>🍒 覆盆莓</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="cherry"> <span>🍒 櫻桃</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="peach"> <span>🍑 桃子</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="apple"> <span>🍎 蘋果</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="grape"> <span>🍇 葡萄</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="red-fruit"> <span>🍒 紅果</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="blackcurrant"> <span>🌑 黑醋栗</span></label>
+          </div>
+          <h4 style="font-size:14px; color:var(--accent); margin:14px 0 8px; letter-spacing:1.5px;">▸ 熱帶水果 / 柑橘</h4>
+          <div class="flavor-grid">
+            <label class="flavor-tag"><input type="checkbox" value="tropical"> <span>🥭 熱帶水果（廣義）</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="mango"> <span>🥭 芒果</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="pineapple"> <span>🍍 鳳梨</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="passion-fruit"> <span>🍊 百香果</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="lychee"> <span>🌹 荔枝</span></label>
             <label class="flavor-tag"><input type="checkbox" value="citrus"> <span>🍋 柑橘</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="tropical"> <span>🥭 熱帶水果</span></label>
+          </div>
+          <h4 style="font-size:14px; color:var(--accent); margin:14px 0 8px; letter-spacing:1.5px;">▸ 花香 / 茶感</h4>
+          <div class="flavor-grid">
+            <label class="flavor-tag"><input type="checkbox" value="floral"> <span>🌸 花香（廣義）</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="jasmine"> <span>🌼 茉莉</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="rose"> <span>🌹 玫瑰</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="tea"> <span>🍵 茶感</span></label>
+          </div>
+          <h4 style="font-size:14px; color:var(--accent); margin:14px 0 8px; letter-spacing:1.5px;">▸ 甜厚 / 巧克力堅果</h4>
+          <div class="flavor-grid">
             <label class="flavor-tag"><input type="checkbox" value="chocolate"> <span>🍫 巧克力</span></label>
             <label class="flavor-tag"><input type="checkbox" value="caramel"> <span>🍯 焦糖</span></label>
             <label class="flavor-tag"><input type="checkbox" value="nutty"> <span>🌰 堅果</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="tea"> <span>🍵 茶感</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="creamy"> <span>🥛 奶油香草</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="sweet"> <span>🍭 甜感</span></label>
+          </div>
+          <h4 style="font-size:14px; color:var(--accent); margin:14px 0 8px; letter-spacing:1.5px;">▸ 發酵 / 深色調</h4>
+          <div class="flavor-grid">
             <label class="flavor-tag"><input type="checkbox" value="wine"> <span>🍷 紅酒</span></label>
+            <label class="flavor-tag"><input type="checkbox" value="lactic"> <span>🥛 優格乳酸</span></label>
             <label class="flavor-tag"><input type="checkbox" value="spice"> <span>🌶️ 辛香</span></label>
             <label class="flavor-tag"><input type="checkbox" value="earthy"> <span>🌳 泥土／菸草</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="lychee"> <span>🌹 荔枝玫瑰</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="blackcurrant"> <span>🌑 黑醋栗</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="peach"> <span>🍑 桃子</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="lactic"> <span>🥛 優格乳酸</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="red-fruit"> <span>🍒 紅果</span></label>
-            <label class="flavor-tag"><input type="checkbox" value="sweet"> <span>🍭 甜感</span></label>
           </div>
           <h4 style="font-size:14px; color:var(--accent); margin:18px 0 8px; letter-spacing:1.5px;">▸ 口感結構（酸度 / body）</h4>
           <div class="flavor-grid">
@@ -5594,18 +5638,27 @@ Outstanding clarity.
           </div>
         </div>
 
-        <!-- 單豆模式：兩個下拉並列 + 其他手填 -->
+        <!-- 單豆模式：產區 / 品種 / 莊園 三個下拉 + 摺疊手填區 -->
         <div class="field-mode-single">
           <div class="single-pick-grid">
-            <label>莊園
-              <select name="estateSingle"></select>
+            <label>產區（國家・區域）
+              <select name="regionSingle"></select>
             </label>
             <label>品種
               <select name="varietySingle"></select>
             </label>
-            <label class="full">其他莊園（下拉找不到時手填，會自動學習）<input name="estateSingleOther" placeholder="如：Finca XXX"></label>
-            <label class="full">其他品種（下拉找不到時手填）<input name="varietySingleOther" placeholder="如：Wush Wush"></label>
+            <label class="full">莊園（可不填）
+              <select name="estateSingle"></select>
+            </label>
           </div>
+          <details class="pick-other-fold">
+            <summary>▾ 不在清單裡？點開手動填寫（會自動學習，下次直接出現在下拉）</summary>
+            <div class="pick-other-grid">
+              <label class="full">其他產區<input name="regionSingleOther" placeholder="如：哥倫比亞 Quindío"></label>
+              <label class="full">其他品種<input name="varietySingleOther" placeholder="如：Wush Wush"></label>
+              <label class="full">其他莊園<input name="estateSingleOther" placeholder="如：El Mirador"></label>
+            </div>
+          </details>
         </div>
 
         <!-- 配方豆模式：chip 多選 -->
@@ -5643,6 +5696,8 @@ Outstanding clarity.
           <option value="natural">日曬</option>
           <option value="honey">蜜處理</option>
           <option value="anaerobic">厭氧發酵</option>
+          <option value="co-fermentation">共同發酵（Co-Fermentation／加入水果汁或酵母）</option>
+          <option value="thermal-shock">熱衝擊（Thermal Shock／冷熱交替）</option>
           <option value="pulped-natural">半水洗</option>
           <option value="giling-basah">濕剝法（印尼）</option>
           <option value="blend">配方豆 / Blend（多支拼配，不知道處理法選這個）</option>
@@ -5660,7 +5715,6 @@ Outstanding clarity.
           <option value="low">低（&lt;1300m）</option>
         </select>
       </label>
-      <label class="full">產區（國家／區域，文字描述，可不填）<input name="origin" placeholder="如：Ethiopia · Gedeo · 1900-2200m"></label>
       <label class="full">備註<textarea name="notes" rows="2" placeholder="風味、價格、購買日、推薦人等"></textarea></label>
 
       <div class="full blend-only" id="blend-origins-block">
@@ -5718,6 +5772,9 @@ const COFFEE_DB = [
   // ===== 台灣 =====
   {id:"ALI_W", name:"台灣阿里山 水洗 Geisha", variety:["Geisha"], process:"washed", density:"medium", brewProfile:"delicate_geisha", origin:"Taiwan · Alishan · 1200-1400m", flavors:["floral","tea","sweet"], roast:["light","medium-light"], notes:"白花、紅茶感、清亮、甘甜悠長", brews:["v60-hoffmann","kalita","origami","v60","aeropress","iced-v60"], similar:["YIRG","GES_W"]},
   {id:"ALI_N", name:"台灣阿里山 日曬 Geisha", variety:["Geisha"], process:"natural", density:"medium", brewProfile:"delicate_geisha", origin:"Taiwan · Alishan · 1200-1400m", flavors:["tropical","floral","sweet","peach"], roast:["light","medium-light"], notes:"蜜桃、芒果、茉莉、黑糖", brews:["v60","switch-chacha","iced-v60","origami","aeropress"], similar:["GES_N","LAM"]},
+  {id:"ALI_BB_W", name:"台灣阿里山 水洗 Bourbon", variety:["Bourbon"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"Taiwan · Alishan · 1100-1500m", flavors:["caramel","red-fruit","sweet","balanced","tea"], roast:["medium-light","medium"], notes:"焦糖、紅蘋果、紅茶感、平衡甜厚 ── 比 Geisha 親民、阿里山日常標竿", brews:["v60","kalita","aeropress","v60-46","origami"], similar:["HUI","RWA","ALI_HONEY"]},
+  {id:"ALI_HONEY", name:"台灣阿里山 蜜處理 Bourbon", variety:["Bourbon","Typica"], process:"honey", density:"medium", brewProfile:"balanced_medium", origin:"Taiwan · Alishan · 1200-1500m", flavors:["red-fruit","floral","sweet","caramel","peach"], roast:["light","medium-light"], notes:"紅果、花香、蜜甜、太妃糖 ── 蜜處理凸顯阿里山細膩果甜", brews:["v60","kalita","origami","aeropress","v60-46","switch-devil"], similar:["TAR_BH","ALI_BB_W","HON_MAR"]},
+  {id:"ZWU_GS", name:"★ 卓武山 Geisha 水洗（阿里山高分莊園）", variety:["Geisha"], process:"washed", density:"high", brewProfile:"delicate_geisha", origin:"Taiwan · Alishan 卓武山 · 1300-1500m", flavors:["floral","tea","peach","tropical","sweet"], roast:["light","medium-light"], notes:"茉莉、白桃、伯爵紅茶、熱帶水果 ── 台灣高分莊園、CoE 常勝軍", brews:["v60-hoffmann","v60-nsew","origami","kalita","iced-v60","aeropress"], similar:["GES_W","ALI_W","GUJI"]},
   // ===== 盧旺達 =====
   {id:"RWA", name:"盧旺達 Bourbon 水洗", variety:["Bourbon"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Rwanda · Nyamagabe / Huye · 1700-2000m", flavors:["red-fruit","citrus","tea","floral","bright"], roast:["light","medium"], notes:"紅醋栗、櫻桃、明亮酸、紅茶感、優雅花香 ── 非洲 Bourbon 代表", brews:["v60","kalita","aeropress","origami","v60-46"], similar:["KAY","YIRG"]},
   // ===== 夏威夷 =====
@@ -5734,6 +5791,79 @@ const COFFEE_DB = [
   {id:"MBE", name:"坦尚尼亞 Mbeya 水洗", variety:["Bourbon"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"Tanzania · Mbeya / Mbinga · 1400-1900m", flavors:["berry","citrus","wine","bright","balanced"], roast:["medium"], notes:"莓果、柑橘、紅酒感、乾淨平衡", brews:["v60","kalita","aeropress","v60-46"], similar:["KIR","KAY"]},
   {id:"BUG", name:"烏干達 Bugisu 水洗", variety:["SL14","SL28"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Uganda · Mt Elgon · 1500-2000m", flavors:["red-fruit","chocolate","citrus","balanced"], roast:["medium"], notes:"紅果、可可、柑橘、結構乾淨 ── 非洲性價比之選", brews:["v60","kalita","aeropress","french-press"], similar:["HON_MAR","CAJ"]},
   {id:"YUN", name:"中國雲南 普洱 水洗", variety:["Catimor"], process:"washed", density:"medium", brewProfile:"low_density_dark", origin:"China · Yunnan Pu'er · 1300-1700m", flavors:["chocolate","nutty","caramel","balanced","low-acid"], roast:["medium","medium-dark"], notes:"可可、堅果、紅糖、低酸圓潤 ── 台灣常見的亞洲商業豆", brews:["aeropress","kalita","french-press","moka","v60-46","espresso"], similar:["MAN","BLU"]},
+  {id:"YUN_BS_W", name:"中國雲南 保山 水洗 Typica", variety:["Typica","Bourbon"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"China · Yunnan Baoshan · 1500-1900m", flavors:["citrus","caramel","nutty","balanced","sweet"], roast:["medium-light","medium"], notes:"柑橘、太妃糖、堅果、乾淨平衡 ── 比普洱明亮、雲南精品代表產區", brews:["v60","kalita","aeropress","v60-46","origami","french-press"], similar:["HON_MAR","CAJ","HUI"]},
+  {id:"YUN_LC_N", name:"中國雲南 臨滄 日曬", variety:["Catimor","Bourbon"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"China · Yunnan Lincang · 1500-1800m", flavors:["berry","tropical","wine","sweet","caramel"], roast:["light","medium-light"], notes:"藍莓、芒果、紅酒釀、紅糖 ── 雲南新興產區、日曬版果香鮮明", brews:["v60","switch-chacha","iced-v60","aeropress","kalita"], similar:["SID","ARI","YUN_ANA"]},
+  {id:"YUN_ANA", name:"★ 中國雲南 厭氧處理 Geisha / SL28", variety:["Geisha","SL28","Catimor"], process:"anaerobic", density:"high", brewProfile:"anaerobic_intense", origin:"China · Yunnan Pu'er / Baoshan · 1600-2000m", flavors:["lychee","floral","tropical","wine","peach"], roast:["light","medium-light"], notes:"荔枝、玫瑰、白桃、酒釀感 ── 雲南近年高端厭氧發酵、CP 值比哥倫比亞 PAR 高", brews:["v60-hoffmann","switch-chacha","origami","aeropress","iced-v60"], similar:["PAR","COL_GES","YUN_LC_N"]},
+  // ===== 使用者特別點名 =====
+  {id:"MY_LIB", name:"馬來西亞 Liberica 賴比瑞亞", variety:["Liberica"], process:"natural", density:"low", brewProfile:"earthy_indonesia", origin:"Malaysia · Selangor / Johor · 200-500m", flavors:["spice","earthy","sweet","heavy-body","balanced"], roast:["medium","medium-dark","dark"], notes:"沙士、肉豆蔻、紅棗乾、黑糖桂圓茶 ── Liberica 品種獨特低海拔粗豆，馬來西亞特產", brews:["french-press","aeropress","moka","espresso","cold-brew","v60-46"], similar:["MAN","YUN"]},
+  {id:"CR_GS_HON", name:"哥斯大黎加 Geisha 蜜處理", variety:["Geisha"], process:"honey", density:"high", brewProfile:"delicate_geisha", origin:"Costa Rica · Tarrazú · 1700-1900m", flavors:["floral","citrus","tea","peach","sweet"], roast:["light","medium-light"], notes:"佛手柑、橙花、檸檬紅茶、茉莉花 ── 中美 Geisha 比巴拿馬乾淨易親近", brews:["v60-hoffmann","origami","kalita","v60-nsew","aeropress","iced-v60"], similar:["GES_W","ZWU_GS","CR_DE_YB"]},
+  {id:"GUA_RPC", name:"瓜地馬拉 Red Pacamara 蜜處理", variety:["Red Pacamara"], process:"honey", density:"high", brewProfile:"elephant_bean", origin:"Guatemala · Acatenango · 1600-1900m", flavors:["citrus","tea","peach","red-fruit","sweet"], roast:["light","medium-light"], notes:"砂糖橘、東方美人茶、五月桃 ── Red Pacamara 比 Pacamara 更甜更複雜", brews:["v60","kalita","origami","aeropress","v60-46"], similar:["GUA_PAC","APA","TAR_BH"]},
+  {id:"PAN_TYP", name:"巴拿馬 Altieri Typica 水洗", variety:["Typica"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Panama · Volcán · 1500-1700m", flavors:["citrus","peach","caramel","nutty","sweet"], roast:["medium-light","medium"], notes:"香吉士、黃桃、焦糖榛果 ── Altieri 莊園 Typica 經典，清亮甜厚", brews:["v60","kalita","aeropress","v60-46","origami"], similar:["HON_MAR","HUI","KON"]},
+  {id:"PAN_SID", name:"★ 巴拿馬 Sidra 厭氧", variety:["Sidra"], process:"anaerobic", density:"high", brewProfile:"anaerobic_intense", origin:"Panama · Boquete · 1700-1900m", flavors:["tea","tropical","sweet","caramel","floral"], roast:["light","medium-light"], notes:"抹茶感、美濃瓜、太妃糖 ── Sidra 厭氧凸顯清爽茶感與哈密瓜甜", brews:["v60-hoffmann","switch-chacha","origami","aeropress","iced-v60"], similar:["LAP","PAR","YUN_ANA"]},
+  {id:"CR_DE_YB", name:"哥斯大黎加 Don Eli 黃波旁蜜處理", variety:["Yellow Bourbon"], process:"honey", density:"high", brewProfile:"balanced_medium", origin:"Costa Rica · Tarrazú · 1700-1900m", flavors:["peach","citrus","caramel","red-fruit","sweet"], roast:["medium-light","medium"], notes:"黃桃、杏桃、柑橘、紅西洋梨 ── Don Eli 莊園黃波旁蜜處理代表作", brews:["v60","kalita","aeropress","v60-46","origami","switch-devil"], similar:["TAR_BH","TAR_W","SUL"]},
+  {id:"ETH_SKY", name:"★ 衣索比亞 Sky Project 日曬", variety:["Heirloom"], process:"natural", density:"high", brewProfile:"fruity_natural", origin:"Ethiopia · Yirgacheffe · 1900-2200m", flavors:["tropical","floral","berry","sweet","peach"], roast:["light","medium-light"], notes:"芒果、紫羅蘭、黃金奇異果 ── 天空項目 JH 高分批次風格", brews:["v60","switch-chacha","iced-v60","origami","aeropress"], similar:["SID","ARI","ALI_N"]},
+  // ===== 主流精品咖啡（gemini 整理擴充批次）=====
+  // 衣索比亞 補 6 支
+  {id:"ETH_KONGA", name:"衣索比亞 耶加雪菲 Konga 日曬 Heirloom", variety:["Heirloom"], process:"natural", density:"high", brewProfile:"fruity_natural", origin:"Ethiopia · Yirgacheffe Konga · 1950-2100m", flavors:["berry","tropical","floral","sweet","blueberry"], roast:["light","medium-light"], notes:"藍莓、熱帶水果與花香，甜感飽滿", brews:["v60-hoffmann","v60","kalita","origami","iced-v60"], similar:["YIRG","GUJI"]},
+  {id:"ETH_BENS", name:"衣索比亞 西達摩 Bensa 厭氧日曬", variety:["Heirloom"], process:"anaerobic", density:"high", brewProfile:"anaerobic_intense", origin:"Ethiopia · Sidamo Bensa · 2000-2150m", flavors:["lactic","strawberry","tropical","wine","berry"], roast:["light"], notes:"厭氧發酵帶出優格、草莓與酒香", brews:["v60-wendelboe","switch-chacha","aeropress","espresso","iced-v60"], similar:["SID","ETH_GES"]},
+  {id:"ETH_LIMU", name:"衣索比亞 利姆 Limu 水洗", variety:["Heirloom"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Ethiopia · Limu · 1900-2050m", flavors:["floral","citrus","tea","bright","peach"], roast:["light","medium-light"], notes:"明亮檸檬與花香、白桃尾韻", brews:["v60","kalita","origami","aeropress","iced-v60"], similar:["ARI","YIRG"]},
+  {id:"ETH_DJIM", name:"衣索比亞 吉馬 Djimmah 日曬", variety:["Heirloom"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"Ethiopia · Djimmah · 1800-1950m", flavors:["berry","sweet","nutty","chocolate"], roast:["medium","medium-dark"], notes:"醇厚甜美、莓果堅果巧克力", brews:["v60-46","french-press","moka","espresso","cold-brew"], similar:["GUJI","SID"]},
+  {id:"ETH_HARR", name:"衣索比亞 哈拉 Harrar 日曬", variety:["Heirloom"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"Ethiopia · Harrar · 1700-1850m", flavors:["blueberry","wine","spice","earthy","heavy-body"], roast:["medium","medium-dark"], notes:"經典藍莓酒香、香料厚實", brews:["french-press","moka","espresso","cold-brew","v60-46"], similar:["GUJI","MOC"]},
+  {id:"ETH_ARIC", name:"衣索比亞 耶加雪菲 Aricha 水洗", variety:["Heirloom"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Ethiopia · Yirgacheffe Aricha · 2000-2200m", flavors:["floral","jasmine","citrus","bright","tea"], roast:["light"], notes:"極致茉莉花香、檸檬酸質乾淨", brews:["v60-hoffmann","v60-wendelboe","origami","switch-chacha","iced-v60"], similar:["YIRG","ARI"]},
+  // 肯亞 補 4 支
+  {id:"KEN_TEGU", name:"肯亞 涅里 Tegu AA 水洗 SL28", variety:["SL28","SL34"], process:"washed", density:"high", brewProfile:"high_acidity_kenya", origin:"Kenya · Nyeri Tegu · 1700-1850m", flavors:["blackcurrant","citrus","bright","red-fruit","wine"], roast:["medium-light","medium"], notes:"黑醋栗、柑橘酸質與葡萄酒感", brews:["v60","kalita","aeropress","espresso","iced-v60"], similar:["NYE","KIR"]},
+  {id:"KEN_KIAN", name:"肯亞 基里尼亞加 Kiandu 水洗", variety:["SL28","SL34","Ruiru 11"], process:"washed", density:"high", brewProfile:"high_acidity_kenya", origin:"Kenya · Kirinyaga Kiandu · 1650-1800m", flavors:["blackcurrant","grape","bright","sweet","red-fruit"], roast:["medium-light","medium"], notes:"濃郁黑醋栗與葡萄、酸甜平衡", brews:["v60-hoffmann","v60","switch-chacha","espresso","iced-v60"], similar:["KIR","NYE"]},
+  {id:"KEN_EMBU", name:"肯亞 恩布 Embu AB 水洗", variety:["SL28","SL34"], process:"washed", density:"high", brewProfile:"high_acidity_kenya", origin:"Kenya · Embu · 1600-1750m", flavors:["citrus","bright","blackcurrant","red-fruit","berry"], roast:["medium-light"], notes:"活潑柑橘與黑醋栗、明亮跳躍", brews:["v60","kalita","aeropress","iced-v60"], similar:["NYE","KIR"]},
+  {id:"KEN_KIAM", name:"肯亞 基安布 Kiambu PB 水洗", variety:["SL28","SL34"], process:"washed", density:"high", brewProfile:"high_acidity_kenya", origin:"Kenya · Kiambu · 1700-1900m", flavors:["blackcurrant","citrus","wine","sweet","bright"], roast:["medium-light"], notes:"圓豆風味集中、黑醋栗與酒香", brews:["v60-wendelboe","origami","espresso","iced-v60"], similar:["NYE","KIR"]},
+  // 巴拿馬 補 4 支
+  {id:"PAN_BOQ", name:"巴拿馬 波奎特 水洗 Catuai", variety:["Catuai"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Panama · Boquete · 1500-1700m", flavors:["chocolate","caramel","nutty","sweet","balanced"], roast:["medium"], notes:"焦糖巧克力與堅果、平衡好喝", brews:["v60","kalita","aeropress","espresso","french-press"], similar:["GUA_PAC","COL_CAS"]},
+  {id:"PAN_VOLC", name:"巴拿馬 沃肯 Volcán 日曬 Caturra", variety:["Caturra"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"Panama · Volcan · 1600-1750m", flavors:["berry","sweet","tropical","chocolate","balanced"], roast:["medium-light","medium"], notes:"熱帶莓果甜感、巧克力尾韻", brews:["v60-46","switch-chacha","espresso","iced-v60"], similar:["GUA_PAC","HON_MAR"]},
+  {id:"PAN_PACA", name:"巴拿馬 波奎特 蜜處理 Pacamara", variety:["Pacamara"], process:"honey", density:"medium", brewProfile:"elephant_bean", origin:"Panama · Boquete · 1650-1800m", flavors:["peach","tropical","sweet","creamy","floral"], roast:["medium-light"], notes:"巨型豆、蜜桃熱帶水果奶油感", brews:["v60-hoffmann","origami","switch-devil","espresso","iced-v60"], similar:["MARG","GUA_PAC"]},
+  {id:"PAN_TYPI", name:"巴拿馬 沃肯 水洗 Typica", variety:["Typica"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Panama · Volcan · 1550-1700m", flavors:["floral","citrus","tea","bright","sweet"], roast:["light"], notes:"經典 Typica、花香柑橘乾淨清爽", brews:["v60","kalita","origami","aeropress","iced-v60"], similar:["GES_W","COL_GES"]},
+  // 哥倫比亞 補 6 支
+  {id:"COL_TOLI", name:"哥倫比亞 托利馬 水洗 Pink Bourbon", variety:["Pink Bourbon"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Colombia · Tolima · 1800-2000m", flavors:["peach","floral","citrus","sweet","creamy"], roast:["light","medium-light"], notes:"桃子、花香與奶油口感、酸甜平衡", brews:["v60-hoffmann","v60-wendelboe","switch-chacha","espresso","iced-v60"], similar:["COL_PB","COL_GES"]},
+  {id:"COL_CAUC", name:"哥倫比亞 考卡 Cauca 水洗 Caturra", variety:["Caturra"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Colombia · Cauca · 1700-1900m", flavors:["chocolate","caramel","apple","sweet","balanced"], roast:["medium"], notes:"蘋果酸甜、焦糖巧克力日常豆", brews:["v60","kalita","aeropress","french-press","espresso"], similar:["COL_CAS","ANT"]},
+  {id:"COL_QUIN", name:"哥倫比亞 金迪奧 Quindío 水洗 Castillo", variety:["Castillo"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"Colombia · Quindio · 1600-1800m", flavors:["chocolate","nutty","caramel","sweet","balanced"], roast:["medium","medium-dark"], notes:"醇厚堅果巧克力、焦糖甜感", brews:["v60-46","french-press","moka","espresso","cold-brew"], similar:["COL_CAS","ANT"]},
+  {id:"COL_ANTI", name:"哥倫比亞 安蒂奧基亞 水洗 Bourbon", variety:["Bourbon"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Colombia · Antioquia · 1750-1950m", flavors:["chocolate","caramel","red-fruit","sweet","balanced"], roast:["medium"], notes:"波旁紅果與焦糖巧克力風味", brews:["v60","kalita","aeropress","espresso","iced-v60"], similar:["ANT","COL_CAS"]},
+  {id:"COL_SANT", name:"哥倫比亞 桑坦德 Santander 日曬 Tabi", variety:["Tabi"], process:"natural", density:"high", brewProfile:"fruity_natural", origin:"Colombia · Santander · 1600-1800m", flavors:["berry","tropical","sweet","wine","red-fruit"], roast:["medium-light"], notes:"熱帶莓果甜美、葡萄酒尾韻", brews:["v60-wendelboe","switch-chacha","espresso","iced-v60"], similar:["COL_PB","GUJI"]},
+  {id:"COL_VALL", name:"哥倫比亞 考卡山谷 水洗 Caturra Castillo", variety:["Caturra","Castillo"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"Colombia · Valle del Cauca · 1500-1700m", flavors:["chocolate","caramel","nutty","sweet","balanced"], roast:["medium","medium-dark"], notes:"醇厚順滑、焦糖堅果日常感", brews:["v60","french-press","moka","espresso","cold-brew"], similar:["COL_CAS","ANT"]},
+  // 巴西 補 4 支
+  {id:"BRA_SUL", name:"巴西 南米納斯 半水洗 Mundo Novo", variety:["Mundo Novo","Catuai"], process:"pulped-natural", density:"low", brewProfile:"low_density_dark", origin:"Brazil · Sul de Minas · 900-1200m", flavors:["chocolate","nutty","caramel","sweet","low-acid"], roast:["medium-dark","dark"], notes:"低酸醇厚、巧克力堅果焦糖", brews:["french-press","moka","espresso","cold-brew","v60-46"], similar:["SUL","BRA_CAT"]},
+  {id:"BRA_MOG", name:"巴西 摩吉安納 日曬 Catuai", variety:["Mundo Novo","Catuai"], process:"natural", density:"low", brewProfile:"low_density_dark", origin:"Brazil · Mogiana · 1000-1300m", flavors:["chocolate","nutty","caramel","sweet","heavy-body"], roast:["medium-dark","dark"], notes:"醇厚濃郁、堅果巧克力義式首選", brews:["french-press","moka","espresso","cold-brew","aeropress"], similar:["MOC","SUL"]},
+  {id:"BRA_BAHI", name:"巴西 巴伊亞塞拉多 日曬 Catuai", variety:["Catuai","Acaia"], process:"natural", density:"low", brewProfile:"low_density_dark", origin:"Brazil · Bahia Cerrado · 950-1250m", flavors:["chocolate","nutty","caramel","sweet","low-acid"], roast:["medium-dark","dark"], notes:"柔和低酸、奶油巧克力堅果", brews:["french-press","moka","espresso","cold-brew","v60-46"], similar:["CER","SUL"]},
+  {id:"BRA_ESPI", name:"巴西 聖埃斯皮里圖 日曬 Arara", variety:["Catuai","Arara"], process:"natural", density:"low", brewProfile:"low_density_dark", origin:"Brazil · Espirito Santo · 900-1100m", flavors:["chocolate","caramel","nutty","sweet","heavy-body"], roast:["medium-dark","dark"], notes:"濃郁巧克力焦糖、口感厚重", brews:["french-press","moka","espresso","cold-brew","aeropress"], similar:["BRA_CAT","MOC"]},
+  // 哥斯大黎加 補 3 支
+  {id:"CR_WEST", name:"哥斯大黎加 西部谷地 蜜處理 Caturra", variety:["Caturra","Catuai"], process:"honey", density:"high", brewProfile:"balanced_medium", origin:"Costa Rica · West Valley · 1400-1700m", flavors:["caramel","apple","sweet","balanced","creamy"], roast:["medium-light","medium"], notes:"蜂蜜甜感、蘋果酸質順滑平衡", brews:["v60","kalita","aeropress","espresso","iced-v60"], similar:["HON_MAR","CAJ"]},
+  {id:"CR_BRUN", name:"哥斯大黎加 布倫卡 日曬", variety:["Catuai","Caturra"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"Costa Rica · Brunca · 1300-1800m", flavors:["berry","tropical","sweet","wine","red-fruit"], roast:["light","medium-light"], notes:"熱帶水果與莓果、甜感酒香", brews:["v60-hoffmann","v60-wolfl","origami","switch-chacha","iced-v60"], similar:["GUJI","SID"]},
+  {id:"CR_TRES", name:"哥斯大黎加 三水河 Tres Ríos 水洗 Villa Sarchi", variety:["Villa Sarchi"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Costa Rica · Tres Rios · 1300-1800m", flavors:["citrus","apple","sweet","balanced","creamy"], roast:["medium"], notes:"柑橘、蘋果與奶油般平衡感", brews:["v60","kalita","aeropress","espresso","iced-v60"], similar:["COL_CAS","HON_MAR"]},
+  // 瓜地馬拉 補 3 支
+  {id:"GUA_HUE", name:"瓜地馬拉 薇薇特南果 Huehuetenango 水洗 Bourbon", variety:["Bourbon"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Guatemala · Huehuetenango · 1500-2000m", flavors:["floral","citrus","peach","sweet","balanced"], roast:["light","medium-light"], notes:"花香、柑橘與甜桃、明亮平衡", brews:["v60-hoffmann","v60","kalita","origami","iced-v60"], similar:["HUI","GUA_PAC"]},
+  {id:"GUA_ACA", name:"瓜地馬拉 阿卡特南戈 蜜處理 Pacamara", variety:["Pacamara"], process:"honey", density:"medium", brewProfile:"elephant_bean", origin:"Guatemala · Acatenango · 1500-2000m", flavors:["red-fruit","chocolate","caramel","sweet","creamy"], roast:["medium-light","medium"], notes:"紅果、巧克力與焦糖奶油感", brews:["v60-wendelboe","v60-46","switch-chacha","espresso","iced-v60"], similar:["GUA_PAC","MARG"]},
+  {id:"GUA_ATI", name:"瓜地馬拉 阿蒂特蘭 Atitlán 水洗 Caturra", variety:["Caturra"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Guatemala · Atitlan · 1500-2000m", flavors:["nutty","chocolate","caramel","balanced","sweet"], roast:["medium"], notes:"堅果、巧克力與焦糖平衡好喝", brews:["v60","kalita","aeropress","french-press","espresso"], similar:["ANT","COL_CAS"]},
+  // 印尼 補 3 支
+  {id:"IND_ACEH", name:"印尼 亞齊迦佑 濕剝 Typica", variety:["Typica","Ateng"], process:"giling-basah", density:"low", brewProfile:"earthy_indonesia", origin:"Indonesia · Aceh Gayo · 1100-1500m", flavors:["earthy","heavy-body","spice","chocolate","nutty"], roast:["medium-dark","dark"], notes:"濕剝法泥土香料、醇厚巧克力", brews:["french-press","moka","espresso","cold-brew"], similar:["MAN","YUN"]},
+  {id:"IND_TORA", name:"印尼 托拉雅卡洛西 Toraja 水洗 Typica", variety:["Typica","S795"], process:"washed", density:"medium", brewProfile:"low_density_dark", origin:"Indonesia · Toraja · 1100-1500m", flavors:["chocolate","nutty","earthy","spice","heavy-body"], roast:["medium-dark"], notes:"巧克力堅果與泥土香料、醇厚", brews:["french-press","moka","espresso","cold-brew","v60"], similar:["MAN","YUN"]},
+  {id:"IND_BALI", name:"印尼 峇里金塔馬尼 Kintamani 水洗 Typica", variety:["Typica","Bourbon"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"Indonesia · Bali Kintamani · 1100-1500m", flavors:["citrus","chocolate","sweet","balanced","creamy"], roast:["medium"], notes:"柑橘、巧克力與奶油般平衡感", brews:["v60","kalita","aeropress","espresso","iced-v60"], similar:["ALI_W","ALI_BB_W"]},
+  // 葉門 補 2 支
+  {id:"YEM_HARA", name:"葉門 哈拉茲 Haraz 日曬 Heirloom", variety:["Yemeni Heirloom"], process:"natural", density:"high", brewProfile:"fruity_natural", origin:"Yemen · Haraz · 1500-2200m", flavors:["wine","berry","chocolate","spice","sweet"], roast:["medium-light","medium"], notes:"葡萄酒、莓果與巧克力香料", brews:["v60-hoffmann","v60-46","switch-chacha","espresso","iced-v60"], similar:["MOC","YIRG"]},
+  {id:"YEM_BANI", name:"葉門 巴尼馬塔爾 Bani Matar 日曬", variety:["Yemeni Heirloom"], process:"natural", density:"high", brewProfile:"fruity_natural", origin:"Yemen · Bani Matar · 1500-2200m", flavors:["red-fruit","chocolate","nutty","spice","sweet"], roast:["medium-light","medium"], notes:"紅果、巧克力與堅果香料甜感", brews:["v60","kalita","aeropress","french-press","espresso"], similar:["MOC","SID"]},
+  // 非洲其他 補 3 支
+  {id:"TAN_MBE", name:"坦尚尼亞 姆貝亞 日曬 Bourbon", variety:["Bourbon","Kent"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"Tanzania · Mbeya · 1400-1900m", flavors:["berry","red-fruit","tropical","sweet","wine"], roast:["medium-light"], notes:"莓果、紅果與熱帶水果酒香", brews:["v60-hoffmann","v60-wolfl","switch-chacha","iced-v60"], similar:["GUJI","SID"]},
+  {id:"MAL_MZUZ", name:"馬拉威 姆祖祖 Mzuzu 水洗 Geisha", variety:["Geisha","Catimor"], process:"washed", density:"high", brewProfile:"delicate_geisha", origin:"Malawi · Mzuzu · 1500-1800m", flavors:["floral","citrus","tea","bright","jasmine"], roast:["light"], notes:"茉莉花香、柑橘茶感、乾淨明亮", brews:["v60-hoffmann","v60","origami","iced-v60"], similar:["GES_W","COL_GES"]},
+  {id:"RWA_GAK", name:"盧安達 加肯克 Gakenke 水洗 Bourbon", variety:["Bourbon"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Rwanda · Gakenke · 1700-2000m", flavors:["blackcurrant","citrus","floral","tea","bright"], roast:["light","medium-light"], notes:"黑醋栗、柑橘與花香茶感、明亮", brews:["v60-hoffmann","v60-wendelboe","origami","iced-v60"], similar:["RWA","KIR"]},
+  // 南美其他 補 2 支
+  {id:"BOL_CARA", name:"玻利維亞 卡拉納維 Caranavi 水洗 Typica", variety:["Typica","Caturra"], process:"washed", density:"high", brewProfile:"bright_highland", origin:"Bolivia · Caranavi · 1500-2000m", flavors:["floral","citrus","peach","bright","sweet"], roast:["light","medium-light"], notes:"花香、柑橘與桃子、明亮甜美", brews:["v60-hoffmann","v60-wendelboe","origami","iced-v60"], similar:["COL_PB","COL_GES"]},
+  {id:"ECU_LOJA", name:"厄瓜多 洛哈 Loja 蜜處理 Typica", variety:["Typica","Caturra"], process:"honey", density:"medium", brewProfile:"balanced_medium", origin:"Ecuador · Loja · 1400-1900m", flavors:["sweet","caramel","chocolate","apple","balanced"], roast:["medium"], notes:"焦糖、巧克力與蘋果、蜜處理甜感", brews:["v60","kalita","switch-chacha","espresso","iced-v60"], similar:["COL_CAS","HON_MAR"]},
+  // 亞太 補 3 支
+  {id:"PNG_SIGR", name:"巴布亞紐幾內亞 Sigri 莊園 水洗 Arusha", variety:["Arusha","Typica"], process:"washed", density:"high", brewProfile:"balanced_medium", origin:"Papua New Guinea · Sigri · 1400-1800m", flavors:["chocolate","nutty","caramel","balanced","sweet"], roast:["medium"], notes:"巧克力、堅果與焦糖、平衡甜感", brews:["v60","kalita","aeropress","french-press","espresso"], similar:["ALI_BB_W","BLU"]},
+  {id:"IND_MONS", name:"印度 季風馬拉巴 AA Monsooned 日曬", variety:["Kent","S795"], process:"natural", density:"low", brewProfile:"low_density_dark", origin:"India · Malabar Coast · 900-1500m", flavors:["earthy","spice","heavy-body","nutty","low-acid"], roast:["dark"], notes:"季風熟成、泥土香料堅果低酸", brews:["french-press","moka","espresso","cold-brew"], similar:["MAN","IND_ACEH"]},
+  {id:"THA_DOIC", name:"泰國 朵昌 Doi Chang 蜜處理 Catimor", variety:["Typica","Catimor"], process:"honey", density:"medium", brewProfile:"balanced_medium", origin:"Thailand · Doi Chang · 1200-1500m", flavors:["sweet","chocolate","nutty","caramel","balanced"], roast:["medium"], notes:"巧克力、堅果與焦糖蜜感、平衡", brews:["v60","kalita","switch-chacha","espresso","iced-v60"], similar:["ALI_N","TAR_W"]},
+  // 中美其他 補 3 支
+  {id:"ELS_SANA", name:"薩爾瓦多 聖安娜 Santa Ana 日曬 Pacamara", variety:["Pacamara"], process:"natural", density:"medium", brewProfile:"elephant_bean", origin:"El Salvador · Santa Ana · 1300-1700m", flavors:["red-fruit","tropical","chocolate","sweet","creamy"], roast:["medium-light","medium"], notes:"紅果、熱帶水果與巧克力、奶油感", brews:["v60-hoffmann","v60-46","switch-chacha","espresso","iced-v60"], similar:["GUA_PAC","MARG"]},
+  {id:"NIC_JINO", name:"尼加拉瓜 希諾特加 Jinotega 厭氧 Caturra", variety:["Caturra","Catuai"], process:"anaerobic", density:"high", brewProfile:"anaerobic_intense", origin:"Nicaragua · Jinotega · 1300-1700m", flavors:["tropical","wine","lactic","red-fruit","sweet"], roast:["medium-light"], notes:"熱帶水果、酒香與乳酸厭氧風味", brews:["v60-wolfl","switch-devil","aeropress","espresso","iced-v60"], similar:["ETH_GES","COL_GES"]},
+  {id:"DOM_BARA", name:"多明尼加 巴拉奧納 Barahona 水洗 Typica", variety:["Typica","Caturra"], process:"washed", density:"medium", brewProfile:"balanced_medium", origin:"Dominican Republic · Barahona · 800-1300m", flavors:["chocolate","nutty","caramel","balanced","sweet"], roast:["medium","medium-dark"], notes:"巧克力、堅果與焦糖、平衡醇厚", brews:["v60","kalita","french-press","moka","espresso"], similar:["BRA_CAT","HON_MAR"]},
+  // 夏威夷 補 1 支
+  {id:"HAW_KAU", name:"夏威夷 Ka'u 日曬 Typica", variety:["Typica"], process:"natural", density:"medium", brewProfile:"fruity_natural", origin:"Hawaii · Kau · 200-800m", flavors:["berry","tropical","sweet","chocolate","nutty"], roast:["medium"], notes:"莓果、熱帶水果與巧克力堅果", brews:["v60-hoffmann","v60","kalita","espresso","iced-v60"], similar:["KON","GUJI"]},
 ];
 
 // ===== 沖煮食譜（結構化版本：可動態縮放粉量、線性換算累計水量）=====
@@ -6013,6 +6143,7 @@ const ROAST_LABELS = {
 // ===== 處理法中文對照 =====
 const PROCESS_LABELS = {
   washed:'水洗', natural:'日曬', honey:'蜜處理', anaerobic:'厭氧發酵',
+  'co-fermentation':'共同發酵', 'thermal-shock':'熱衝擊',
   'pulped-natural':'半水洗', 'giling-basah':'濕剝法',
   blend:'配方豆 / Blend', other:'其他',
 };
@@ -6306,6 +6437,8 @@ const ESTATE_OPTIONS = [
   { key:'El Paraíso',   label:'El Paraíso 92 天堂（哥倫比亞）' },
   { key:'Inmaculada',   label:'Inmaculada 完美 92（哥倫比亞）' },
   { key:'La Palma',     label:'La Palma & El Tucan（哥倫比亞）' },
+  { key:'El Mirador',   label:'El Mirador（哥倫比亞 Quindío／Edwin Noreña，共同發酵名家）' },
+  { key:'Las Nubes',    label:'Las Nubes（哥倫比亞 Cauca）' },
   // 衣索比亞
   { key:'Yirgacheffe Konga', label:'Yirgacheffe Konga 孔加（衣索比亞）' },
   { key:'Aricha',       label:'Aricha 阿莉嘉（衣索比亞）' },
@@ -6384,6 +6517,83 @@ const VARIETY_OPTIONS = [
   { key:'Tim Tim',        label:'Tim Tim 帝汶' },
 ];
 
+// 產區（國家・區域）── 單豆下拉用，比莊園更實用（莊園太多收不齊、產區相對固定）
+const REGION_OPTIONS = [
+  // 衣索比亞
+  {key:'Ethiopia · Yirgacheffe', label:'衣索比亞 Yirgacheffe（耶加雪菲）'},
+  {key:'Ethiopia · Sidama',      label:'衣索比亞 Sidama'},
+  {key:'Ethiopia · Guji',        label:'衣索比亞 Guji'},
+  {key:'Ethiopia · Limu',        label:'衣索比亞 Limu'},
+  {key:'Ethiopia · Harar',       label:'衣索比亞 Harar'},
+  // 肯亞
+  {key:'Kenya · Nyeri',          label:'肯亞 Nyeri'},
+  {key:'Kenya · Kirinyaga',      label:'肯亞 Kirinyaga'},
+  {key:'Kenya · Kiambu',         label:'肯亞 Kiambu'},
+  // 巴拿馬
+  {key:'Panama · Boquete',       label:'巴拿馬 Boquete'},
+  {key:'Panama · Volcán',        label:'巴拿馬 Volcán'},
+  // 哥倫比亞
+  {key:'Colombia · Huila',       label:'哥倫比亞 Huila（維拉）'},
+  {key:'Colombia · Cauca',       label:'哥倫比亞 Cauca'},
+  {key:'Colombia · Nariño',      label:'哥倫比亞 Nariño'},
+  {key:'Colombia · Quindío',     label:'哥倫比亞 Quindío'},
+  {key:'Colombia · Tolima',      label:'哥倫比亞 Tolima'},
+  {key:'Colombia · Antioquia',   label:'哥倫比亞 Antioquia'},
+  {key:'Colombia · Valle del Cauca', label:'哥倫比亞 Valle del Cauca'},
+  // 巴西
+  {key:'Brazil · Cerrado',       label:'巴西 Cerrado'},
+  {key:'Brazil · Sul de Minas',  label:'巴西 Sul de Minas'},
+  {key:'Brazil · Mogiana',       label:'巴西 Mogiana'},
+  // 瓜地馬拉
+  {key:'Guatemala · Antigua',         label:'瓜地馬拉 Antigua'},
+  {key:'Guatemala · Huehuetenango',   label:'瓜地馬拉 Huehuetenango'},
+  {key:'Guatemala · Acatenango',      label:'瓜地馬拉 Acatenango'},
+  // 哥斯大黎加
+  {key:'Costa Rica · Tarrazú',   label:'哥斯大黎加 Tarrazú'},
+  {key:'Costa Rica · Tres Ríos', label:'哥斯大黎加 Tres Ríos'},
+  {key:'Costa Rica · Naranjo',   label:'哥斯大黎加 Naranjo'},
+  // 葉門
+  {key:'Yemen · Haraz',          label:'葉門 Haraz'},
+  {key:'Yemen · Bani Matar',     label:'葉門 Bani Matar'},
+  // 印尼
+  {key:'Indonesia · Sumatra',    label:'印尼 Sumatra（蘇門答臘・曼特寧）'},
+  {key:'Indonesia · Java',       label:'印尼 Java（爪哇）'},
+  {key:'Indonesia · Sulawesi',   label:'印尼 Sulawesi（蘇拉維西）'},
+  // 台灣
+  {key:'Taiwan · Alishan',       label:'台灣 阿里山'},
+  {key:'Taiwan · Gukeng',        label:'台灣 雲林古坑'},
+  {key:'Taiwan · Guoxing',       label:'台灣 南投國姓'},
+  {key:'Taiwan · Pingtung',      label:'台灣 屏東'},
+  // 中國雲南
+  {key:"China · Yunnan Pu'er",   label:'中國雲南 普洱'},
+  {key:'China · Yunnan Baoshan', label:'中國雲南 保山'},
+  {key:'China · Yunnan Lincang', label:'中國雲南 臨滄'},
+  // 盧旺達
+  {key:'Rwanda · Nyamagabe',     label:'盧旺達 Nyamagabe'},
+  {key:'Rwanda · Huye',          label:'盧旺達 Huye'},
+  // 蒲隆地
+  {key:'Burundi · Kayanza',      label:'蒲隆地 Kayanza'},
+  // 夏威夷
+  {key:'Hawaii · Kona',          label:'夏威夷 Kona'},
+  {key:"Hawaii · Ka'u",          label:"夏威夷 Ka'u"},
+  // 牙買加
+  {key:'Jamaica · Blue Mountain',label:'牙買加 Blue Mountain'},
+  // 秘魯
+  {key:'Peru · Cajamarca',       label:'秘魯 Cajamarca'},
+  // 宏都拉斯
+  {key:'Honduras · Marcala',     label:'宏都拉斯 Marcala'},
+  {key:'Honduras · Santa Bárbara', label:'宏都拉斯 Santa Bárbara'},
+  // 薩爾瓦多
+  {key:'El Salvador · Apaneca-Ilamatepec', label:'薩爾瓦多 Apaneca'},
+  // 尼加拉瓜
+  {key:'Nicaragua · Jinotega',   label:'尼加拉瓜 Jinotega'},
+  {key:'Nicaragua · Matagalpa',  label:'尼加拉瓜 Matagalpa'},
+  // 烏干達
+  {key:'Uganda · Mt Elgon',      label:'烏干達 Mt Elgon'},
+  // 坦尚尼亞
+  {key:'Tanzania · Mbeya',       label:'坦尚尼亞 Mbeya'},
+];
+
 const BLEND_ORIGIN_OPTIONS = [
   { key:'Brazil',     label:'🇧🇷 巴西'       },
   { key:'Ethiopia',   label:'🇪🇹 衣索比亞'   },
@@ -6414,7 +6624,7 @@ function deriveBrewProfile(spec) {
     return 'blend_filter';  // 平衡 / 兩種都選 / 都沒選 / 只選奶油香草等中性
   }
   if (process === 'giling-basah') return 'earthy_indonesia';
-  if (process === 'anaerobic') return 'anaerobic_intense';
+  if (process === 'anaerobic' || process === 'co-fermentation' || process === 'thermal-shock') return 'anaerobic_intense';
   if (v.some(x => x.includes('pacamara') || x.includes('maragogype'))) return 'elephant_bean';
   if (v.some(x => x.includes('geisha') || x.includes('gesha'))) return 'delicate_geisha';
   if (v.some(x => x === 'sl28' || x === 'sl34') && ['light','medium-light','medium'].includes(roast)) return 'high_acidity_kenya';
@@ -6441,11 +6651,35 @@ function getBeanFreshness(roastDate) {
 const FLAVOR_LABELS = {
   "floral":"🌸 花香","berry":"🫐 莓果","citrus":"🍋 柑橘","tropical":"🥭 熱帶水果",
   "chocolate":"🍫 巧克力","caramel":"🍯 焦糖","nutty":"🌰 堅果","tea":"🍵 茶感",
-  "wine":"🍷 紅酒","spice":"🌶️ 辛香","earthy":"🌳 泥土／菸草","lychee":"🌹 荔枝玫瑰",
+  "wine":"🍷 紅酒","spice":"🌶️ 辛香","earthy":"🌳 泥土／菸草","lychee":"🌹 荔枝",
   "blackcurrant":"🌑 黑醋栗","peach":"🍑 桃子","lactic":"🥛 優格乳酸",
   "bright":"⚡ 明亮酸","heavy-body":"💪 厚實 body","low-acid":"🌊 低酸滑順",
-  "balanced":"⚖ 平衡甜","sweet":"🍭 甜感","red-fruit":"🍒 紅果"
+  "balanced":"⚖ 平衡甜","sweet":"🍭 甜感","red-fruit":"🍒 紅果",
+  // 細項風味（透過 FLAVOR_ALIASES 對應到 COFFEE_DB 已有 key）
+  "strawberry":"🍓 草莓","blueberry":"🫐 藍莓","raspberry":"🍒 覆盆莓","cherry":"🍒 櫻桃",
+  "apple":"🍎 蘋果","grape":"🍇 葡萄","mango":"🥭 芒果","pineapple":"🍍 鳳梨",
+  "passion-fruit":"🍊 百香果","jasmine":"🌼 茉莉","rose":"🌹 玫瑰","creamy":"🥛 奶油香草"
 };
+
+// 細項風味 → COFFEE_DB 已用 key 的別名映射
+// 使用者勾選細項（如 grape）時，scoring 會把對應 alias（wine）算進去
+const FLAVOR_ALIASES = {
+  strawberry:    ['berry','red-fruit'],
+  blueberry:     ['berry'],
+  raspberry:     ['berry','red-fruit'],
+  cherry:        ['red-fruit'],
+  apple:         ['red-fruit','sweet'],
+  grape:         ['wine'],
+  mango:         ['tropical'],
+  pineapple:     ['tropical'],
+  'passion-fruit': ['tropical'],
+  jasmine:       ['floral','tea'],
+  rose:          ['floral','lychee'],
+  creamy:        ['lactic','sweet','nutty'],
+};
+function expandFlavor(f) {
+  return [f, ...(FLAVOR_ALIASES[f] || [])];
+}
 
 // ===== Tab Routing =====
 function showSection(id) {
@@ -6567,7 +6801,8 @@ function recommend() {
 
   // 計分
   const scored = COFFEE_DB.map(b => {
-    const matches = flavors.filter(f => b.flavors.includes(f));
+    // 使用者選的風味用 alias 展開後再 match（讓細項風味也能對應到既有豆）
+    const matches = flavors.filter(f => expandFlavor(f).some(k => b.flavors.includes(k)));
     if (matches.length === 0) return null;
     let score = matches.length / Math.sqrt(b.flavors.length);
     score *= roastWeight(b.roast);
@@ -6642,7 +6877,7 @@ function recommend() {
       ${tipBlock}
       <div class="brews">
         <strong>🫖 推薦沖法（點擊展開步驟、可調粉量）：</strong>
-        ${brewsToShow.slice(0, 4).map((rid, idx) => renderBrewItem(rid, idx === 0)).join('')}
+        ${brewsToShow.slice(0, 4).map(rid => renderBrewItem(rid, false)).join('')}
         ${b.viableBrews.length === 0 ? '<div class="equipment-warn">⚠️ 你勾選的器材都不太合，這裡顯示通用沖法</div>' : ''}
       </div>
       ${similars.length > 0 ? `<div class="similar-beans"><strong>🔄 買不到的話，可以試試：</strong> ${similars.map(s => s.name).join('  ／  ')}</div>` : ''}
@@ -7269,8 +7504,9 @@ function renderSinglePicks() {
   };
   const form = document.getElementById('bean-form');
   if (!form) return;
-  if (form.elements.estateSingle)  form.elements.estateSingle.innerHTML  = buildOptions(ESTATE_OPTIONS, 'customEstates');
+  if (form.elements.regionSingle)  form.elements.regionSingle.innerHTML  = buildOptions(REGION_OPTIONS, 'customRegions');
   if (form.elements.varietySingle) form.elements.varietySingle.innerHTML = buildOptions(VARIETY_OPTIONS, 'customVarieties');
+  if (form.elements.estateSingle)  form.elements.estateSingle.innerHTML  = buildOptions(ESTATE_OPTIONS, 'customEstates');
 }
 
 function toggleBlendOnly(isBlend) {
@@ -7309,11 +7545,15 @@ function openBeanDialog(beanToEdit) {
   setChipValues('blend-origins-group', []);
   setChipValues('variety-group', []);
   setChipValues('estate-group', []);
-  ['varietyOther','estateOther','flavorOther','varietySingleOther','estateSingleOther'].forEach(n => {
+  ['varietyOther','estateOther','flavorOther','varietySingleOther','regionSingleOther','estateSingleOther'].forEach(n => {
     if (form.elements[n]) form.elements[n].value = '';
   });
-  if (form.elements.estateSingle)  form.elements.estateSingle.value  = '';
+  if (form.elements.regionSingle)  form.elements.regionSingle.value  = '';
   if (form.elements.varietySingle) form.elements.varietySingle.value = '';
+  if (form.elements.estateSingle)  form.elements.estateSingle.value  = '';
+  // 摺疊「其他手填」區
+  const pickOtherFold = form.querySelector('.pick-other-fold');
+  if (pickOtherFold) pickOtherFold.open = false;
 
   if (beanToEdit) {
     title.textContent = '編輯豆子';
@@ -7323,7 +7563,6 @@ function openBeanDialog(beanToEdit) {
     form.elements.process.value = beanToEdit.process || '';
     form.elements.density.value = beanToEdit.density || '';
     form.elements.roastDate.value = beanToEdit.roastDate || '';
-    form.elements.origin.value = beanToEdit.origin || '';
     form.elements.shopName.value = beanToEdit.shopName || '';
     form.elements.gramRemaining.value = beanToEdit.gramRemaining || '';
     form.elements.notes.value = beanToEdit.notes || '';
@@ -7354,23 +7593,35 @@ function openBeanDialog(beanToEdit) {
       if (form.elements.varietyOther) form.elements.varietyOther.value = varOthers.join(', ');
       if (form.elements.estateOther)  form.elements.estateOther.value  = estOthers.join(', ');
     } else {
-      // 單豆：第一個塞下拉（找不到就塞 other），其餘塞 other（多筆用逗號連）
+      // 單豆：產區從 b.origin 取（下拉找不到塞 regionSingleOther）；莊園、品種：下拉 + 手填
+      const region = (beanToEdit.origin || '').trim();
+      if (region) {
+        const opt = form.elements.regionSingle
+          ? [...form.elements.regionSingle.options].find(o => o.value === region)
+          : null;
+        if (opt) form.elements.regionSingle.value = opt.value;
+        else if (form.elements.regionSingleOther) form.elements.regionSingleOther.value = region;
+      }
+      // 品種 / 莊園：第一個塞下拉（找不到塞 other），其餘塞 other
       const fillSingle = (selectEl, otherEl, keys) => {
         if (!keys.length) return;
         const [first, ...rest] = keys;
         const lowerFirst = first.toLowerCase();
         const matchedOpt = selectEl ? [...selectEl.options].find(o => o.value && o.value.toLowerCase() === lowerFirst) : null;
         const overflow = [...rest];
-        if (selectEl && matchedOpt) {
-          selectEl.value = matchedOpt.value;
-        } else {
-          // 第一筆下拉找不到 → 也塞進 other
-          overflow.unshift(first);
-        }
+        if (selectEl && matchedOpt) selectEl.value = matchedOpt.value;
+        else overflow.unshift(first);
         if (otherEl && overflow.length) otherEl.value = overflow.join(', ');
       };
-      fillSingle(form.elements.estateSingle,  form.elements.estateSingleOther,  estateKeys);
       fillSingle(form.elements.varietySingle, form.elements.varietySingleOther, varietyKeys);
+      fillSingle(form.elements.estateSingle,  form.elements.estateSingleOther,  estateKeys);
+      // 若手填區有任何值，預設展開摺疊區讓使用者看到
+      const fold = form.querySelector('.pick-other-fold');
+      if (fold) {
+        const hasOther = [form.elements.regionSingleOther, form.elements.varietySingleOther, form.elements.estateSingleOther]
+          .some(el => el && el.value.trim());
+        fold.open = hasOther;
+      }
     }
   } else {
     title.textContent = '新增豆子';
@@ -7386,8 +7637,8 @@ function handleBeanFormSubmit(form) {
   const isBlend = fd.get('process') === 'blend';
   const splitOther = v => (v || '').toString().split(/[,，、]/).map(s => s.trim()).filter(Boolean);
 
-  // 莊園 / 品種：依模式取值（單豆用下拉，配方豆用 chip 多選）
-  let variety, estates;
+  // 莊園 / 品種 / 產區：依模式取值（單豆：產區下拉 + 莊園手填、品種下拉；配方豆：chip 多選）
+  let variety, estates, originFromForm = '';
   if (isBlend) {
     const varietyChips = fd.getAll('varietyChip').map(x => x.toString());
     const varietyOther = splitOther(fd.get('varietyOther'));
@@ -7398,14 +7649,21 @@ function handleBeanFormSubmit(form) {
     if (varietyOther.length) addCustomOptions('customVarieties', varietyOther);
     if (estateOther.length)  addCustomOptions('customEstates',   estateOther);
   } else {
+    // 品種：下拉 + 手填
     const varietyPick  = (fd.get('varietySingle') || '').toString().trim();
     const varietyOther = splitOther(fd.get('varietySingleOther'));
     variety = [...new Set([varietyPick, ...varietyOther].filter(Boolean))];
-    const estatePick   = (fd.get('estateSingle') || '').toString().trim();
-    const estateOther  = splitOther(fd.get('estateSingleOther'));
-    estates = [...new Set([estatePick, ...estateOther].filter(Boolean))];
     if (varietyOther.length) addCustomOptions('customVarieties', varietyOther);
-    if (estateOther.length)  addCustomOptions('customEstates',   estateOther);
+    // 莊園：下拉 + 手填
+    const estatePick  = (fd.get('estateSingle') || '').toString().trim();
+    const estateOther = splitOther(fd.get('estateSingleOther'));
+    estates = [...new Set([estatePick, ...estateOther].filter(Boolean))];
+    if (estateOther.length) addCustomOptions('customEstates', estateOther);
+    // 產區：下拉值優先、否則用「其他產區」手填
+    const regionPick  = (fd.get('regionSingle') || '').toString().trim();
+    const regionOther = (fd.get('regionSingleOther') || '').toString().trim();
+    originFromForm = regionPick || regionOther;
+    if (regionOther) addCustomOptions('customRegions', [regionOther]);
   }
 
   const flavorChips = fd.getAll('blendFlavor').map(x => x.toString());
@@ -7425,7 +7683,7 @@ function handleBeanFormSubmit(form) {
     process: (fd.get('process') || '').toString(),
     density: (fd.get('density') || '').toString(),
     roastDate: (fd.get('roastDate') || '').toString(),
-    origin: (fd.get('origin') || '').toString().trim(),
+    origin: originFromForm,
     variety: variety,
     estates: estates,
     shopName: (fd.get('shopName') || '').toString().trim(),

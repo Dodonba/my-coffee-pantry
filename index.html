@@ -346,8 +346,8 @@
     th, td { padding: 7px 9px; }
 
     /* ==== Chapter nav 緊縮 ==== */
-    .chapter-nav { padding: 8px 10px; gap: 3px; }
-    .chapter-nav a { padding: 6px 11px; font-size: 12px; letter-spacing: 0.5px; }
+    .chapter-nav { padding: 10px 14px; gap: 5px; }
+    .chapter-nav a { padding: 7px 13px; font-size: 13px; letter-spacing: 0.5px; }
 
     /* ==== 推薦工具 ==== */
     .tool-container { padding: 20px 16px; }
@@ -428,7 +428,7 @@
     .direction-card .title { font-size: 13px; }
     .direction-card .desc { font-size: 10.5px; }
     .flavor-tag, .radio-tag { padding: 8px 8px; font-size: 12.5px; }
-    .chapter-nav a { padding: 6px 9px; font-size: 11.5px; }
+    .chapter-nav a { padding: 7px 11px; font-size: 12.5px; }
   }
 
   /* === Estate cards === */
@@ -1316,7 +1316,7 @@
   @media (max-width: 720px) {
     .bean-row { padding: 12px 14px; flex-wrap: wrap; padding-right: 90px; }
     .bean-row-title { flex: 1 1 100%; min-width: 0; max-width: none; }
-    .bean-row-meta { flex: 1 1 100%; font-size: 12px; gap: 2px 12px; }
+    .bean-row-meta { flex: 1 1 100%; font-size: 13px; gap: 3px 14px; }
     .bean-row-actions { position: absolute; top: 10px; right: 10px; }
     .bean-row-actions .icon-btn { width: 32px; height: 32px; }
     .bean-details { padding: 12px 14px 14px; }
@@ -1747,7 +1747,36 @@
   @media (max-width: 720px) {
     .bean-dialog .form-grid { grid-template-columns: 1fr; }
     .bean-dialog .single-pick-grid { grid-template-columns: 1fr; }
-    .bean-dialog { padding: 18px 16px; max-height: 92vh; overflow-y: auto; }
+    /* 手機：dialog 全螢幕、標題與動作 sticky */
+    .bean-dialog {
+      padding: 0;
+      max-width: none; width: 100%;
+      max-height: 100vh; max-height: 100dvh;
+      height: 100vh; height: 100dvh;
+      border-radius: 0; margin: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .bean-dialog > form { padding: 0 16px; }
+    .bean-dialog h3 {
+      position: sticky; top: 0; z-index: 3;
+      background: var(--card);
+      margin: 0 -16px 14px;
+      padding: 14px 16px 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 17px;
+    }
+    .bean-dialog .dialog-actions {
+      position: sticky; bottom: 0; z-index: 3;
+      background: var(--card);
+      margin: 18px -16px 0;
+      padding: 12px 16px;
+      padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+      border-top: 1px solid var(--border);
+    }
+    .bean-dialog .dialog-actions button {
+      flex: 1; padding: 12px 16px; min-height: 48px; font-size: 15px;
+    }
     .chip { padding: 6px 11px; min-height: 30px; }
   }
 
@@ -1755,18 +1784,18 @@
   @media (max-width: 720px) {
     .pantry-hero { padding: 20px 18px; margin: 12px 0 16px; border-radius: 6px; }
     .pantry-hero h2 { font-size: 22px; }
-    .pantry-hero p { font-size: 13px; margin-bottom: 12px; }
+    .pantry-hero p { font-size: 14px; margin-bottom: 12px; line-height: 1.65; }
     .primary-btn { padding: 10px 20px; font-size: 14.5px; min-height: 44px; }
     .pantry-bean-card { padding: 14px 14px; }
     .bean-header h3 { font-size: 16.5px; min-width: 0; flex: 1 1 100%; order: 1; }
     .bean-header .freshness-badge { order: 2; }
     .bean-header .bean-actions-top { order: 3; margin-left: auto; }
     .bean-header button.icon-btn { width: 36px; height: 36px; }
-    .bean-meta { font-size: 12.5px; gap: 3px 10px; }
+    .bean-meta { font-size: 13.5px; gap: 4px 12px; }
     .bean-meta-item strong { display: inline; }
     .brew-suggest { padding: 10px 12px; }
     .brew-suggest .name { font-size: 14px; }
-    .brew-suggest .params { font-size: 12px; line-height: 1.65; }
+    .brew-suggest .params { font-size: 13px; line-height: 1.7; }
     .brew-suggest .label { font-size: 11px; letter-spacing: 1px; }
     .bean-actions { gap: 6px; padding-top: 10px; }
     .bean-actions button { padding: 9px 12px; font-size: 12.5px; flex: 1 1 calc(50% - 4px); min-height: 40px; }
@@ -5770,8 +5799,8 @@ const BREW_RECIPES = {
     {t:"1:10",      a:"繼續注水至 {water}g", water:320, type:"pour"},
     {t:"2:30-3:00", a:"目標流乾（圓錐紙偏 V60、波浪紙偏 Kalita）", type:"finish"},
   ]},
-  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中細｜C40 #25 / K-Ultra #7.6", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。**總液 = 熱水 160g + 下壺冰 80g ≈ 1:12**（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
-    {t:"準備",       a:"下壺先放冰塊 {water}g（**這部分計入總液比例**）", water:80, type:"setup-ice"},
+  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中細｜C40 #25 / K-Ultra #7.6", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。總液 = 熱水 160g + 下壺冰 80g ≈ 1:12（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
+    {t:"準備",       a:"下壺先放冰塊 {water}g（這部分計入總液比例）", water:80, type:"setup-ice"},
     {t:"準備",       a:"飲用杯另備冰塊約 50g（出杯時融入、不計入萃取比例）", type:"setup-ice"},
     {t:"0:00",       a:"[關／開閥可選] 第一段注水至 {water}g（淺焙開閥、中焙以上關閥）", water:50, type:"pour"},
     {t:"0:40",       a:"開閥注水至 {water}g", water:90, type:"pour"},
@@ -5824,12 +5853,12 @@ const BREW_RECIPES = {
     {t:"1:30",       a:"累計至 {water}g（100%）", water:200, type:"pour"},
     {t:"3:00",       a:"目標流乾，搖晃下壺讓冰融化均勻，倒入新冰杯飲用", type:"finish"},
   ]},
-  "switch-fast-ice": {name:"Switch｜浸泡式快速冰沖（早晨速戰，參考 Hedrick / Kasuya Switch Iced 變形）", grind:"中粗｜C40 #25-28 / K-Ultra #7.6-8.6", temp:"92°C 熱水", baseDose:18, baseRatio:14, scalable:true, doseRange:[12,25], time:"2:00", why:"關閥一次注滿熱水浸泡 → 攪拌 → 開閥沖過冰塊。**1:14 比例 + 短浸泡** 避免過萃出澀（總液 = 熱水 132g + 下壺冰 120g）", steps:[
-    {t:"準備",  a:"下壺先放冰塊 {water}g（**計入總液比例**）", water:120, type:"setup-ice"},
+  "switch-fast-ice": {name:"Switch｜浸泡式快速冰沖（早晨速戰，參考 Hedrick / Kasuya Switch Iced 變形）", grind:"中粗｜C40 #25-28 / K-Ultra #7.6-8.6", temp:"92°C 熱水", baseDose:18, baseRatio:14, scalable:true, doseRange:[12,25], time:"2:00", why:"關閥一次注滿熱水浸泡 → 攪拌 → 開閥沖過冰塊。1:14 比例 + 短浸泡避免過萃出澀（總液 = 熱水 132g + 下壺冰 120g）", steps:[
+    {t:"準備",  a:"下壺先放冰塊 {water}g（計入總液比例）", water:120, type:"setup-ice"},
     {t:"準備",  a:"飲用杯另備冰塊約 40g（出杯時融入、調溫用）", type:"setup-ice"},
     {t:"0:00",  a:"[關閥] 一次注滿熱水至 {water}g（粉床全部浸泡）", water:132, type:"pour"},
     {t:"0:10",  a:"用湯匙繞圈攪拌 5-10 秒，讓粉均勻浸潤", type:"agitation"},
-    {t:"1:30",  a:"[開閥] 讓水全部流下、沖過冰塊（**1:30 開閥避免浸泡過久出澀**）", type:"valve"},
+    {t:"1:30",  a:"[開閥] 讓水全部流下、沖過冰塊（1:30 開閥避免浸泡過久出澀）", type:"valve"},
     {t:"2:00",  a:"目標流乾、搖晃下壺融冰，倒入飲用杯", type:"finish"},
   ]},
   "cold-brew": {name:"Cold Brew 冷萃", grind:"粗｜C40 #30+ / K-Ultra #9.1+", temp:"4°C 冷藏", baseDose:20, baseRatio:10, scalable:true, doseRange:[15,100], time:"12-16 小時", why:"低酸甜厚，可線性放大批量；冷藏可保存 7-10 天", steps:[

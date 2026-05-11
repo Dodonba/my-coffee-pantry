@@ -1184,6 +1184,27 @@
     .today-pick-msg { flex-basis: 100%; margin-left: 0; margin-top: 4px; }
   }
   /* 篩選 bar（pantry-list 上方） */
+  .dose-pref-bar {
+    display: flex; align-items: center; flex-wrap: wrap;
+    gap: 10px; padding: 8px 14px; margin: 8px 0 10px;
+    background: var(--bg-soft); border-radius: 6px;
+    font-size: 13px;
+  }
+  .dose-pref-bar .label { color: var(--text-soft); font-weight: 600; }
+  .dose-pref-bar .seg-group { display: inline-flex; border: 1px solid var(--border); border-radius: 5px; overflow: hidden; background: white; }
+  .dose-pref-bar .seg {
+    background: white; border: none; padding: 5px 12px;
+    font-size: 12.5px; cursor: pointer; color: var(--text-soft);
+    font-weight: 600; font-family: inherit;
+  }
+  .dose-pref-bar .seg + .seg { border-left: 1px solid var(--border); }
+  .dose-pref-bar .seg.active { background: var(--accent-dark); color: white; }
+  .dose-pref-bar .dose-pref-hint { color: var(--text-soft); font-size: 12px; }
+  @media (max-width: 720px) {
+    .dose-pref-bar { padding: 8px 12px; font-size: 12.5px; }
+    .dose-pref-bar .dose-pref-hint { flex-basis: 100%; font-size: 11.5px; }
+    .dose-pref-bar .seg { padding: 6px 12px; min-height: 32px; }
+  }
   .pantry-filter-bar {
     display: flex; flex-wrap: wrap;
     gap: 8px 12px; align-items: center;
@@ -1242,11 +1263,64 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 18px 20px;
+    padding: 0; overflow: hidden;
     box-shadow: 0 1px 4px rgba(62, 39, 35, 0.06);
     transition: box-shadow 0.2s;
   }
   .pantry-bean-card:hover { box-shadow: 0 3px 10px rgba(62, 39, 35, 0.12); }
+  /* 折疊/展開切換 */
+  .pantry-bean-card.collapsed .bean-details { display: none; }
+  .pantry-bean-card.expanded .bean-row { border-bottom: 1px dashed var(--border); }
+  /* 一排清單 row（永遠顯示）*/
+  .bean-row {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 18px; cursor: pointer; user-select: none;
+    position: relative; transition: background 0.15s;
+  }
+  .bean-row:hover { background: var(--bg-soft); }
+  .bean-row-title {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    flex: 0 0 auto; min-width: 200px; max-width: 320px;
+  }
+  .bean-row-title h3 {
+    margin: 0; font-size: 16px; color: var(--accent-dark);
+    font-weight: 700; line-height: 1.3;
+  }
+  .bean-row-tags { display: inline-flex; flex-wrap: wrap; gap: 5px; align-items: center; }
+  .bean-row-meta {
+    display: flex; flex-wrap: wrap; gap: 3px 14px;
+    font-size: 12.5px; color: var(--text); flex: 1 1 auto;
+    font-variant-numeric: tabular-nums;
+  }
+  .bean-row-meta .meta-item strong {
+    color: var(--text-soft); font-weight: 600;
+    margin-right: 4px; font-size: 11px;
+  }
+  .bean-row-actions { display: flex; align-items: center; gap: 6px; flex: 0 0 auto; }
+  .bean-row-actions .icon-btn {
+    background: transparent; border: 1px solid var(--border);
+    width: 30px; height: 30px; border-radius: 50%;
+    cursor: pointer; color: var(--text-soft);
+    font-size: 13px; line-height: 1; padding: 0;
+    transition: background 0.15s, color 0.15s;
+  }
+  .bean-row-actions .icon-btn:hover { background: var(--bg-soft); color: var(--accent-dark); }
+  .bean-row-actions .icon-btn.delete:hover { background: #fee; color: #c33; border-color: #f99; }
+  .bean-expand-indicator {
+    font-size: 14px; color: var(--text-soft);
+    transition: transform 0.2s; margin-left: 4px;
+  }
+  .pantry-bean-card.expanded .bean-expand-indicator { transform: rotate(180deg); }
+  /* 展開區 padding */
+  .bean-details { padding: 14px 18px 16px; }
+  @media (max-width: 720px) {
+    .bean-row { padding: 12px 14px; flex-wrap: wrap; padding-right: 90px; }
+    .bean-row-title { flex: 1 1 100%; min-width: 0; max-width: none; }
+    .bean-row-meta { flex: 1 1 100%; font-size: 12px; gap: 2px 12px; }
+    .bean-row-actions { position: absolute; top: 10px; right: 10px; }
+    .bean-row-actions .icon-btn { width: 32px; height: 32px; }
+    .bean-details { padding: 12px 14px 14px; }
+  }
   .bean-header { display: flex; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
   .bean-header h3 {
     margin: 0; font-size: 18px; color: var(--accent-dark);
@@ -1299,11 +1373,27 @@
   .bean-meta-item strong { color: var(--accent-dark); margin-right: 4px; }
   .bean-notes { font-size: 13px; color: var(--text-soft); margin: 6px 0; font-style: italic; }
   .brew-pair {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    margin: 12px 0 8px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    margin: 12px 0 6px;
   }
   @media (max-width: 720px) { .brew-pair { grid-template-columns: 1fr; } }
   .brew-pair.single { grid-template-columns: 1fr; }
+  /* 4 張卡：熱主／熱備／冰主／冰備 ── 2x2 grid */
+  .brew-pair.brew-quad { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 720px) { .brew-pair.brew-quad { grid-template-columns: 1fr; } }
+  /* 「其他沖法」下拉 */
+  .brew-other-row { margin: 0 0 8px; }
+  .brew-other-select {
+    width: 100%; padding: 8px 10px;
+    border: 1px dashed var(--border); border-radius: 5px;
+    background: var(--bg-soft); color: var(--text);
+    font-size: 13px; font-family: inherit; cursor: pointer;
+  }
+  .brew-other-select:hover { border-color: var(--accent); }
+  .brew-other-select.has-pick {
+    border-style: solid; border-color: var(--accent-dark);
+    background: white; color: var(--accent-dark); font-weight: 600;
+  }
   /* 被「降級」的另一沖法摺疊（依使用者紀錄）*/
   .brew-alt-fold {
     margin: 6px 0 4px;
@@ -1324,10 +1414,33 @@
   .brew-alt-fold .brew-suggest { margin-top: 0; }
   .brew-suggest {
     border-radius: 6px; padding: 12px 14px;
-    border: 1px solid var(--border);
+    border: 2px solid var(--border);
+    cursor: pointer; position: relative;
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.08s;
+  }
+  .brew-suggest:hover {
+    box-shadow: 0 3px 10px rgba(0,0,0,0.10);
+    transform: translateY(-1px);
+  }
+  .brew-suggest:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(180,130,80,0.35);
+  }
+  .brew-suggest.selected {
+    border-color: var(--accent-dark);
+    box-shadow: 0 3px 12px rgba(180,130,80,0.22);
+  }
+  .brew-suggest.selected::after {
+    content: '✓ 已選'; position: absolute;
+    top: 6px; right: 10px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+    color: white; background: var(--accent-dark);
+    padding: 2px 7px; border-radius: 10px;
   }
   .brew-suggest.hot  { background: linear-gradient(135deg, #fff5e6 0%, #fde6cc 100%); border-color: #f5b888; }
   .brew-suggest.cold { background: linear-gradient(135deg, #e6f2ff 0%, #cfe4f7 100%); border-color: #88baf5; }
+  .brew-suggest.hot.selected  { border-color: #b85a1a; }
+  .brew-suggest.cold.selected { border-color: #1f5b96; }
   .brew-suggest .label {
     font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px;
     text-transform: uppercase; opacity: 0.75; margin-bottom: 4px;
@@ -1352,8 +1465,29 @@
     transition: background 0.15s, border-color 0.15s;
   }
   .bean-actions button:hover { background: var(--accent-light); color: white; border-color: var(--accent-light); }
-  .bean-actions button.primary { background: var(--accent); color: white; border-color: var(--accent); flex: 1 1 auto; }
+  .bean-actions button.primary {
+    background: var(--accent); color: white; border-color: var(--accent); flex: 1 1 auto;
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    line-height: 1.25; padding: 8px 14px;
+  }
   .bean-actions button.primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+  .bean-actions button.primary .brew-cta-main { font-weight: 700; }
+  .bean-actions button.primary .brew-cta-sub {
+    font-size: 11.5px; opacity: 0.9; font-weight: 500;
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .bean-actions button.primary .brew-cta-sub:empty { display: none; }
+  /* select 選了「其他」之後、CTA 強調動畫 */
+  .bean-actions button.primary.cta-armed {
+    background: var(--accent-dark); border-color: var(--accent-dark);
+    box-shadow: 0 0 0 0 rgba(180,130,80,0.6);
+    animation: cta-pulse 0.9s ease-out 1;
+  }
+  @keyframes cta-pulse {
+    0%   { box-shadow: 0 0 0 0   rgba(180,130,80,0.55); transform: scale(1); }
+    50%  { box-shadow: 0 0 0 10px rgba(180,130,80,0);  transform: scale(1.03); }
+    100% { box-shadow: 0 0 0 0   rgba(180,130,80,0);   transform: scale(1); }
+  }
   .bean-actions button.secondary-link {
     background: transparent; border: none;
     color: var(--text-soft); font-size: 12.5px;
@@ -1467,7 +1601,7 @@
   /* === Dialog === */
   .bean-dialog {
     border: none; border-radius: 8px;
-    padding: 24px 26px; max-width: 540px; width: 92%;
+    padding: 24px 26px; max-width: 760px; width: 94%;
     box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     background: var(--card);
   }
@@ -1476,7 +1610,7 @@
   .bean-dialog .form-grid {
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;
   }
-  .bean-dialog .form-grid label.full { grid-column: 1 / -1; }
+  .bean-dialog .form-grid > .full { grid-column: 1 / -1; }
   .bean-dialog label {
     display: flex; flex-direction: column; gap: 4px;
     font-size: 13px; color: var(--text); font-weight: 600;
@@ -1528,7 +1662,7 @@
     display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;
     padding: 6px 0 4px;
   }
-  .bean-dialog .advanced-grid label.full { grid-column: 1 / -1; }
+  .bean-dialog .advanced-grid > .full { grid-column: 1 / -1; }
   @media (max-width: 540px) {
     .bean-dialog .advanced-grid { grid-template-columns: 1fr; }
   }
@@ -1553,6 +1687,11 @@
   }
   .chip.readonly { cursor: default; padding: 3px 9px; font-size: 11.5px; }
   .chip.readonly:hover { background: white; border-color: var(--border); }
+  .chip.custom { border-color: #f5b888; background: rgba(255, 200, 100, 0.10); }
+  .chip.custom:hover { background: rgba(255, 200, 100, 0.20); border-color: #e89545; }
+  .chip.custom:has(input:checked), .chip.custom.checked {
+    background: #b85a1a; border-color: #b85a1a; color: white;
+  }
   .blend-only { display: none; }
   .blend-only.active { display: flex; }
   .blend-only > .chip-label {
@@ -1563,8 +1702,51 @@
     display: flex; flex-wrap: wrap; gap: 5px;
     margin: 4px 0;
   }
-  @media (max-width: 540px) {
+  /* 莊園/品種雙模式：單豆下拉 vs 配方豆 chip 多選 */
+  .bean-dialog .pick-block {
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 12px 14px 12px;
+    background: var(--bg-soft);
+  }
+  .bean-dialog .pick-block .pick-header {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; flex-wrap: wrap;
+    margin: 0 0 10px;
+  }
+  .bean-dialog .pick-block .pick-title {
+    font-size: 12.5px; color: var(--text-soft); font-weight: 600;
+    margin: 0;
+  }
+  .bean-dialog .pick-mode-toggle {
+    display: inline-flex;
+    border: 1px solid var(--border); border-radius: 5px;
+    overflow: hidden; background: white;
+  }
+  .bean-dialog .pick-mode-toggle .seg {
+    background: white; border: none;
+    padding: 5px 12px; font-size: 12.5px;
+    cursor: pointer; color: var(--text-soft); font-weight: 600;
+    font-family: inherit;
+  }
+  .bean-dialog .pick-mode-toggle .seg + .seg { border-left: 1px solid var(--border); }
+  .bean-dialog .pick-mode-toggle .seg.active {
+    background: var(--accent-dark); color: white;
+  }
+  .bean-dialog .field-mode-blend { display: none; }
+  .bean-dialog.is-blend .field-mode-single { display: none; }
+  .bean-dialog.is-blend .field-mode-blend { display: block; }
+  .bean-dialog .single-pick-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;
+  }
+  .bean-dialog .single-pick-grid > .full { grid-column: 1 / -1; }
+  .bean-dialog .mode-hint {
+    margin: 8px 0 0; font-size: 12px; color: var(--text-soft);
+    font-weight: 400; line-height: 1.5;
+  }
+  @media (max-width: 720px) {
     .bean-dialog .form-grid { grid-template-columns: 1fr; }
+    .bean-dialog .single-pick-grid { grid-template-columns: 1fr; }
     .bean-dialog { padding: 18px 16px; max-height: 92vh; overflow-y: auto; }
     .chip { padding: 6px 11px; min-height: 30px; }
   }
@@ -1820,6 +2002,15 @@
         <button type="button" class="seg" data-value="low">快喝完</button>
       </div>
       <span class="filter-count" id="filter-count"></span>
+    </div>
+    <div class="dose-pref-bar" id="dose-pref-bar">
+      <span class="label">☕ 常用粉量：</span>
+      <div class="seg-group">
+        <button type="button" class="seg" data-dose-pref="15">15g</button>
+        <button type="button" class="seg" data-dose-pref="18">18g</button>
+        <button type="button" class="seg" data-dose-pref="20">20g</button>
+      </div>
+      <span class="dose-pref-hint">食譜預設帶這個粉量、按 +/− 還能微調</span>
     </div>
     <div id="pantry-list" class="pantry-list"></div>
   </section>
@@ -5363,6 +5554,49 @@ Outstanding clarity.
     <input type="hidden" name="id">
     <div class="form-grid">
       <label class="full">豆名 <span class="req">*</span><input name="name" required maxlength="80" placeholder="如：衣索比亞 Yirgacheffe G1"></label>
+
+      <!-- 莊園 / 品種：選豆模式（單豆下拉 vs 配方豆 chip 多選） -->
+      <div class="full pick-block">
+        <div class="pick-header">
+          <p class="pick-title">莊園 / 品種</p>
+          <div class="pick-mode-toggle" id="pick-mode-toggle" role="tablist">
+            <button type="button" class="seg active" data-mode="single">☕ 單豆</button>
+            <button type="button" class="seg" data-mode="blend">🎨 配方豆 Blend</button>
+          </div>
+        </div>
+
+        <!-- 單豆模式：兩個下拉並列 + 其他手填 -->
+        <div class="field-mode-single">
+          <div class="single-pick-grid">
+            <label>莊園
+              <select name="estateSingle"></select>
+            </label>
+            <label>品種
+              <select name="varietySingle"></select>
+            </label>
+            <label class="full">其他莊園（下拉找不到時手填，會自動學習）<input name="estateSingleOther" placeholder="如：Finca XXX"></label>
+            <label class="full">其他品種（下拉找不到時手填）<input name="varietySingleOther" placeholder="如：Wush Wush"></label>
+          </div>
+        </div>
+
+        <!-- 配方豆模式：chip 多選 -->
+        <div class="field-mode-blend">
+          <span class="chip-label">莊園（配方豆多選）</span>
+          <div class="chip-group" id="estate-group"></div>
+          <input name="estateOther" placeholder="其他莊園（逗號分隔；下次新增豆時會自動成為 chip 選項）" style="margin-top:4px;">
+          <span class="chip-label" style="margin-top:12px;">品種（配方豆多選）</span>
+          <div class="chip-group" id="variety-group"></div>
+          <input name="varietyOther" placeholder="其他品種（逗號分隔）" style="margin-top:4px;">
+        </div>
+      </div>
+
+      <!-- 風味（移到莊園/品種下面）-->
+      <div class="full" id="blend-flavors-block">
+        <span class="chip-label">主打風味（豆袋上寫的描述、多選）── 單豆／配方豆都可填</span>
+        <div class="chip-group" id="blend-flavors-group"></div>
+        <input name="flavorOther" placeholder="其他風味（逗號分隔；下次新增豆時會自動成為 chip 選項）" style="margin-top:4px;">
+      </div>
+
       <label>烘焙度 <span class="req">*</span>
         <select name="roast" required>
           <option value="light">淺焙</option>
@@ -5386,33 +5620,24 @@ Outstanding clarity.
         </select>
       </label>
       <label>店家<input name="shopName" placeholder="如：Simple Kaffa"></label>
-      <label>剩餘量 (g)<input type="number" name="gramRemaining" min="0" max="2000" step="10" placeholder="如：200"></label>
+      <label>豆袋總重 (g)<input type="number" name="weightTotal" min="0" max="2000" step="10" placeholder="如：200"></label>
+      <label>購買價 NT$<input type="number" name="pricePerBag" min="0" max="50000" step="10" placeholder="如：780"></label>
+      <label>剩餘量 (g)<input type="number" name="gramRemaining" min="0" max="2000" step="10" placeholder="不填 → 預設＝總重"></label>
+      <label>海拔（高 = 沖法偏淺焙花果）
+        <select name="density">
+          <option value="">— 不確定 —</option>
+          <option value="high">高（&gt;1500m）</option>
+          <option value="medium">中（1300-1500m）</option>
+          <option value="low">低（&lt;1300m）</option>
+        </select>
+      </label>
+      <label class="full">產區（國家／區域，文字描述，可不填）<input name="origin" placeholder="如：Ethiopia · Gedeo · 1900-2200m"></label>
       <label class="full">備註<textarea name="notes" rows="2" placeholder="風味、價格、購買日、推薦人等"></textarea></label>
-      <div class="full blend-only" id="blend-flavors-block">
-        <span class="chip-label">主打風味（豆袋上寫的描述、多選）</span>
-        <div class="chip-group" id="blend-flavors-group"></div>
-      </div>
+
       <div class="full blend-only" id="blend-origins-block">
-        <span class="chip-label">主要成分產區（如果豆袋有寫、可不填）</span>
+        <span class="chip-label">主要成分產區（配方豆才會顯示，如果豆袋有寫、可不填）</span>
         <div class="chip-group" id="blend-origins-group"></div>
       </div>
-      <details class="full advanced-fields">
-        <summary>＋ 進階欄位（產區／品種／密度／價格）── 不確定可不填</summary>
-        <div class="advanced-grid">
-          <label class="full">產區（國家／莊園／海拔）<input name="origin" placeholder="如：Ethiopia · Gedeo · 1900-2200m"></label>
-          <label class="full">品種（多個用逗號分隔）<input name="variety" placeholder="如：Heirloom 或 Bourbon, Caturra"></label>
-          <label class="full">密度 / 海拔
-            <select name="density">
-              <option value="">— 不確定 —</option>
-              <option value="high">高（&gt;1500m）</option>
-              <option value="medium">中（1300-1500m）</option>
-              <option value="low">低（&lt;1300m）</option>
-            </select>
-          </label>
-          <label>豆袋總重 (g)<input type="number" name="weightTotal" min="0" max="2000" step="10" placeholder="如：200"></label>
-          <label>購買價 NT$<input type="number" name="pricePerBag" min="0" max="50000" step="10" placeholder="如：780"></label>
-        </div>
-      </details>
     </div>
     <div class="dialog-actions">
       <button type="button" data-act="cancel">取消</button>
@@ -5487,15 +5712,14 @@ const COFFEE_DB = [
 // scalable:false 的食譜（espresso/moka）粉量受器材限制，不顯示 stepper
 // 時間軸不縮放（codex 建議：時間是萃取節奏、不是水量函數）
 const BREW_RECIPES = {
-  "v60-hoffmann": {name:"V60｜Hoffmann 終極 (2022)", grind:"中細｜C40 #18 / K-Ultra #5.4 / EK43 #4-5", temp:"100°C", baseDose:15, baseRatio:16.7, scalable:true, doseRange:[8,30], time:"3:00", why:"多次小水量分階段注水（40%→60%→80%→100%），淺焙花果調首選", steps:[
-    {t:"0:00-0:10", a:"注水 {water}g 悶蒸（粉重約 3 倍）", water:50, type:"bloom"},
-    {t:"0:10-0:15", a:"輕搖濾杯讓粉床平整", type:"agitation"},
-    {t:"0:45",      a:"注水至 {water}g（40%）", water:100, type:"pour"},
-    {t:"1:10",      a:"注水至 {water}g（60%）", water:150, type:"pour"},
-    {t:"1:30",      a:"注水至 {water}g（80%）", water:200, type:"pour"},
-    {t:"1:50",      a:"注水至 {water}g（100%）", water:250, type:"pour"},
-    {t:"2:00",      a:"再輕搖濾杯一次（消除粉壁）", type:"agitation"},
-    {t:"3:00",      a:"目標流乾、移開濾杯", type:"finish"},
+  "v60-hoffmann": {name:"V60｜Hoffmann Ultimate (2022)", grind:"中細｜C40 #18 / K-Ultra #5.4 / EK43 #4-5", temp:"99-100°C", baseDose:15, baseRatio:16.7, scalable:true, doseRange:[8,30], time:"3:30-4:00", why:"James Hoffmann 2022 終極：大量 bloom + 兩次 vigorous swirl（bloom 後、水位將乾前各一次）。淺焙花果調首選", steps:[
+    {t:"0:00",      a:"注水 {water}g 悶蒸（粉重 ~4 倍）", water:60, type:"bloom"},
+    {t:"0:00-0:05", a:"立刻 vigorous swirl（用力旋繞濾杯讓粉床全部濕潤）", type:"agitation"},
+    {t:"等 0:45",   a:"靜置悶蒸 45 秒（不要再攪動）", type:"wait"},
+    {t:"0:45-1:15", a:"30 秒內慢繞圈注水至 {water}g（總水 60%）", water:150, type:"pour"},
+    {t:"1:15-1:45", a:"30 秒內注水至 {water}g（100%）", water:250, type:"pour"},
+    {t:"水位將乾",  a:"最後一次 vigorous swirl（水位即將見底時、消除粉壁）", type:"agitation"},
+    {t:"3:30-4:00", a:"目標流乾、移開濾杯", type:"finish"},
   ]},
   "v60": {name:"V60｜通用簡化版", grind:"中細｜C40 #18-22 / K-Ultra #5.4-6.5", temp:"92°C", baseDose:20, baseRatio:16, scalable:true, doseRange:[10,30], time:"2:30-3:00", why:"三段注水好記，淺到中焙都能用，新手第一支", steps:[
     {t:"0:00-0:10", a:"注水 {water}g 悶蒸（粉重 2 倍）", water:40, type:"bloom"},
@@ -5503,15 +5727,16 @@ const BREW_RECIPES = {
     {t:"1:10",      a:"繼續注水至 {water}g", water:320, type:"pour"},
     {t:"2:30-3:00", a:"目標流乾、移開濾杯", type:"finish"},
   ]},
-  "v60-wendelboe": {name:"V60｜Tim Wendelboe 北歐派", grind:"中細｜C40 #18-20 / K-Ultra #5.4-5.9", temp:"98°C", baseDose:16, baseRatio:15.6, scalable:true, doseRange:[10,25], time:"2:30-3:00", why:"北歐派標竿：高水溫 + 一次大水量 bloom + 結束搖晃，極乾淨凸顯北歐淺焙花果（Tim Wendelboe 公開配方）", steps:[
-    {t:"0:00-0:10", a:"注水 {water}g 大量 bloom（粉重 ~3 倍）", water:45, type:"bloom"},
-    {t:"0:10-0:45", a:"靜置 35 秒（讓 CO2 完全排出）", type:"wait"},
-    {t:"0:45-1:15", a:"低擾動緩繞圈注水至 {water}g（注水時把湯匙當隔板，水流低）", water:250, type:"pour"},
-    {t:"1:15",      a:"注完立刻搖晃濾杯（消除粉壁、把粉床壓平）", type:"agitation"},
-    {t:"2:30-3:00", a:"目標流乾", type:"finish"},
+  "v60-wendelboe": {name:"V60｜Tim Wendelboe 北歐派", grind:"中細｜C40 #18-20 / K-Ultra #5.4-5.9", temp:"98°C", baseDose:16, baseRatio:15.6, scalable:true, doseRange:[10,25], time:"2:30-3:00", why:"北歐派標竿：高水溫 + 大量 bloom 不攪拌 + 低擾動單段續注，極乾淨凸顯北歐淺焙花果。重點：全程不搖、不攪", steps:[
+    {t:"0:00",      a:"注水 {water}g 大量 bloom（粉重 ~3 倍、不攪拌不搖）", water:45, type:"bloom"},
+    {t:"等 0:40",   a:"靜置 40 秒讓 CO2 排出（不要碰濾杯）", type:"wait"},
+    {t:"0:40-1:15", a:"低擾動緩繞圈注水至 {water}g（湯匙當隔板、水流低）", water:250, type:"pour"},
+    {t:"2:30-3:00", a:"目標流乾、不需結束搖晃", type:"finish"},
   ]},
-  "v60-wolfl": {name:"V60｜Martin Wölfl 2024 WBrC 冠軍（V60 簡化版）", grind:"中細偏粗｜C40 #22-24 / K-Ultra #6.5-7.2", temp:"93°C", baseDose:17, baseRatio:15.9, scalable:true, doseRange:[12,25], time:"2:20-2:25", why:"4 段精準注水：bloom→快補→慢加→收尾。原版用 Orea V4 + Sibarist 快流紙，現代厭氧/雙發酵豆首選", steps:[
-    {t:"0:00-0:30", a:"bloom 注水至 {water}g（粉重 ~3.5 倍、悶蒸 30 秒）", water:60, type:"bloom"},
+  "v60-wolfl": {name:"V60｜Martin Wölfl 2024 WBrC 冠軍（V60 簡化版）", grind:"中細偏粗｜C40 #22-24 / K-Ultra #6.5-7.2", temp:"96-99°C", baseDose:17, baseRatio:15.9, scalable:true, doseRange:[12,25], time:"2:20-2:25", why:"4 段精準注水 + bloom 後 vigorous swirl。原版用 Orea V3 + Sibarist 快流紙、99°C 高溫，現代厭氧/雙發酵豆首選", steps:[
+    {t:"0:00",      a:"bloom 注水至 {water}g（粉重 ~3.5 倍）", water:60, type:"bloom"},
+    {t:"0:00-0:05", a:"vigorous swirl 讓粉床完全濕潤", type:"agitation"},
+    {t:"等 0:30",   a:"靜置悶蒸 30 秒", type:"wait"},
     {t:"0:30-0:40", a:"注水至 {water}g（快補第二段，10 秒內完成）", water:120, type:"pour"},
     {t:"0:40-1:20", a:"注水至 {water}g（慢加第三段）", water:170, type:"pour"},
     {t:"1:20-2:00", a:"注水至 {water}g（收尾段、緩繞圈）", water:270, type:"pour"},
@@ -5545,33 +5770,34 @@ const BREW_RECIPES = {
     {t:"1:10",      a:"繼續注水至 {water}g", water:320, type:"pour"},
     {t:"2:30-3:00", a:"目標流乾（圓錐紙偏 V60、波浪紙偏 Kalita）", type:"finish"},
   ]},
-  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中細｜C40 #25 / K-Ultra #7.6", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾，冰沖鎖香氣（總液 = 熱水 + 冰塊 1:12）", steps:[
-    {t:"準備",       a:"下壺先放冰塊 {water}g", water:80, type:"setup-ice"},
+  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中細｜C40 #25 / K-Ultra #7.6", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。**總液 = 熱水 160g + 下壺冰 80g ≈ 1:12**（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
+    {t:"準備",       a:"下壺先放冰塊 {water}g（**這部分計入總液比例**）", water:80, type:"setup-ice"},
+    {t:"準備",       a:"飲用杯另備冰塊約 50g（出杯時融入、不計入萃取比例）", type:"setup-ice"},
     {t:"0:00",       a:"[關／開閥可選] 第一段注水至 {water}g（淺焙開閥、中焙以上關閥）", water:50, type:"pour"},
     {t:"0:40",       a:"開閥注水至 {water}g", water:90, type:"pour"},
     {t:"流乾即注",   a:"注水至 {water}g", water:130, type:"pour"},
     {t:"流乾即注",   a:"注水至 {water}g（總熱水）", water:160, type:"pour"},
-    {t:"出杯",       a:"倒出搖晃融冰，倒入新冰杯飲用", type:"finish"},
+    {t:"出杯",       a:"倒出搖晃融冰、倒入飲用杯（內含預備冰塊）飲用", type:"finish"},
   ]},
-  "switch-devil": {name:"Hario Switch｜粕谷哲惡魔手沖", grind:"中粗｜C40 #28 / K-Ultra #8.6", temp:"92°C", baseDose:15, baseRatio:15, scalable:true, doseRange:[10,30], time:"2:20", why:"浸泡＋滴濾混合，新手 SOP 友善的單人份", steps:[
-    {t:"0:00", a:"開閥注水至 {water}g", water:30, type:"pour"},
-    {t:"0:40", a:"保持滴濾注水至 {water}g", water:90, type:"pour"},
-    {t:"1:20", a:"關閥注水至 {water}g（浸泡）", water:225, type:"pour"},
-    {t:"1:50", a:"開閥放下", type:"valve"},
-    {t:"2:20", a:"目標流乾", type:"finish"},
+  "switch-devil": {name:"Hario Switch｜Kasuya 粕谷哲惡魔手沖", grind:"中粗｜C40 #28 / K-Ultra #8.6", temp:"92°C", baseDose:15, baseRatio:15, scalable:true, doseRange:[10,30], time:"3:30", why:"開→關→開三段操作：先開閥滴濾出第一杯香氣 → 關閥鎖住浸泡萃取 → 開閥流乾。新手 SOP 友善", steps:[
+    {t:"0:00", a:"[開閥] 第一段注水至 {water}g 悶蒸（讓水滴穿透粉床到下壺）", water:50, type:"bloom"},
+    {t:"0:30", a:"[關閥] 注水至 {water}g（鎖住粉床浸泡）", water:100, type:"pour"},
+    {t:"0:45", a:"仍關閥、注水至 {water}g 完成全部注水", water:225, type:"pour"},
+    {t:"1:30", a:"[開閥] 讓水流下", type:"valve"},
+    {t:"3:30", a:"目標流乾、完成", type:"finish"},
   ]},
-  "aeropress": {name:"Aeropress｜Hoffmann Standard", grind:"中細｜C40 #18-22 / K-Ultra #5.4-6.5 / EK43 #6-8", temp:"沸後稍涼", baseDose:15, baseRatio:16, scalable:true, doseRange:[8,20], time:"2:30 (浸 2 分 + 下壓 30-60 秒)", why:"攜帶王、玩法多，淺中深焙都適合", steps:[
+  "aeropress": {name:"Aeropress｜Hoffmann 正向法", grind:"中細｜C40 #18-22 / K-Ultra #5.4-6.5 / EK43 #6-8", temp:"92-94°C", baseDose:15, baseRatio:16, scalable:true, doseRange:[8,20], time:"2:30 (浸 2 分 + 下壓 30-60 秒)", why:"Hoffmann 日常正向法：攜帶王、玩法多，淺中深焙都適合（倒置法是另一個 80°C 配方，不在此）", steps:[
     {t:"準備",       a:"濾紙裝好、Aeropress 正放於杯上、加入 {dose}g 粉", type:"setup"},
     {t:"0:00",       a:"注水 {water}g（一次注完）", water:240, type:"pour"},
     {t:"0:30",       a:"攪拌一次、蓋上活塞「拉氣密但不下壓」", type:"agitation"},
     {t:"等 2:00",    a:"浸泡 2 分鐘", type:"wait"},
     {t:"2:00-2:30",  a:"緩慢下壓 30-60 秒（聽到「滋」聲時停手）", type:"finish"},
   ]},
-  "french-press": {name:"French Press｜Hoffmann Ultimate", grind:"中粗｜C40 #30+ / K-Ultra #9.1+", temp:"沸水", baseDose:20, baseRatio:16.7, scalable:true, doseRange:[12,50], time:"9 分鐘（4 浸 + 5 沉降，不下壓）", why:"保留咖啡油脂、body 最厚實", steps:[
-    {t:"0:00", a:"加 {dose}g 粉、注沸水 {water}g", water:335, type:"pour"},
-    {t:"4:00", a:"攪拌一次、撇除表面浮渣與粉塊", type:"agitation"},
-    {t:"9:00", a:"沉降完成（全程不要按下活塞）", type:"wait"},
-    {t:"出杯", a:"緩慢傾倒咖啡液（最後 30g 留在壺底不倒，避免細粉）", type:"finish"},
+  "french-press": {name:"French Press｜Hoffmann Ultimate", grind:"中粗｜C40 #30+ / K-Ultra #9.1+", temp:"剛沸 ~96°C", baseDose:20, baseRatio:16.7, scalable:true, doseRange:[12,50], time:"9 分鐘（4 浸 + 5 沉降，不下壓）", why:"Hoffmann 重點：4 分鐘破殼撈渣 + 再靜置沉降 + 不按下活塞。保留咖啡油脂、body 最厚實", steps:[
+    {t:"0:00",      a:"加 {dose}g 粉、注剛沸水 {water}g（不要攪拌）", water:335, type:"pour"},
+    {t:"4:00",      a:"用湯匙撥開表層粉殼（break crust）+ 撈掉浮泡與飄粉", type:"agitation"},
+    {t:"4:00-9:00", a:"靜置 5 分鐘讓細粉沉降（活塞輕放但不要下壓）", type:"wait"},
+    {t:"9:00",      a:"緩慢傾倒咖啡液（最後 30g 留在壺底、避免細粉）", type:"finish"},
   ]},
   "moka": {name:"Moka Pot 摩卡壺", grind:"中細｜C40 #15 / K-Ultra #4.5", temp:"預熱水到泄壓閥下緣", baseDose:17, baseRatio:null, scalable:false, fixedNote:"粉量由摩卡壺粉杯尺寸決定（1 杯壺 ~5g、3 杯壺 ~17g、6 杯壺 ~30g），不要任意縮放", time:"3-5 分鐘（聽聲音）", why:"1.5-3 bar 準濃縮，居家義式入門", steps:[
     {t:"準備",   a:"下壺加預熱水到泄壓閥下緣", type:"setup"},
@@ -5598,12 +5824,13 @@ const BREW_RECIPES = {
     {t:"1:30",       a:"累計至 {water}g（100%）", water:200, type:"pour"},
     {t:"3:00",       a:"目標流乾，搖晃下壺讓冰融化均勻，倒入新冰杯飲用", type:"finish"},
   ]},
-  "ice-brew": {name:"中段冰球｜粕谷哲 Ice Brew", grind:"中粗｜C40 #28-30 / K-Ultra #8.6-9.1", temp:"0-5°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,40], time:"30-60 分鐘慢沖", why:"冰塊在粉床上方融化、慢速滴濾，syrupy 質感、極致甜厚（總液 = 冰塊 + 冷水 1:12）", steps:[
-    {t:"準備",     a:"中粗研磨 {dose}g 咖啡放入 V60（紙模潤過後甩乾）", type:"setup"},
-    {t:"放冰",     a:"把大冰球（或 jumbo 製冰盒方塊 2-3 顆）整顆壓在粉床上方，總量 {water}g", water:200, type:"setup-ice"},
-    {t:"0:00",     a:"從冰球頂部「緩慢倒入 {water}g 冷水」，讓冷水繞過冰塊滲到粉床", water:40, type:"pour"},
-    {t:"離開",     a:"離開不要管，等冰塊全部融化、咖啡液完全滴入下壺", type:"wait"},
-    {t:"30-60 分", a:"完成（看冰塊大小與室溫），倒入新冰杯飲用", type:"finish"},
+  "switch-fast-ice": {name:"Switch｜浸泡式快速冰沖（早晨速戰，參考 Hedrick / Kasuya Switch Iced 變形）", grind:"中粗｜C40 #25-28 / K-Ultra #7.6-8.6", temp:"92°C 熱水", baseDose:18, baseRatio:14, scalable:true, doseRange:[12,25], time:"2:00", why:"關閥一次注滿熱水浸泡 → 攪拌 → 開閥沖過冰塊。**1:14 比例 + 短浸泡** 避免過萃出澀（總液 = 熱水 132g + 下壺冰 120g）", steps:[
+    {t:"準備",  a:"下壺先放冰塊 {water}g（**計入總液比例**）", water:120, type:"setup-ice"},
+    {t:"準備",  a:"飲用杯另備冰塊約 40g（出杯時融入、調溫用）", type:"setup-ice"},
+    {t:"0:00",  a:"[關閥] 一次注滿熱水至 {water}g（粉床全部浸泡）", water:132, type:"pour"},
+    {t:"0:10",  a:"用湯匙繞圈攪拌 5-10 秒，讓粉均勻浸潤", type:"agitation"},
+    {t:"1:30",  a:"[開閥] 讓水全部流下、沖過冰塊（**1:30 開閥避免浸泡過久出澀**）", type:"valve"},
+    {t:"2:00",  a:"目標流乾、搖晃下壺融冰，倒入飲用杯", type:"finish"},
   ]},
   "cold-brew": {name:"Cold Brew 冷萃", grind:"粗｜C40 #30+ / K-Ultra #9.1+", temp:"4°C 冷藏", baseDose:20, baseRatio:10, scalable:true, doseRange:[15,100], time:"12-16 小時", why:"低酸甜厚，可線性放大批量；冷藏可保存 7-10 天", steps:[
     {t:"準備",       a:"{dose}g 粉（粗研磨）+ {water}g 冷水放入瓶罐／壺", water:200, type:"setup"},
@@ -5668,7 +5895,7 @@ const BREWS_BY_PROFILE_ROAST = {
     _default:       { hot:'v60-hoffmann',  hotAlt:'v60-wendelboe', cold:'iced-v60' },
   },
   fruity_natural: {
-    light:          { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'ice-brew' },
+    light:          { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-fast-ice' },
     'medium-light': { hot:'v60',           hotAlt:'switch-chacha', cold:'switch-chacha' },
     medium:         { hot:'v60-46',        hotAlt:'kalita',        cold:'iced-v60' },
     _default:       { hot:'v60',           hotAlt:'switch-chacha', cold:'switch-chacha' },
@@ -5679,9 +5906,9 @@ const BREWS_BY_PROFILE_ROAST = {
     _default:       { hot:'v60-hoffmann',  hotAlt:'origami',       cold:'iced-v60' },
   },
   anaerobic_intense: {
-    light:          { hot:'v60-wolfl',     hotAlt:'v60-hoffmann',  cold:'ice-brew' },
-    'medium-light': { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'ice-brew' },
-    _default:       { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'ice-brew' },
+    light:          { hot:'v60-wolfl',     hotAlt:'v60-hoffmann',  cold:'switch-fast-ice' },
+    'medium-light': { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-fast-ice' },
+    _default:       { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-fast-ice' },
   },
   high_acidity_kenya: {
     light:          { hot:'v60',           hotAlt:'kalita',        cold:'iced-v60' },
@@ -5735,9 +5962,18 @@ const BREWS_BY_PROFILE_ROAST = {
   },
 };
 
+// 從主推 cold 推出一個互補的 coldAlt
+function deriveColdAlt(cold) {
+  if (cold === 'cold-brew')        return 'iced-v60';      // 冷萃 ↔ 急冷
+  if (cold === 'iced-v60')         return 'switch-fast-ice'; // 急冷 ↔ Switch 浸泡冰
+  if (cold === 'switch-fast-ice')  return 'iced-v60';      // Switch 浸泡 ↔ 急冷
+  if (cold === 'switch-chacha')    return 'switch-fast-ice'; // CHACHA ↔ Switch 浸泡
+  return 'cold-brew';
+}
 function getBestBrews(profile, roast) {
   const t = BREWS_BY_PROFILE_ROAST[profile] || BREWS_BY_PROFILE_ROAST.balanced_medium;
-  return t[roast] || t._default || { hot:'v60-46', hotAlt:'v60', cold:'iced-v60' };
+  const base = t[roast] || t._default || { hot:'v60-46', hotAlt:'v60', cold:'iced-v60' };
+  return { ...base, coldAlt: base.coldAlt || deriveColdAlt(base.cold) };
 }
 
 // ===== 烘焙度中文對照 =====
@@ -5896,6 +6132,7 @@ function addBean(spec) {
       process: spec.process,
       density: spec.density,
       variety: spec.variety,
+      estates: spec.estates,
       brewProfile: spec.brewProfile,
       blendFlavors: spec.blendFlavors,
       blendOrigins: spec.blendOrigins,
@@ -5987,19 +6224,37 @@ function addBrewLogEntry(beanId, entry) {
   return { deducted, remaining: b.gramRemaining };
 }
 
-// ===== 配方豆風味標籤 / 主要成分（豆袋常見描述）=====
-// 16 個選項涵蓋精品配方豆常見風味（青蘋果、莓果、瓜葡萄、奶油香草等）
+// ===== 配方豆／單豆風味標籤（依 SCA 風味輪標準 + 豆袋常見描述）=====
+// 28 個選項：細項在前（如水蜜桃、草莓、葡萄）+ 廣義在後（如水果甜、莓果）+ 厚實/中性
 const BLEND_FLAVOR_OPTIONS = [
-  // 明亮果香類
-  { key:'apple',       label:'🍏 蘋果系',      style:'bright' },
-  { key:'berry',       label:'🍓 莓果',        style:'bright' },
-  { key:'melon-grape', label:'🍈 瓜類葡萄荔枝', style:'bright' },
-  { key:'citrus',      label:'🍋 柑橘',        style:'bright' },
-  { key:'tropical',    label:'🥭 熱帶水果',    style:'bright' },
+  // 莓果類
+  { key:'strawberry',  label:'🍓 草莓',        style:'bright' },
+  { key:'blueberry',   label:'🫐 藍莓',        style:'bright' },
+  { key:'raspberry',   label:'🍒 覆盆莓',      style:'bright' },
+  { key:'berry',       label:'🍓 莓果（廣義）', style:'bright' },
+  // 核果類
+  { key:'peach',       label:'🍑 水蜜桃',      style:'bright' },
+  { key:'cherry',      label:'🍒 櫻桃',        style:'bright' },
   { key:'fruity',      label:'🍑 桃李果甜',    style:'bright' },
-  { key:'floral',      label:'🌸 花香',        style:'bright' },
+  // 蘋果/葡萄/瓜
+  { key:'apple',       label:'🍏 蘋果系',      style:'bright' },
+  { key:'grape',       label:'🍇 葡萄',        style:'bright' },
+  { key:'melon',       label:'🍈 哈密瓜',      style:'bright' },
+  { key:'melon-grape', label:'🍈 瓜葡萄荔枝（廣義）', style:'bright' },
+  // 熱帶
+  { key:'lychee',      label:'🌹 荔枝',        style:'bright' },
+  { key:'mango',       label:'🥭 芒果',        style:'bright' },
+  { key:'pineapple',   label:'🍍 鳳梨',        style:'bright' },
+  { key:'passionfruit',label:'🥭 百香果',      style:'bright' },
+  { key:'tropical',    label:'🥭 熱帶水果（廣義）', style:'bright' },
+  // 柑橘
+  { key:'citrus',      label:'🍋 柑橘',        style:'bright' },
+  // 花茶
+  { key:'jasmine',     label:'🌼 茉莉',        style:'bright' },
+  { key:'rose',        label:'🌹 玫瑰',        style:'bright' },
+  { key:'floral',      label:'🌸 花香（廣義）', style:'bright' },
   { key:'tea',         label:'🍵 茶感',        style:'bright' },
-  // 厚實甜感類
+  // 厚實甜感
   { key:'chocolate',   label:'🍫 巧克力可可',  style:'rich'   },
   { key:'nutty',       label:'🌰 堅果',        style:'rich'   },
   { key:'caramel',     label:'🍯 焦糖太妃',    style:'rich'   },
@@ -6010,6 +6265,96 @@ const BLEND_FLAVOR_OPTIONS = [
   { key:'creamy',      label:'🍦 奶油香草',    style:'neutral'},
   { key:'balanced',    label:'⚖ 平衡綜合',    style:'neutral'},
 ];
+// 全球知名莊園（chip 多選）── 用過的會自動學習加進 customEstates
+const ESTATE_OPTIONS = [
+  // 巴拿馬
+  { key:'La Esmeralda', label:'Hacienda La Esmeralda 翡翠（巴拿馬）' },
+  { key:'Lamastus',     label:'Lamastus Family 拉瑪斯圖斯（巴拿馬）' },
+  { key:'Ninety Plus',  label:'Ninety Plus（巴拿馬）' },
+  { key:'Carmen',       label:'Carmen Estate（巴拿馬）' },
+  // 哥倫比亞
+  { key:'La Esperanza', label:'Café Granja La Esperanza 希望（哥倫比亞）' },
+  { key:'El Paraíso',   label:'El Paraíso 92 天堂（哥倫比亞）' },
+  { key:'Inmaculada',   label:'Inmaculada 完美 92（哥倫比亞）' },
+  { key:'La Palma',     label:'La Palma & El Tucan（哥倫比亞）' },
+  // 衣索比亞
+  { key:'Yirgacheffe Konga', label:'Yirgacheffe Konga 孔加（衣索比亞）' },
+  { key:'Aricha',       label:'Aricha 阿莉嘉（衣索比亞）' },
+  { key:'Worka',        label:'Worka 沃卡（衣索比亞）' },
+  // 中美
+  { key:'El Injerto',   label:'Finca El Injerto（瓜地馬拉）' },
+  { key:'Las Lajas',    label:'Las Lajas（哥斯大黎加）' },
+  // 巴西
+  { key:'Daterra',      label:'Daterra（巴西）' },
+  { key:'Carmo de Minas', label:'Carmo de Minas（巴西）' },
+  // 葉門
+  { key:'Mokha Haraz',  label:'Mokha Haraz（葉門）' },
+  // 台灣
+  { key:'Alishan',      label:'阿里山（台灣產區）' },
+  { key:'Zou Wu Shan',  label:'卓武山 Zou Wu Shan（台灣阿里山）' },
+  { key:'Tsou Coffee',  label:'鄒築園 Tsou Coffee（台灣阿里山）' },
+  { key:'Gukeng',       label:'古坑（台灣雲林）' },
+  { key:'Guoxing',      label:'國姓（台灣南投）' },
+  // 中國雲南
+  { key:'Yunnan Puer',    label:'雲南 普洱（中國）' },
+  { key:'Yunnan Baoshan', label:'雲南 保山（中國）' },
+];
+
+// 本地自學 chip（使用者輸入過的會記住）
+const CUSTOM_OPTS_KEY = 'coffee-custom-options-v1';
+function loadCustomOptions() {
+  try { return JSON.parse(localStorage.getItem(CUSTOM_OPTS_KEY) || '{}'); }
+  catch { return {}; }
+}
+function saveCustomOptions(opts) {
+  try { localStorage.setItem(CUSTOM_OPTS_KEY, JSON.stringify(opts)); } catch(e) {}
+}
+function getCustomOptions(field) { return loadCustomOptions()[field] || []; }
+function addCustomOptions(field, list) {
+  if (!Array.isArray(list) || list.length === 0) return;
+  const opts = loadCustomOptions();
+  opts[field] = opts[field] || [];
+  list.forEach(v => {
+    const trimmed = String(v || '').trim();
+    if (trimmed && !opts[field].includes(trimmed)) opts[field].push(trimmed);
+  });
+  saveCustomOptions(opts);
+}
+
+// 單豆／配方豆共用的品種選項（chip 多選）
+const VARIETY_OPTIONS = [
+  // 經典老牌
+  { key:'Heirloom',       label:'Heirloom 衣索比亞古老' },
+  { key:'Bourbon',        label:'Bourbon 波旁' },
+  { key:'Typica',         label:'Typica 鐵比卡' },
+  // 拉美主流
+  { key:'Caturra',        label:'Caturra' },
+  { key:'Catuai',         label:'Catuai' },
+  { key:'Castillo',       label:'Castillo' },
+  { key:'Pacas',          label:'Pacas' },
+  { key:'Mundo Novo',     label:'Mundo Novo' },
+  { key:'Villa Sarchi',   label:'Villa Sarchí' },
+  // 象豆
+  { key:'Maragogype',     label:'Maragogype 象豆' },
+  { key:'Pacamara',       label:'Pacamara 象豆' },
+  // 肯亞
+  { key:'SL28',           label:'SL28' },
+  { key:'SL34',           label:'SL34' },
+  { key:'SL14',           label:'SL14' },
+  // 高貴 / 特殊
+  { key:'Geisha',         label:'Geisha / Gesha 藝伎' },
+  { key:'Pink Bourbon',   label:'Pink Bourbon 粉色波旁' },
+  { key:'Yellow Bourbon', label:'Yellow Bourbon 黃波旁' },
+  { key:'Sidra',          label:'Sidra' },
+  { key:'Sudan Rume',     label:'Sudan Rume 蘇丹魯姆' },
+  // 抗病雜交 / 中國雲南
+  { key:'Catimor',        label:'Catimor 卡蒂姆' },
+  { key:'P3-P4',          label:'P3 / P4（雲南改良系）' },
+  { key:'Yunnan 1',       label:'雲咖 1 號（雲南本地）' },
+  { key:'Sarchimor',      label:'Sarchimor 莎奇姆' },
+  { key:'Tim Tim',        label:'Tim Tim 帝汶' },
+];
+
 const BLEND_ORIGIN_OPTIONS = [
   { key:'Brazil',     label:'🇧🇷 巴西'       },
   { key:'Ethiopia',   label:'🇪🇹 衣索比亞'   },
@@ -6114,7 +6459,7 @@ const EQUIPMENT_BREWS = {
   'french-press': ['french-press'],
   'moka':         ['moka'],
   'espresso':     ['espresso'],
-  'cold':         ['iced-v60','ice-brew','cold-brew'],
+  'cold':         ['iced-v60','switch-fast-ice','cold-brew'],
 };
 
 // ===== 衝突風味組合 =====
@@ -6283,7 +6628,7 @@ function recommend() {
 function renderBrewItem(rid, isOpen = false) {
   const r = BREW_RECIPES[rid];
   if (!r) return '';
-  const dose = r.baseDose || 15;
+  const dose = preferredDose(r);
   const stepperHtml = r.scalable ? `<span class="stepper" data-rid="${rid}">
     <button type="button" data-act="dec" aria-label="減少粉量">−</button>
     <input type="number" class="dose-input" value="${dose}" min="${(r.doseRange||[1])[0]}" max="${(r.doseRange||[100])[1]}" step="1" aria-label="粉量">
@@ -6314,7 +6659,7 @@ function updateBrewItem(brewItemEl) {
   const r = BREW_RECIPES[rid];
   if (!r) return;
   const input = brewItemEl.querySelector('.dose-input');
-  let dose = r.baseDose || 15;
+  let dose = preferredDose(r);
   if (input) {
     const v = parseInt(input.value, 10);
     if (!isNaN(v) && v > 0) dose = v;
@@ -6347,8 +6692,41 @@ function escapeHtml(s) {
 }
 
 // ===== 熱/冰沖法判斷與使用者偏好（Phase 5）=====
-const COLD_RECIPES = new Set(['iced-v60','ice-brew','cold-brew','switch-chacha']);
+const COLD_RECIPES = new Set(['iced-v60','switch-fast-ice','cold-brew','switch-chacha']);
 function isColdRecipe(rid) { return COLD_RECIPES.has(rid); }
+
+// 使用者常用粉量偏好（食譜預設 dose ── 卡片上仍可 +/- 微調）
+const DOSE_PREF_KEY = 'coffee-dose-pref-v1';
+function getDosePref() {
+  try {
+    const v = parseInt(localStorage.getItem(DOSE_PREF_KEY) || '', 10);
+    return (v === 15 || v === 18 || v === 20) ? v : 20;
+  } catch { return 20; }
+}
+function setDosePref(v) {
+  try { localStorage.setItem(DOSE_PREF_KEY, String(v)); } catch(e) {}
+}
+// 給定 recipe，回傳「應該預設用的 dose」── 偏好值在 doseRange 內就用偏好、否則 fallback baseDose
+function preferredDose(r) {
+  if (!r || !r.scalable) return r ? r.baseDose : 15;
+  const pref = getDosePref();
+  const [min, max] = r.doseRange || [1, 100];
+  return (pref >= min && pref <= max) ? pref : r.baseDose;
+}
+
+// 建立食譜下拉選單 HTML（依熱/冰/義式 optgroup 分群）── 共用給 post-brew 跟「過去日誌」
+function recipeSelectHtml(selectedRid, dataAttr) {
+  const hot = [], cold = [], esp = [];
+  Object.keys(BREW_RECIPES).forEach(rid => {
+    const r = BREW_RECIPES[rid];
+    if (rid === 'espresso' || rid === 'moka') esp.push({ rid, name: r.name });
+    else if (isColdRecipe(rid)) cold.push({ rid, name: r.name });
+    else hot.push({ rid, name: r.name });
+  });
+  const opt = (rid, name) => `<option value="${rid}"${rid===selectedRid?' selected':''}>${escapeHtml(name)}</option>`;
+  const grp = (label, list) => list.length ? `<optgroup label="${label}">${list.map(o => opt(o.rid, o.name)).join('')}</optgroup>` : '';
+  return `<select ${dataAttr}>${grp('🔥 熱沖', hot)}${grp('❄️ 冰沖', cold)}${grp('☕ 義式 / 摩卡', esp)}</select>`;
+}
 
 function getPreferredKind(bean) {
   const logs = (bean.brewLog || []).slice(0, 5);
@@ -6495,82 +6873,135 @@ function renderPantry() {
 function renderBeanCard(b, isTodayPick) {
   const fresh = getBeanFreshness(b.roastDate);
   const best = getBestBrews(b.brewProfile, b.roast);
-  const hot  = BREW_RECIPES[best.hot];
-  const cold = BREW_RECIPES[best.cold];
-  const renderSuggest = (r, kind, label) => {
+  const hot     = BREW_RECIPES[best.hot];
+  const hotAlt  = BREW_RECIPES[best.hotAlt];
+  const cold    = BREW_RECIPES[best.cold];
+  const coldAlt = BREW_RECIPES[best.coldAlt];
+  const preferred = getPreferredKind(b);
+  // 預設選中：使用者偏好優先 → 該系列主推
+  const defaultRecipeId = (preferred === 'cold' && cold) ? best.cold : (hot ? best.hot : best.cold);
+  const renderSuggest = (r, kind, recipeId, label) => {
     if (!r) return '';
-    const water = r.scalable && r.baseRatio ? Math.round(r.baseDose * r.baseRatio) : null;
-    return `<div class="brew-suggest ${kind}">
+    const dose = preferredDose(r);
+    const water = r.scalable && r.baseRatio ? Math.round(dose * r.baseRatio) : null;
+    const sel = recipeId === defaultRecipeId;
+    return `<div class="brew-suggest ${kind}${sel ? ' selected' : ''}" role="button" tabindex="0" data-act="pick-brew" data-recipe-id="${escapeHtml(recipeId)}">
       <div class="label">${label}</div>
       <div class="name">${escapeHtml(r.name)}</div>
-      <div class="params"><strong>${r.baseDose}g</strong> 粉${water ? ` · <strong>${water}g</strong> 水` : ''}${r.baseRatio ? ` · 比例 1:${r.baseRatio}` : ''}<br>水溫 ${escapeHtml(r.temp || '—')} · 目標 ${escapeHtml(r.time)}</div>
+      <div class="params"><strong>${dose}g</strong> 粉${water ? ` · <strong>${water}g</strong> 水` : ''}${r.baseRatio ? ` · 比例 1:${r.baseRatio}` : ''}<br>水溫 ${escapeHtml(r.temp || '—')} · 目標 ${escapeHtml(r.time)}</div>
     </div>`;
   };
-  const meta = [];
-  if (b.origin)         meta.push(`<span class="bean-meta-item"><strong>產區</strong>${escapeHtml(b.origin)}</span>`);
-  if (b.process)        meta.push(`<span class="bean-meta-item"><strong>處理</strong>${PROCESS_LABELS[b.process] || b.process}</span>`);
-  meta.push(`<span class="bean-meta-item"><strong>烘焙</strong>${ROAST_LABELS[b.roast] || b.roast}</span>`);
-  if (b.variety && b.variety.length) meta.push(`<span class="bean-meta-item"><strong>品種</strong>${escapeHtml(b.variety.join(' / '))}</span>`);
-  if (b.shopName)       meta.push(`<span class="bean-meta-item"><strong>店家</strong>${escapeHtml(b.shopName)}</span>`);
+  // 「其他」下拉：列出所有 recipe（依熱/冰分組），排除已顯示的 4 張卡
+  const shownIds = new Set([best.hot, best.hotAlt, best.cold, best.coldAlt].filter(Boolean));
+  const otherHot = [], otherCold = [], otherEsp = [];
+  Object.keys(BREW_RECIPES).forEach(rid => {
+    if (shownIds.has(rid)) return;
+    const r = BREW_RECIPES[rid];
+    if (rid === 'espresso' || rid === 'moka') otherEsp.push({rid, name:r.name});
+    else if (isColdRecipe(rid))               otherCold.push({rid, name:r.name});
+    else                                      otherHot.push({rid, name:r.name});
+  });
+  const optGroup = (label, arr) => arr.length ? `<optgroup label="${label}">${arr.map(o => `<option value="${escapeHtml(o.rid)}">${escapeHtml(o.name)}</option>`).join('')}</optgroup>` : '';
+  const otherSelectHtml = `<select class="brew-other-select" data-act="pick-other">
+    <option value="">📋 選其他沖法 ── 選完按下方「🎯 開始沖煮」看步驟</option>
+    ${optGroup('🔥 熱沖', otherHot)}${optGroup('❄️ 冰沖', otherCold)}${optGroup('☕ 義式', otherEsp)}
+  </select>`;
+  // 一排清單 meta（精簡）：烘焙 / 莊園 / 品種 / 剩 / 每g
+  const rowMeta = [];
+  rowMeta.push(`<span class="meta-item"><strong>烘焙</strong>${ROAST_LABELS[b.roast] || b.roast}</span>`);
+  if (b.estates && b.estates.length) rowMeta.push(`<span class="meta-item"><strong>莊園</strong>${escapeHtml(b.estates.join(' / '))}</span>`);
+  if (b.variety && b.variety.length) rowMeta.push(`<span class="meta-item"><strong>品種</strong>${escapeHtml(b.variety.join(' / '))}</span>`);
   if (b.gramRemaining != null) {
     const portion = b.weightTotal ? `${b.gramRemaining}/${b.weightTotal}g` : `${b.gramRemaining}g`;
-    const low = (b.gramRemaining > 0 && b.gramRemaining <= 50) ? ' <span style="color:#b8541f;">⚠ 快喝完</span>' : (b.gramRemaining === 0 ? ' <span style="color:#c33;">已用完</span>' : '');
-    meta.push(`<span class="bean-meta-item"><strong>剩</strong>${portion}${low}</span>`);
+    const low = (b.gramRemaining > 0 && b.gramRemaining <= 50) ? ' <span style="color:#b8541f;">⚠</span>' : (b.gramRemaining === 0 ? ' <span style="color:#c33;">❌</span>' : '');
+    rowMeta.push(`<span class="meta-item"><strong>剩</strong>${portion}${low}</span>`);
   }
   if (b.pricePerBag && b.weightTotal) {
     const perG = (b.pricePerBag / b.weightTotal).toFixed(1);
-    meta.push(`<span class="bean-meta-item"><strong>每g</strong>$${perG}</span>`);
+    rowMeta.push(`<span class="meta-item"><strong>每g</strong>$${perG}</span>`);
   } else if (b.pricePerBag) {
-    meta.push(`<span class="bean-meta-item"><strong>$</strong>${b.pricePerBag}</span>`);
+    rowMeta.push(`<span class="meta-item"><strong>$</strong>${b.pricePerBag}</span>`);
   }
+  // 展開區補充 meta：產區 / 處理 / 店家（次要資訊）
+  const detailsMeta = [];
+  if (b.origin)   detailsMeta.push(`<span class="bean-meta-item"><strong>產區</strong>${escapeHtml(b.origin)}</span>`);
+  if (b.process)  detailsMeta.push(`<span class="bean-meta-item"><strong>處理</strong>${PROCESS_LABELS[b.process] || b.process}</span>`);
+  if (b.shopName) detailsMeta.push(`<span class="bean-meta-item"><strong>店家</strong>${escapeHtml(b.shopName)}</span>`);
+
   const logCount = (b.brewLog || []).length;
   const kind = getBeanKind(b);
-  return `<div class="pantry-bean-card${isTodayPick ? ' today-pick' : ''}" data-bean-id="${b.id}">
-    <div class="bean-header">
-      <h3>${escapeHtml(b.name)}</h3>
-      <span class="bean-kind-badge ${kind.code}">${kind.label}</span>
-      ${isTodayPick ? '<span class="today-pick-badge">⭐ 今天推這個</span>' : ''}
-      ${fresh ? `<span class="freshness-badge ${fresh.stage}">${fresh.label}</span>` : ''}
-      <span class="bean-actions-top">
+  // 今天推薦的預設展開、其他預設折疊（一行清單）
+  const isExpanded = !!isTodayPick;
+  return `<div class="pantry-bean-card ${isExpanded ? 'expanded' : 'collapsed'}${isTodayPick ? ' today-pick' : ''}" data-bean-id="${b.id}" data-selected-recipe="${escapeHtml(defaultRecipeId || '')}">
+    <div class="bean-row" data-act="toggle-expand">
+      <div class="bean-row-title">
+        <h3>${escapeHtml(b.name)}</h3>
+        <span class="bean-row-tags">
+          <span class="bean-kind-badge ${kind.code}">${kind.label}</span>
+          ${isTodayPick ? '<span class="today-pick-badge">⭐ 今天推</span>' : ''}
+          ${fresh ? `<span class="freshness-badge ${fresh.stage}">${fresh.label}</span>` : ''}
+        </span>
+      </div>
+      <div class="bean-row-meta">${rowMeta.join('')}</div>
+      <div class="bean-row-actions">
         <button type="button" class="icon-btn" data-act="edit" title="編輯">✎</button>
         <button type="button" class="icon-btn delete" data-act="delete" title="刪除">🗑</button>
-      </span>
+        <span class="bean-expand-indicator" aria-hidden="true">▾</span>
+      </div>
     </div>
-    ${fresh ? `<div class="freshness-tip">💡 ${fresh.tip}</div>` : ''}
-    <div class="bean-meta">${meta.join(' ')}</div>
-    ${(b.blendFlavors && b.blendFlavors.length) ? `<div class="blend-tag-row">${b.blendFlavors.map(k => {
-      const o = BLEND_FLAVOR_OPTIONS.find(x => x.key === k);
-      return o ? `<span class="chip readonly">${o.label}</span>` : '';
-    }).join('')}</div>` : ''}
-    ${(b.blendOrigins && b.blendOrigins.length) ? `<div class="blend-tag-row">${b.blendOrigins.map(k => {
-      const o = BLEND_ORIGIN_OPTIONS.find(x => x.key === k);
-      return o ? `<span class="chip readonly">${o.label}</span>` : '';
-    }).join('')}</div>` : ''}
-    ${b.notes ? `<div class="bean-notes">「${escapeHtml(b.notes)}」</div>` : ''}
-    ${(() => {
-      const a = analyzeRecentLogs(b);
-      if (!a) return '';
-      const labelClean = (DIAGNOSIS[a.rating]?.label || '').replace(/^\S+\s+/, '');
-      return `<div class="recent-log-tip ${a.rating}">📊 最近 ${a.n}/${a.total} 次評為「${escapeHtml(labelClean)}」── ${escapeHtml(a.tip)}</div>`;
-    })()}
-    ${(() => {
-      const preferred = getPreferredKind(b);
-      if (preferred === 'hot') {
-        return `<div class="brew-pair single">${renderSuggest(hot, 'hot', '🔥 最佳熱沖（你最近常選）')}</div>
-        ${cold ? `<details class="brew-alt-fold"><summary>想換 ❄️ 冰沖試試？</summary>${renderSuggest(cold, 'cold', '❄️ 冰沖')}</details>` : ''}`;
-      }
-      if (preferred === 'cold') {
-        return `<div class="brew-pair single">${renderSuggest(cold, 'cold', '❄️ 最佳冰沖（你最近常選）')}</div>
-        ${hot ? `<details class="brew-alt-fold"><summary>想換 🔥 熱沖試試？</summary>${renderSuggest(hot, 'hot', '🔥 熱沖')}</details>` : ''}`;
-      }
-      return `<div class="brew-pair">${renderSuggest(hot, 'hot', '🔥 最佳熱沖')}${renderSuggest(cold, 'cold', '❄️ 最佳冰沖')}</div>`;
-    })()}
-    <div class="bean-actions">
-      <button type="button" data-act="brew" class="primary">🎯 開始沖煮</button>
-      <button type="button" data-act="log" class="secondary-link">📝 過去日誌${logCount ? ` (${logCount})` : ''}</button>
+    <div class="bean-details">
+      ${fresh ? `<div class="freshness-tip">💡 ${fresh.tip}</div>` : ''}
+      ${detailsMeta.length ? `<div class="bean-meta">${detailsMeta.join(' ')}</div>` : ''}
+      ${(b.blendFlavors && b.blendFlavors.length) ? `<div class="blend-tag-row">${b.blendFlavors.map(k => {
+        const o = BLEND_FLAVOR_OPTIONS.find(x => x.key === k);
+        return o ? `<span class="chip readonly">${o.label}</span>` : '';
+      }).join('')}</div>` : ''}
+      ${(b.blendOrigins && b.blendOrigins.length) ? `<div class="blend-tag-row">${b.blendOrigins.map(k => {
+        const o = BLEND_ORIGIN_OPTIONS.find(x => x.key === k);
+        return o ? `<span class="chip readonly">${o.label}</span>` : '';
+      }).join('')}</div>` : ''}
+      ${b.notes ? `<div class="bean-notes">「${escapeHtml(b.notes)}」</div>` : ''}
+      ${(() => {
+        const a = analyzeRecentLogs(b);
+        if (!a) return '';
+        const labelClean = (DIAGNOSIS[a.rating]?.label || '').replace(/^\S+\s+/, '');
+        return `<div class="recent-log-tip ${a.rating}">📊 最近 ${a.n}/${a.total} 次評為「${escapeHtml(labelClean)}」── ${escapeHtml(a.tip)}</div>`;
+      })()}
+      <div class="brew-pair brew-quad">
+        ${renderSuggest(hot,     'hot',  best.hot,     preferred === 'hot' ? '🔥 主推熱沖（你最近常選）' : '🔥 主推熱沖')}
+        ${renderSuggest(hotAlt,  'hot',  best.hotAlt,  '🔥 替代熱沖')}
+        ${renderSuggest(cold,    'cold', best.cold,    preferred === 'cold' ? '❄️ 主推冰沖（你最近常選）' : '❄️ 主推冰沖')}
+        ${renderSuggest(coldAlt, 'cold', best.coldAlt, '❄️ 替代冰沖')}
+      </div>
+      <div class="brew-other-row">${otherSelectHtml}</div>
+      <div class="bean-actions">
+        <button type="button" data-act="brew" class="primary" data-default-recipe="${escapeHtml(defaultRecipeId || '')}">
+          <span class="brew-cta-main">🎯 開始沖煮</span>
+          <span class="brew-cta-sub" data-cta-sub>${escapeHtml(BREW_RECIPES[defaultRecipeId]?.name || '')}</span>
+        </button>
+        <button type="button" data-act="log" class="secondary-link">📝 過去日誌${logCount ? ` (${logCount})` : ''}</button>
+      </div>
+      <div class="bean-expand-zone" data-zone></div>
     </div>
-    <div class="bean-expand-zone" data-zone></div>
   </div>`;
+}
+
+// 更新「🎯 開始沖煮」按鈕：帶選中沖法名 + pulse 強調
+function updateBrewCta(card, recipeId) {
+  const btn = card.querySelector('button[data-act="brew"]');
+  if (!btn) return;
+  const sub = btn.querySelector('[data-cta-sub]');
+  const r = recipeId && BREW_RECIPES[recipeId];
+  if (sub) sub.textContent = r ? r.name : '';
+  // 若沖煮區還沒展開，給按鈕 pulse 一次提示「按我看步驟」
+  const opened = !!card.querySelector('[data-section="brew"]');
+  if (!opened && r) {
+    btn.classList.remove('cta-armed');
+    void btn.offsetWidth;  // 強制 reflow 才能重播動畫
+    btn.classList.add('cta-armed');
+  } else {
+    btn.classList.remove('cta-armed');
+  }
 }
 
 // 展開區（toggle 同 section 收合、不同 section 累加）
@@ -6585,7 +7016,7 @@ function expandBeanSection(card, sectionType) {
   const section = document.createElement('div');
   section.className = 'bean-expand-section';
   section.dataset.section = sectionType;
-  if (sectionType === 'brew')     section.innerHTML = renderBeanBrewSection(bean);
+  if (sectionType === 'brew')     section.innerHTML = renderBeanBrewSection(bean, card.dataset.selectedRecipe);
   if (sectionType === 'diagnose') section.innerHTML = renderBeanDiagnoseSection(bean);
   if (sectionType === 'log')      section.innerHTML = renderBeanLogSection(bean);
   zone.appendChild(section);
@@ -6594,7 +7025,17 @@ function expandBeanSection(card, sectionType) {
   }
 }
 
-function renderBeanBrewSection(bean) {
+function renderBeanBrewSection(bean, selectedRecipeId) {
+  // 卡片有選中沖法 → 只展開那一支（聚焦流程）
+  if (selectedRecipeId && BREW_RECIPES[selectedRecipeId]) {
+    return `<h4>🎯 沖煮步驟 ── ${escapeHtml(BREW_RECIPES[selectedRecipeId].name)}</h4>
+      <div class="brews">${renderBrewItem(selectedRecipeId, true)}</div>
+      <div class="brew-finish-zone">
+        <button type="button" class="brew-finish-btn" data-act="brew-finish">✓ 我沖完了，記錄這次結果</button>
+        <div class="post-brew-zone" data-post-brew hidden></div>
+      </div>`;
+  }
+  // fallback：沒選就列全部
   const best = getBestBrews(bean.brewProfile, bean.roast);
   const ids = [best.hot, best.hotAlt, best.cold, ...(best.extras || [])]
     .filter((x, i, a) => x && a.indexOf(x) === i && BREW_RECIPES[x]);
@@ -6618,10 +7059,12 @@ function renderPostBrew(bean, recipeId, dose) {
     <div class="diagnosis-fixes" data-fixes><div style="color:var(--text-soft); font-size:12.5px; padding:6px 0;">點上方症狀看修正建議</div></div>
     <div class="post-brew-form" data-post-form hidden>
       <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:8px; font-size:12.5px; color:var(--text-soft);">
-        <label>這次粉量
+        <label>食譜
+          ${recipeSelectHtml(recipeId, 'data-pb-recipe')}
+        </label>
+        <label>粉量
           <input type="number" data-pb-dose value="${defaultDose}" min="5" max="100" step="1" style="width:60px; padding:4px 8px; margin-left:4px; border:1px solid var(--border); border-radius:4px; font-weight:600;">g
         </label>
-        <input type="hidden" data-pb-recipe value="${recipeId || ''}">
         <input type="hidden" data-pb-symptom value="">
       </div>
       <div style="display:flex; gap:8px; flex-wrap:wrap;">
@@ -6727,11 +7170,11 @@ function onSavePostBrew(card, beanId) {
 function renderBeanLogSection(bean) {
   const logs = bean.brewLog || [];
   const best = getBestBrews(bean.brewProfile, bean.roast);
-  const recipeOptions = [...new Set([best.hot, best.hotAlt, best.cold].filter(x => x && BREW_RECIPES[x]))];
-  if (recipeOptions.length === 0) recipeOptions.push('v60');
+  // 預設選主推熱沖；下拉內含全部沖法（熱/冰/義式分群）
+  const defaultRid = best.hot && BREW_RECIPES[best.hot] ? best.hot : 'v60';
   return `<h4>📝 沖煮日誌（記錄這支豆每次的口感）</h4>
     <div class="brewlog-add">
-      <select data-log-recipe>${recipeOptions.map(rid => `<option value="${rid}">${BREW_RECIPES[rid].name}</option>`).join('')}</select>
+      ${recipeSelectHtml(defaultRid, 'data-log-recipe')}
       <input type="number" class="dose" data-log-dose placeholder="粉g" min="5" max="100" step="1">
       <select data-log-rating>
         <option value="good">😋 剛好</option>
@@ -6757,25 +7200,60 @@ function renderBeanLogSection(bean) {
 }
 
 // ===== Dialog / 表單 =====
+// 每次打開 dialog 都重 render（不依賴 ready flag，這樣 custom chips 也會更新）
 function renderBlendChips() {
-  const flavorsGroup = document.getElementById('blend-flavors-group');
-  const originsGroup = document.getElementById('blend-origins-group');
-  if (flavorsGroup && !flavorsGroup.dataset.ready) {
-    flavorsGroup.innerHTML = BLEND_FLAVOR_OPTIONS.map(o =>
-      `<label class="chip"><input type="checkbox" name="blendFlavor" value="${o.key}"><span>${o.label}</span></label>`
-    ).join('');
-    flavorsGroup.dataset.ready = '1';
-  }
-  if (originsGroup && !originsGroup.dataset.ready) {
-    originsGroup.innerHTML = BLEND_ORIGIN_OPTIONS.map(o =>
-      `<label class="chip"><input type="checkbox" name="blendOrigin" value="${o.key}"><span>${o.label}</span></label>`
-    ).join('');
-    originsGroup.dataset.ready = '1';
-  }
+  renderChipGroup('blend-flavors-group', 'blendFlavor', BLEND_FLAVOR_OPTIONS, 'customFlavors');
+  renderChipGroup('blend-origins-group', 'blendOrigin', BLEND_ORIGIN_OPTIONS, null);
+  renderChipGroup('variety-group',       'varietyChip', VARIETY_OPTIONS,       'customVarieties');
+  renderChipGroup('estate-group',        'estateChip', ESTATE_OPTIONS,         'customEstates');
+  renderSinglePicks();
+}
+function renderChipGroup(groupId, inputName, defaults, customField) {
+  const group = document.getElementById(groupId);
+  if (!group) return;
+  const customs = customField ? getCustomOptions(customField) : [];
+  const defaultKeys = new Set(defaults.map(o => o.key));
+  // 預設 chip + 自學 chip（自學的只取「不在預設裡」的）
+  const allChips = [
+    ...defaults.map(o => ({ key:o.key, label:o.label, custom:false })),
+    ...customs.filter(k => !defaultKeys.has(k)).map(k => ({ key:k, label:'⭐ ' + k, custom:true })),
+  ];
+  group.innerHTML = allChips.map(o =>
+    `<label class="chip${o.custom ? ' custom' : ''}"><input type="checkbox" name="${inputName}" value="${escapeHtml(o.key)}"><span>${escapeHtml(o.label)}</span></label>`
+  ).join('');
+}
+
+// 單豆模式的莊園 / 品種下拉（單選）── 預設 + 自學
+function renderSinglePicks() {
+  const buildOptions = (defaults, customField) => {
+    const customs = customField ? getCustomOptions(customField) : [];
+    const defaultKeys = new Set(defaults.map(o => o.key));
+    const extraCustoms = customs.filter(k => !defaultKeys.has(k));
+    let html = `<option value="">— 不確定 / 不填 —</option>`;
+    html += defaults.map(o => `<option value="${escapeHtml(o.key)}">${escapeHtml(o.label)}</option>`).join('');
+    if (extraCustoms.length) {
+      html += `<optgroup label="自學">` +
+        extraCustoms.map(k => `<option value="${escapeHtml(k)}">⭐ ${escapeHtml(k)}</option>`).join('') +
+        `</optgroup>`;
+    }
+    return html;
+  };
+  const form = document.getElementById('bean-form');
+  if (!form) return;
+  if (form.elements.estateSingle)  form.elements.estateSingle.innerHTML  = buildOptions(ESTATE_OPTIONS, 'customEstates');
+  if (form.elements.varietySingle) form.elements.varietySingle.innerHTML = buildOptions(VARIETY_OPTIONS, 'customVarieties');
 }
 
 function toggleBlendOnly(isBlend) {
   document.querySelectorAll('.blend-only').forEach(el => el.classList.toggle('active', !!isBlend));
+  const dialog = document.getElementById('bean-dialog');
+  if (dialog) dialog.classList.toggle('is-blend', !!isBlend);
+  const toggle = document.getElementById('pick-mode-toggle');
+  if (toggle) {
+    toggle.querySelectorAll('.seg').forEach(seg => {
+      seg.classList.toggle('active', seg.dataset.mode === (isBlend ? 'blend' : 'single'));
+    });
+  }
 }
 
 function setChipValues(groupId, values) {
@@ -6795,7 +7273,19 @@ function openBeanDialog(beanToEdit) {
   if (!dialog || !form) return;
   form.reset();
   renderBlendChips();
-  const advDetails = form.querySelector('.advanced-fields');
+  // 重置「使用者已手動改過剩餘量」flag，下次打開總重 → 剩餘量會重新自動帶
+  if (form.elements.gramRemaining) delete form.elements.gramRemaining.dataset.userEdited;
+  // 清空所有可能殘留的控件
+  setChipValues('blend-flavors-group', []);
+  setChipValues('blend-origins-group', []);
+  setChipValues('variety-group', []);
+  setChipValues('estate-group', []);
+  ['varietyOther','estateOther','flavorOther','varietySingleOther','estateSingleOther'].forEach(n => {
+    if (form.elements[n]) form.elements[n].value = '';
+  });
+  if (form.elements.estateSingle)  form.elements.estateSingle.value  = '';
+  if (form.elements.varietySingle) form.elements.varietySingle.value = '';
+
   if (beanToEdit) {
     title.textContent = '編輯豆子';
     form.elements.id.value = beanToEdit.id;
@@ -6805,7 +7295,6 @@ function openBeanDialog(beanToEdit) {
     form.elements.density.value = beanToEdit.density || '';
     form.elements.roastDate.value = beanToEdit.roastDate || '';
     form.elements.origin.value = beanToEdit.origin || '';
-    form.elements.variety.value = (beanToEdit.variety || []).join(', ');
     form.elements.shopName.value = beanToEdit.shopName || '';
     form.elements.gramRemaining.value = beanToEdit.gramRemaining || '';
     form.elements.notes.value = beanToEdit.notes || '';
@@ -6813,17 +7302,50 @@ function openBeanDialog(beanToEdit) {
     if (form.elements.pricePerBag)  form.elements.pricePerBag.value  = beanToEdit.pricePerBag || '';
     setChipValues('blend-flavors-group', beanToEdit.blendFlavors);
     setChipValues('blend-origins-group', beanToEdit.blendOrigins);
-    // 若有進階欄位資料就自動展開讓使用者看到
-    if (advDetails) {
-      const hasAdv = beanToEdit.origin || (beanToEdit.variety && beanToEdit.variety.length) || beanToEdit.density || beanToEdit.weightTotal || beanToEdit.pricePerBag;
-      advDetails.open = !!hasAdv;
+
+    const isBlend = beanToEdit.process === 'blend';
+    const varietyKeys = (beanToEdit.variety || []).map(String);
+    const estateKeys  = (beanToEdit.estates  || []).map(String);
+    if (isBlend) {
+      // 配方豆：填多選 chip + textinput
+      const knownVar = new Set([
+        ...VARIETY_OPTIONS.map(o => o.key.toLowerCase()),
+        ...getCustomOptions('customVarieties').map(s => s.toLowerCase()),
+      ]);
+      const knownEst = new Set([
+        ...ESTATE_OPTIONS.map(o => o.key.toLowerCase()),
+        ...getCustomOptions('customEstates').map(s => s.toLowerCase()),
+      ]);
+      const varInChips = varietyKeys.filter(v => knownVar.has(v.toLowerCase()));
+      const varOthers  = varietyKeys.filter(v => !knownVar.has(v.toLowerCase()));
+      const estInChips = estateKeys.filter(v => knownEst.has(v.toLowerCase()));
+      const estOthers  = estateKeys.filter(v => !knownEst.has(v.toLowerCase()));
+      setChipValues('variety-group', varInChips);
+      setChipValues('estate-group',  estInChips);
+      if (form.elements.varietyOther) form.elements.varietyOther.value = varOthers.join(', ');
+      if (form.elements.estateOther)  form.elements.estateOther.value  = estOthers.join(', ');
+    } else {
+      // 單豆：第一個塞下拉（找不到就塞 other），其餘塞 other（多筆用逗號連）
+      const fillSingle = (selectEl, otherEl, keys) => {
+        if (!keys.length) return;
+        const [first, ...rest] = keys;
+        const lowerFirst = first.toLowerCase();
+        const matchedOpt = selectEl ? [...selectEl.options].find(o => o.value && o.value.toLowerCase() === lowerFirst) : null;
+        const overflow = [...rest];
+        if (selectEl && matchedOpt) {
+          selectEl.value = matchedOpt.value;
+        } else {
+          // 第一筆下拉找不到 → 也塞進 other
+          overflow.unshift(first);
+        }
+        if (otherEl && overflow.length) otherEl.value = overflow.join(', ');
+      };
+      fillSingle(form.elements.estateSingle,  form.elements.estateSingleOther,  estateKeys);
+      fillSingle(form.elements.varietySingle, form.elements.varietySingleOther, varietyKeys);
     }
   } else {
     title.textContent = '新增豆子';
     form.elements.id.value = '';
-    setChipValues('blend-flavors-group', []);
-    setChipValues('blend-origins-group', []);
-    if (advDetails) advDetails.open = false;
   }
   toggleBlendOnly(form.elements.process.value === 'blend');
   if (typeof dialog.showModal === 'function') dialog.showModal();
@@ -6832,10 +7354,37 @@ function openBeanDialog(beanToEdit) {
 
 function handleBeanFormSubmit(form) {
   const fd = new FormData(form);
-  const variety = (fd.get('variety') || '').toString().split(/[,，、]/).map(s => s.trim()).filter(Boolean);
-  const blendFlavors = fd.getAll('blendFlavor').map(x => x.toString());
-  const blendOrigins = fd.getAll('blendOrigin').map(x => x.toString());
   const isBlend = fd.get('process') === 'blend';
+  const splitOther = v => (v || '').toString().split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+
+  // 莊園 / 品種：依模式取值（單豆用下拉，配方豆用 chip 多選）
+  let variety, estates;
+  if (isBlend) {
+    const varietyChips = fd.getAll('varietyChip').map(x => x.toString());
+    const varietyOther = splitOther(fd.get('varietyOther'));
+    variety = [...new Set([...varietyChips, ...varietyOther])];
+    const estateChips  = fd.getAll('estateChip').map(x => x.toString());
+    const estateOther  = splitOther(fd.get('estateOther'));
+    estates = [...new Set([...estateChips, ...estateOther])];
+    if (varietyOther.length) addCustomOptions('customVarieties', varietyOther);
+    if (estateOther.length)  addCustomOptions('customEstates',   estateOther);
+  } else {
+    const varietyPick  = (fd.get('varietySingle') || '').toString().trim();
+    const varietyOther = splitOther(fd.get('varietySingleOther'));
+    variety = [...new Set([varietyPick, ...varietyOther].filter(Boolean))];
+    const estatePick   = (fd.get('estateSingle') || '').toString().trim();
+    const estateOther  = splitOther(fd.get('estateSingleOther'));
+    estates = [...new Set([estatePick, ...estateOther].filter(Boolean))];
+    if (varietyOther.length) addCustomOptions('customVarieties', varietyOther);
+    if (estateOther.length)  addCustomOptions('customEstates',   estateOther);
+  }
+
+  const flavorChips = fd.getAll('blendFlavor').map(x => x.toString());
+  const flavorOther = splitOther(fd.get('flavorOther'));
+  const blendFlavors = [...new Set([...flavorChips, ...flavorOther])];
+  const blendOrigins = fd.getAll('blendOrigin').map(x => x.toString());
+  if (flavorOther.length) addCustomOptions('customFlavors', flavorOther);
+
   const numOrNull = k => fd.get(k) ? parseInt(fd.get(k).toString(), 10) : null;
   const weightTotal = numOrNull('weightTotal');
   let gramRemaining = numOrNull('gramRemaining');
@@ -6849,13 +7398,14 @@ function handleBeanFormSubmit(form) {
     roastDate: (fd.get('roastDate') || '').toString(),
     origin: (fd.get('origin') || '').toString().trim(),
     variety: variety,
+    estates: estates,
     shopName: (fd.get('shopName') || '').toString().trim(),
     weightTotal: weightTotal,
     gramRemaining: gramRemaining,
     pricePerBag: numOrNull('pricePerBag'),
     notes: (fd.get('notes') || '').toString().trim(),
-    blendFlavors: isBlend ? blendFlavors : [],
-    blendOrigins: isBlend ? blendOrigins : [],
+    blendFlavors: blendFlavors,  // 風味標籤：單豆、配方豆都可填
+    blendOrigins: isBlend ? blendOrigins : [],  // 成分產區：只配方豆才有意義
   };
   if (!spec.name) return false;
   const id = (fd.get('id') || '').toString();
@@ -6910,6 +7460,22 @@ function bindPantryEvents() {
       renderPantry();
     });
   }
+  // 常用粉量偏好：點 seg → 存偏好 + 重新渲染豆櫃
+  const doseBar = document.getElementById('dose-pref-bar');
+  if (doseBar) {
+    // 初始化 active 狀態
+    const cur = String(getDosePref());
+    doseBar.querySelectorAll('.seg').forEach(s => s.classList.toggle('active', s.dataset.dosePref === cur));
+    doseBar.addEventListener('click', e => {
+      const seg = e.target.closest('.seg[data-dose-pref]');
+      if (!seg) return;
+      const v = parseInt(seg.dataset.dosePref, 10);
+      if (!v) return;
+      setDosePref(v);
+      doseBar.querySelectorAll('.seg').forEach(s => s.classList.toggle('active', s === seg));
+      renderPantry();
+    });
+  }
   // 篩選 segmented：全部/單豆/配方豆/適飲期/快喝完
   const filterBar = document.getElementById('pantry-filter-bar');
   if (filterBar) {
@@ -6931,6 +7497,27 @@ function bindPantryEvents() {
     form.querySelector('[data-act="cancel"]')?.addEventListener('click', () => dialog.close());
     // 處理法切換 → 顯示/隱藏配方豆專屬 chips
     form.elements.process?.addEventListener('change', e => toggleBlendOnly(e.target.value === 'blend'));
+    // 選豆模式 segmented toggle：點下時同步切 UI 跟處理法
+    document.getElementById('pick-mode-toggle')?.addEventListener('click', e => {
+      const seg = e.target.closest('.seg[data-mode]');
+      if (!seg) return;
+      const wantBlend = seg.dataset.mode === 'blend';
+      const processSel = form.elements.process;
+      if (wantBlend) {
+        if (processSel) processSel.value = 'blend';
+      } else if (processSel && processSel.value === 'blend') {
+        processSel.value = '';
+      }
+      toggleBlendOnly(wantBlend);
+    });
+    // 豆袋總重 → 剩餘量自動帶（除非使用者手動改過剩餘量）
+    form.elements.gramRemaining?.addEventListener('input', e => {
+      e.target.dataset.userEdited = '1';
+    });
+    form.elements.weightTotal?.addEventListener('input', e => {
+      const rem = form.elements.gramRemaining;
+      if (rem && !rem.dataset.userEdited) rem.value = e.target.value;
+    });
     // chip 點擊：在 :has() 不支援的瀏覽器加 .checked class 維持 highlight
     form.addEventListener('change', e => {
       const cb = e.target.closest('input[type=checkbox]');
@@ -6942,6 +7529,32 @@ function bindPantryEvents() {
 
   const list = document.getElementById('pantry-list');
   if (!list) return;
+  // 鍵盤無障礙：Enter / Space 觸發沖法卡片點擊
+  list.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList?.contains('brew-suggest')) {
+      e.preventDefault(); e.target.click();
+    }
+  });
+  // 「其他沖法」下拉變更 → 改用 select 值、清掉 4 張卡 selected
+  list.addEventListener('change', e => {
+    const sel = e.target.closest('.brew-other-select');
+    if (!sel) return;
+    const card = sel.closest('.pantry-bean-card');
+    if (!card) return;
+    if (sel.value) {
+      card.querySelectorAll('.brew-suggest.selected').forEach(el => el.classList.remove('selected'));
+      card.dataset.selectedRecipe = sel.value;
+      sel.classList.add('has-pick');
+    } else {
+      sel.classList.remove('has-pick');
+      // 回到預設沖法
+      const cta = card.querySelector('button[data-act="brew"]');
+      card.dataset.selectedRecipe = cta?.dataset.defaultRecipe || '';
+    }
+    updateBrewCta(card, card.dataset.selectedRecipe);
+    const openBrew = card.querySelector('[data-section="brew"]');
+    if (openBrew) { openBrew.remove(); expandBeanSection(card, 'brew'); }
+  });
   list.addEventListener('click', e => {
     const card = e.target.closest('.pantry-bean-card');
     if (!card) return;
@@ -6962,9 +7575,33 @@ function bindPantryEvents() {
       return;
     }
 
+    // 沖法卡片點下 → 切 selected + 記到 card.dataset
+    const pickBrew = e.target.closest('.brew-suggest[data-recipe-id]');
+    if (pickBrew) {
+      card.querySelectorAll('.brew-suggest').forEach(el => el.classList.toggle('selected', el === pickBrew));
+      card.dataset.selectedRecipe = pickBrew.dataset.recipeId;
+      // 取消「其他」下拉的選擇狀態
+      const otherSel = card.querySelector('.brew-other-select');
+      if (otherSel) { otherSel.value = ''; otherSel.classList.remove('has-pick'); }
+      // 更新 CTA 文字 + pulse
+      updateBrewCta(card, pickBrew.dataset.recipeId);
+      // 若沖煮步驟區已展開，重新渲染以對應新選擇
+      const openBrew = card.querySelector('[data-section="brew"]');
+      if (openBrew) { openBrew.remove(); expandBeanSection(card, 'brew'); }
+      return;
+    }
+
     // 主 actions (brew/log)
     const mainActionBtn = e.target.closest('.bean-actions > button[data-act]');
     if (mainActionBtn) { expandBeanSection(card, mainActionBtn.dataset.act); return; }
+
+    // 點清單列任何空白處 → toggle 展開/折疊
+    const row = e.target.closest('.bean-row');
+    if (row) {
+      const opened = card.classList.toggle('expanded');
+      card.classList.toggle('collapsed', !opened);
+      return;
+    }
 
     // 「我沖完了」按鈕（時序流程）
     const brewFinishBtn = e.target.closest('[data-act="brew-finish"]');

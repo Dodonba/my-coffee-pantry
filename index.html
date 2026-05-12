@@ -539,9 +539,10 @@
     background: linear-gradient(135deg, #3E2723 0%, #6F4E37 100%);
     z-index: 100;
     display: flex;
+    justify-content: center;
     overflow-x: auto;
     padding: 10px 16px;
-    gap: 4px;
+    gap: 8px;
     box-shadow: 0 2px 12px rgba(0,0,0,0.2);
     scrollbar-width: thin;
   }
@@ -563,6 +564,44 @@
   .chapter-nav a.active { color: var(--accent-dark); background: var(--bg); }
   .chapter-nav .tool-tab { background: var(--accent-light); color: var(--accent-dark); }
   .chapter-nav .tool-tab.active { background: #FFC107; color: #3E2723; }
+  /* 章節下拉選單 ── 跟 pantry-tab / tool-tab 同等級的明顯按鈕 */
+  .nav-dropdown { position: relative; flex-shrink: 0; }
+  .nav-dropdown-trigger.info-tab {
+    padding: 8px 16px;
+    background: #d4b896;
+    color: var(--accent-dark);
+    font-size: 13.5px; font-weight: 700;
+    border: none;
+    border-radius: 4px; letter-spacing: 1px;
+    white-space: nowrap; cursor: pointer;
+    font-family: inherit; transition: all 0.15s;
+  }
+  .nav-dropdown-trigger.info-tab:hover { background: #e6cda9; }
+  .nav-dropdown.has-active .nav-dropdown-trigger.info-tab,
+  .nav-dropdown.open .nav-dropdown-trigger.info-tab {
+    background: #FFD9A0; color: var(--accent-dark);
+  }
+  .nav-dropdown-menu {
+    display: none; position: fixed;
+    background: #3E2723;
+    border-radius: 0 0 6px 6px;
+    padding: 6px 0; min-width: 160px;
+    max-height: 70vh; overflow-y: auto;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    z-index: 200;
+  }
+  .nav-dropdown.open .nav-dropdown-menu { display: flex; flex-direction: column; }
+  .nav-dropdown-menu a {
+    padding: 9px 16px;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13.5px;
+    white-space: nowrap;
+    letter-spacing: 1px;
+    transition: background 0.15s;
+  }
+  .nav-dropdown-menu a:hover { background: rgba(255,255,255,0.12); color: white; }
+  .nav-dropdown-menu a.active { color: var(--accent-dark); background: var(--bg); }
 
   /* === Page sections (single-page mode) === */
   .page-section, .chapter { display: none; }
@@ -1200,6 +1239,12 @@
   .dose-pref-bar .seg + .seg { border-left: 1px solid var(--border); }
   .dose-pref-bar .seg.active { background: var(--accent-dark); color: white; }
   .dose-pref-bar .dose-pref-hint { color: var(--text-soft); font-size: 12px; }
+  .grinder-pref-select {
+    padding: 5px 10px; border: 1px solid var(--border); border-radius: 5px;
+    background: white; color: var(--text); font-size: 12.5px;
+    font-family: inherit; cursor: pointer; font-weight: 600;
+  }
+  .grinder-pref-select:focus { outline: none; border-color: var(--accent); }
   @media (max-width: 720px) {
     .dose-pref-bar { padding: 8px 12px; font-size: 12.5px; }
     .dose-pref-bar .dose-pref-hint { flex-basis: 100%; font-size: 11.5px; }
@@ -1954,25 +1999,29 @@
     <span class="badge">產地 / 品種 / 處理法</span>
     <span class="badge">完整履歷 + 居家沖煮</span>
   </div>
-  <div class="meta" style="margin-top: 22px;">為洪偉皓整理 ｜ 2026-05-10</div>
+  <div class="meta" style="margin-top: 22px;">最終更新：2026-05-13 00:15</div>
 </header>
 
 <nav class="chapter-nav">
   <a href="#pantry" data-target="pantry" class="pantry-tab">☕ 我的豆櫃</a>
-  <a href="#home" data-target="home">首頁</a>
   <a href="#tool" data-target="tool" class="tool-tab">🛠 推薦器</a>
-  <a href="#ch1" data-target="ch1">1 起源</a>
-  <a href="#ch2" data-target="ch2">2 品種</a>
-  <a href="#ch3" data-target="ch3">3 產地</a>
-  <a href="#ch4" data-target="ch4">4 處理法</a>
-  <a href="#ch5" data-target="ch5">5 生豆</a>
-  <a href="#ch6" data-target="ch6">6 烘焙</a>
-  <a href="#ch7" data-target="ch7">7 設備</a>
-  <a href="#ch8" data-target="ch8">8 履歷</a>
-  <a href="#ch9" data-target="ch9">9 杯測</a>
-  <a href="#ch10" data-target="ch10">10 保存</a>
-  <a href="#ch11" data-target="ch11">11 沖煮</a>
-  <a href="#ch12" data-target="ch12">12 Quiz</a>
+  <div class="nav-dropdown" id="info-dropdown">
+    <button type="button" class="nav-dropdown-trigger info-tab">📚 咖啡資訊 ▾</button>
+    <div class="nav-dropdown-menu">
+      <a href="#ch1" data-target="ch1">1 起源</a>
+      <a href="#ch2" data-target="ch2">2 品種</a>
+      <a href="#ch3" data-target="ch3">3 產地</a>
+      <a href="#ch4" data-target="ch4">4 處理法</a>
+      <a href="#ch5" data-target="ch5">5 生豆</a>
+      <a href="#ch6" data-target="ch6">6 烘焙</a>
+      <a href="#ch7" data-target="ch7">7 設備</a>
+      <a href="#ch8" data-target="ch8">8 履歷</a>
+      <a href="#ch9" data-target="ch9">9 杯測</a>
+      <a href="#ch10" data-target="ch10">10 保存</a>
+      <a href="#ch11" data-target="ch11">11 沖煮</a>
+      <a href="#ch12" data-target="ch12">12 Quiz</a>
+    </div>
+  </div>
 </nav>
 
 <main class="container">
@@ -2060,6 +2109,19 @@
         <button type="button" class="seg" data-dose-pref="20">20g</button>
       </div>
       <span class="dose-pref-hint">食譜預設帶這個粉量、按 +/− 還能微調</span>
+    </div>
+    <div class="dose-pref-bar" id="grinder-pref-bar">
+      <span class="label">⚙ 磨豆機：</span>
+      <select id="grinder-pref-select" class="grinder-pref-select">
+        <option value="default">C40 + K-Ultra（精簡）</option>
+        <option value="C40">C40</option>
+        <option value="K-Ultra">K-Ultra</option>
+        <option value="K-Pro">K-Pro / Plus</option>
+        <option value="K6">K6</option>
+        <option value="EK43">EK43</option>
+        <option value="all">全部</option>
+      </select>
+      <span class="dose-pref-hint">食譜研磨刻度依此顯示、找不到對應就從 C40 線性換算</span>
     </div>
     <div id="pantry-list" class="pantry-list"></div>
   </section>
@@ -4586,14 +4648,16 @@ Outstanding clarity.
       <h3>11.6 手沖實戰食譜（13 派別配方集）</h3>
       <p>從入門到 WBrC 冠軍、從 Hario V60 到日台特殊濾杯，<strong>按流派分組</strong>。研磨刻度同時標示 <strong>Comandante C40 / 1Zpresso K-Ultra</strong>（部分標 EK43），<a href="https://hzroomcafe.github.io/Coffee-Brewing-and-Grind-Size/" target="_blank" rel="noopener">hzroomcafe 工具箱</a>線性換算對應。</p>
       <table style="font-size: 13px; margin: 6px 0 18px;">
-        <thead><tr><th>分類</th><th>C40 範圍</th><th>K-Ultra 範圍</th><th>適用</th></tr></thead>
+        <thead><tr><th>分類</th><th>C40</th><th>K-Ultra</th><th>EK43</th><th>K-Pro / Plus</th><th>Kingrinder K6</th><th>適用沖法</th></tr></thead>
         <tbody>
-          <tr><td>義式濃縮（細）</td><td>9-15</td><td>3-4.5</td><td>Espresso、Moka 摩卡壺</td></tr>
-          <tr><td>愛樂壓（中細）</td><td>15-22</td><td>4.5-6.5</td><td>V60 多次注水、Aeropress</td></tr>
-          <tr><td>手沖（中等）</td><td>22-29</td><td>6.5-9</td><td>V60 一次注水、Switch、Tri-Up</td></tr>
-          <tr><td>法壓（粗）</td><td>29-40</td><td>9-10</td><td>French Press、Cold Brew、Ice Brew</td></tr>
+          <tr><td>土耳其（極細）</td><td>5-9</td><td>2-3</td><td>1-1.5</td><td>2-3</td><td>28-40</td><td>土耳其咖啡（家用罕用）</td></tr>
+          <tr><td>義式（細）</td><td>9-15</td><td>3-4.5</td><td>1.5-2.5</td><td>3-4.5</td><td>40-60</td><td>Espresso、Moka 摩卡壺</td></tr>
+          <tr><td>愛樂壓（中細）</td><td>15-22</td><td>4.5-6.5</td><td>2.5-5</td><td>4.5-6</td><td>60-90</td><td>V60 多次注水、Aeropress、Hoffmann V60、Wendelboe</td></tr>
+          <tr><td>手沖（中等）</td><td>22-29</td><td>6.5-9</td><td>5-8.5</td><td>6-8.5</td><td>90-120</td><td>V60 NSEW、Wölfl、Switch、CHACHA</td></tr>
+          <tr><td>法壓／冷萃（粗）</td><td>29-40</td><td>9-10</td><td>8.5-11</td><td>8.5-10</td><td>120-150</td><td>French Press、Cold Brew、Kasuya 4:6、粕谷哲惡魔</td></tr>
         </tbody>
       </table>
+      <p style="font-size: 12.5px; color: var(--text-soft); margin: -10px 0 14px;">資料對照 <a href="https://hzroomcafe.github.io/Coffee-Brewing-and-Grind-Size/" target="_blank" rel="noopener">hzroomcafe 工具箱 v3.0.0</a>。你的磨豆機不在這 5 台？點連結用線性換算工具找對應刻度。</p>
 
       <h4 style="color: var(--accent); margin-top: 28px;">📌 入門通用 ── 不挑豆、不挑技巧</h4>
 
@@ -4644,7 +4708,7 @@ Outstanding clarity.
           <div class="param"><div class="param-label">粉</div><div class="param-value">15g</div></div>
           <div class="param"><div class="param-label">水</div><div class="param-value">250g (1:16.7)</div></div>
           <div class="param"><div class="param-label">水溫</div><div class="param-value">100°C</div></div>
-          <div class="param"><div class="param-label">研磨</div><div class="param-value">中細｜C40 #18 / K-Ultra #5.4 / EK43 #4-5</div></div>
+          <div class="param"><div class="param-label">研磨</div><div class="param-value">中細｜C40 #18 / K-Ultra #5.4 / EK43 #3-4</div></div>
           <div class="param"><div class="param-label">總時間</div><div class="param-value">3:00</div></div>
         </div>
         <p style="font-size: 13.5px; color: var(--text-soft); margin: 8px 0;">多次小水量分階段注水（40% → 60% → 80% → 100%），鎖定酸甜層次。<strong>淺焙花果調首選</strong>。可線性放大到 30g/500g。</p>
@@ -4752,7 +4816,7 @@ Outstanding clarity.
           <div class="param"><div class="param-label">粉</div><div class="param-value">15g</div></div>
           <div class="param"><div class="param-label">水</div><div class="param-value">250g (1:16.7)</div></div>
           <div class="param"><div class="param-label">水溫</div><div class="param-value">96°C</div></div>
-          <div class="param"><div class="param-label">研磨</div><div class="param-value">中細｜EK43 #6 / C40 #24 / K-Ultra #7.2</div></div>
+          <div class="param"><div class="param-label">研磨</div><div class="param-value">中細｜EK43 #5 / C40 #24 / K-Ultra #7.2</div></div>
           <div class="param"><div class="param-label">總時間</div><div class="param-value">3:00</div></div>
         </div>
         <p style="font-size: 13.5px; color: var(--text-soft); margin: 8px 0;">悶蒸時做<strong>東南西北攪拌</strong>（NSEW Stir）確保粉床完全濕潤再分段加水。2021 WBrC 米蘭冠軍食譜。</p>
@@ -5871,7 +5935,7 @@ const COFFEE_DB = [
 // scalable:false 的食譜（espresso/moka）粉量受器材限制，不顯示 stepper
 // 時間軸不縮放（codex 建議：時間是萃取節奏、不是水量函數）
 const BREW_RECIPES = {
-  "v60-hoffmann": {name:"V60｜Hoffmann Ultimate (2022)", grind:"中細｜C40 #18 / K-Ultra #5.4 / EK43 #4-5", temp:"99-100°C", baseDose:15, baseRatio:16.7, scalable:true, doseRange:[8,30], time:"3:30-4:00", why:"James Hoffmann 2022 終極：大量 bloom + 兩次 vigorous swirl（bloom 後、水位將乾前各一次）。淺焙花果調首選", steps:[
+  "v60-hoffmann": {name:"V60｜Hoffmann Ultimate (2022)", grind:"中細｜C40 #18 / K-Ultra #5.4 / EK43 #3-4", temp:"99-100°C", baseDose:15, baseRatio:16.7, scalable:true, doseRange:[8,30], time:"3:30-4:00", why:"James Hoffmann 2022 終極：大量 bloom + 兩次 vigorous swirl（bloom 後、水位將乾前各一次）。淺焙花果調首選", steps:[
     {t:"0:00",      a:"注水 {water}g 悶蒸（粉重 ~4 倍）", water:60, type:"bloom"},
     {t:"0:00-0:05", a:"立刻 vigorous swirl（用力旋繞濾杯讓粉床全部濕潤）", type:"agitation"},
     {t:"等 0:45",   a:"靜置悶蒸 45 秒（不要再攪動）", type:"wait"},
@@ -5901,7 +5965,7 @@ const BREW_RECIPES = {
     {t:"1:20-2:00", a:"注水至 {water}g（收尾段、緩繞圈）", water:270, type:"pour"},
     {t:"2:20-2:25", a:"目標流乾完成", type:"finish"},
   ]},
-  "v60-nsew": {name:"V60｜Matt Winton NSEW (2021 WBrC 冠軍)", grind:"中細｜C40 #24 / K-Ultra #7.2 / EK43 #6", temp:"96°C", baseDose:15, baseRatio:16.7, scalable:true, doseRange:[10,25], time:"3:00", why:"悶蒸時做東南西北攪拌（NSEW Stir）確保粉床完全濕潤，2021 WBrC 米蘭冠軍食譜", steps:[
+  "v60-nsew": {name:"V60｜Matt Winton NSEW (2021 WBrC 冠軍)", grind:"中細｜C40 #24 / K-Ultra #7.2 / EK43 #5", temp:"96°C", baseDose:15, baseRatio:16.7, scalable:true, doseRange:[10,25], time:"3:00", why:"悶蒸時做東南西北攪拌（NSEW Stir）確保粉床完全濕潤，2021 WBrC 米蘭冠軍食譜", steps:[
     {t:"0:00-0:30", a:"注水至 {water}g，湯匙做 N→S→E→W 攪拌（東南西北各一次）", water:50, type:"bloom"},
     {t:"0:30-0:50", a:"注水至 {water}g", water:130, type:"pour"},
     {t:"0:50-1:10", a:"注水至 {water}g", water:200, type:"pour"},
@@ -5929,7 +5993,7 @@ const BREW_RECIPES = {
     {t:"1:10",      a:"繼續注水至 {water}g", water:320, type:"pour"},
     {t:"2:30-3:00", a:"目標流乾（圓錐紙偏 V60、波浪紙偏 Kalita）", type:"finish"},
   ]},
-  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中細｜C40 #25 / K-Ultra #7.6", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。總液 = 熱水 160g + 下壺冰 80g ≈ 1:12（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
+  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中｜C40 #24-26 / K-Ultra #6.9-7.6 / EK43 #6-7", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。總液 = 熱水 160g + 下壺冰 80g ≈ 1:12（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
     {t:"準備",       a:"下壺先放冰塊 {water}g（這部分計入總液比例）", water:80, type:"setup-ice"},
     {t:"準備",       a:"飲用杯另備冰塊約 50g（出杯時融入、不計入萃取比例）", type:"setup-ice"},
     {t:"0:00",       a:"[關／開閥可選] 第一段注水至 {water}g（淺焙開閥、中焙以上關閥）", water:50, type:"pour"},
@@ -5945,14 +6009,14 @@ const BREW_RECIPES = {
     {t:"1:30", a:"[開閥] 讓水流下", type:"valve"},
     {t:"3:30", a:"目標流乾、完成", type:"finish"},
   ]},
-  "aeropress": {name:"Aeropress｜Hoffmann 正向法", grind:"中細｜C40 #18-22 / K-Ultra #5.4-6.5 / EK43 #6-8", temp:"92-94°C", baseDose:15, baseRatio:16, scalable:true, doseRange:[8,20], time:"2:30 (浸 2 分 + 下壓 30-60 秒)", why:"Hoffmann 日常正向法：攜帶王、玩法多，淺中深焙都適合（倒置法是另一個 80°C 配方，不在此）", steps:[
+  "aeropress": {name:"Aeropress｜Hoffmann 正向法", grind:"中細｜C40 #18-22 / K-Ultra #5.4-6.5 / EK43 #5-7", temp:"92-94°C", baseDose:15, baseRatio:16, scalable:true, doseRange:[8,20], time:"2:30 (浸 2 分 + 下壓 30-60 秒)", why:"Hoffmann 日常正向法：攜帶王、玩法多，淺中深焙都適合（倒置法是另一個 80°C 配方，不在此）", steps:[
     {t:"準備",       a:"濾紙裝好、Aeropress 正放於杯上、加入 {dose}g 粉", type:"setup"},
     {t:"0:00",       a:"注水 {water}g（一次注完）", water:240, type:"pour"},
     {t:"0:30",       a:"攪拌一次、蓋上活塞「拉氣密但不下壓」", type:"agitation"},
     {t:"等 2:00",    a:"浸泡 2 分鐘", type:"wait"},
     {t:"2:00-2:30",  a:"緩慢下壓 30-60 秒（聽到「滋」聲時停手）", type:"finish"},
   ]},
-  "french-press": {name:"French Press｜Hoffmann Ultimate", grind:"中粗｜C40 #30+ / K-Ultra #9.1+", temp:"剛沸 ~96°C", baseDose:20, baseRatio:16.7, scalable:true, doseRange:[12,50], time:"9 分鐘（4 浸 + 5 沉降，不下壓）", why:"Hoffmann 重點：4 分鐘破殼撈渣 + 再靜置沉降 + 不按下活塞。保留咖啡油脂、body 最厚實", steps:[
+  "french-press": {name:"French Press｜Hoffmann Ultimate", grind:"粗｜C40 #30-35 / K-Ultra #9-10 / EK43 #9-11", temp:"剛沸 ~96°C", baseDose:20, baseRatio:16.7, scalable:true, doseRange:[12,50], time:"9 分鐘（4 浸 + 5 沉降，不下壓）", why:"Hoffmann 重點：4 分鐘破殼撈渣 + 再靜置沉降 + 不按下活塞。保留咖啡油脂、body 最厚實", steps:[
     {t:"0:00",      a:"加 {dose}g 粉、注剛沸水 {water}g（不要攪拌）", water:335, type:"pour"},
     {t:"4:00",      a:"用湯匙撥開表層粉殼（break crust）+ 撈掉浮泡與飄粉", type:"agitation"},
     {t:"4:00-9:00", a:"靜置 5 分鐘讓細粉沉降（活塞輕放但不要下壓）", type:"wait"},
@@ -5991,7 +6055,7 @@ const BREW_RECIPES = {
     {t:"1:30",  a:"[開閥] 讓水全部流下、沖過冰塊（1:30 開閥避免浸泡過久出澀）", type:"valve"},
     {t:"2:00",  a:"目標流乾、搖晃下壺融冰，倒入飲用杯", type:"finish"},
   ]},
-  "cold-brew": {name:"Cold Brew 冷萃", grind:"粗｜C40 #30+ / K-Ultra #9.1+", temp:"4°C 冷藏", baseDose:20, baseRatio:10, scalable:true, doseRange:[15,100], time:"12-16 小時", why:"低酸甜厚，可線性放大批量；冷藏可保存 7-10 天", steps:[
+  "cold-brew": {name:"Cold Brew 冷萃", grind:"粗｜C40 #32-40 / K-Ultra #9.5-10 / EK43 #10-11", temp:"4°C 冷藏", baseDose:20, baseRatio:10, scalable:true, doseRange:[15,100], time:"12-16 小時", why:"低酸甜厚，可線性放大批量；冷藏可保存 7-10 天", steps:[
     {t:"準備",       a:"{dose}g 粉（粗研磨）+ {water}g 冷水放入瓶罐／壺", water:200, type:"setup"},
     {t:"攪拌",       a:"攪拌均勻，讓粉完全濕潤、無粉團浮在表面", type:"agitation"},
     {t:"冷藏",       a:"冷藏 12-16 小時（淺焙取上限、深焙取下限）", type:"wait"},
@@ -6694,8 +6758,43 @@ function showSection(id) {
   document.querySelectorAll('.chapter-nav a').forEach(a => {
     a.classList.toggle('active', a.dataset.target === id);
   });
+  // 章節下拉 trigger 也標 active（如果切到 ch1-12）
+  const isChapter = /^ch\d+$/.test(id);
+  document.getElementById('info-dropdown')?.classList.toggle('has-active', isChapter);
   window.scrollTo({top: 0, behavior: 'instant'});
 }
+
+// 章節下拉選單：開關 + fixed 定位 + 點外面/scroll/resize 關閉
+(function initNavDropdown() {
+  const dd = document.getElementById('info-dropdown');
+  if (!dd) return;
+  const trigger = dd.querySelector('.nav-dropdown-trigger');
+  const menu = dd.querySelector('.nav-dropdown-menu');
+  const positionMenu = () => {
+    const rect = trigger.getBoundingClientRect();
+    menu.style.top = (rect.bottom + 2) + 'px';
+    // 防止 mobile 上 menu 溢出視窗右側
+    const mw = menu.offsetWidth || 160;
+    let left = rect.left;
+    if (left + mw > window.innerWidth - 8) left = window.innerWidth - mw - 8;
+    if (left < 8) left = 8;
+    menu.style.left = left + 'px';
+  };
+  trigger?.addEventListener('click', e => {
+    e.stopPropagation();
+    const willOpen = !dd.classList.contains('open');
+    if (willOpen) positionMenu();
+    dd.classList.toggle('open');
+  });
+  document.addEventListener('click', e => {
+    if (!dd.contains(e.target)) dd.classList.remove('open');
+  });
+  window.addEventListener('scroll', () => dd.classList.remove('open'), { passive: true });
+  window.addEventListener('resize', () => dd.classList.remove('open'));
+  menu?.addEventListener('click', e => {
+    if (e.target.tagName === 'A') setTimeout(() => dd.classList.remove('open'), 50);
+  });
+})();
 
 // ===== 簡易模式：方向 → 風味映射 =====
 const DIRECTION_FLAVORS = {
@@ -6909,7 +7008,7 @@ function renderBrewItem(rid, isOpen = false) {
         <span class="meta-pill" data-ratio>比例<strong></strong></span>
         <span class="meta-pill">水溫<strong>${r.temp || '—'}</strong></span>
       </div>
-      <div class="brew-grind">研磨：${r.grind || '—'}</div>
+      <div class="brew-grind">研磨：${escapeHtml(formatGrind(r.grind))}</div>
       <div class="dose-warning" data-warning style="display:none;"></div>
       <div class="brew-why">${r.why}</div>
       <ol class="brew-steps" data-steps></ol>
@@ -6958,6 +7057,85 @@ function escapeHtml(s) {
 // ===== 熱/冰沖法判斷與使用者偏好（Phase 5）=====
 const COLD_RECIPES = new Set(['iced-v60','switch-fast-ice','cold-brew','switch-chacha']);
 function isColdRecipe(rid) { return COLD_RECIPES.has(rid); }
+
+// ===== 磨豆機偏好：依使用者磨豆機顯示對應刻度 =====
+const GRINDER_PREF_KEY = 'coffee-grinder-pref-v1';
+// 五段分類範圍（土耳其/義式/愛樂壓/手沖/法壓）── 對齊 hzroomcafe 工具箱 v3.0.0
+const GRIND_RANGES = {
+  C40:       [[5,9],[9,15],[15,22],[22,29],[29,40]],
+  'K-Ultra': [[2,3],[3,4.5],[4.5,6.5],[6.5,9],[9,10]],
+  EK43:      [[1,1.5],[1.5,2.5],[2.5,5],[5,8.5],[8.5,11]],
+  'K-Pro':   [[2,3],[3,4.5],[4.5,6],[6,8.5],[8.5,10]],
+  K6:        [[28,40],[40,60],[60,90],[90,120],[120,150]],
+};
+function getGrinderPref() {
+  try { return localStorage.getItem(GRINDER_PREF_KEY) || 'default'; }
+  catch { return 'default'; }
+}
+function setGrinderPref(v) { try { localStorage.setItem(GRINDER_PREF_KEY, v); } catch(e) {} }
+// 從 grindStr 抽出某磨豆機既有刻度（"中細｜C40 #18 / K-Ultra #5.4" → "#18"）
+function extractGrinder(grindStr, grinder) {
+  const esc = grinder.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const m = grindStr.match(new RegExp(esc + '\\s*(#[\\d.\\-]+)'));
+  return m ? m[1] : null;
+}
+// 從 C40 刻度線性換算到目標磨豆機刻度
+function convertGrindFromC40(c40Str, target) {
+  const nums = c40Str.replace('#','').split('-').map(s => parseFloat(s));
+  const c40Vals = nums.length === 1 ? [nums[0], nums[0]] : nums;
+  const c40R = GRIND_RANGES.C40;
+  const tR = GRIND_RANGES[target];
+  if (!tR) return null;
+  const interpolate = v => {
+    for (let i = 0; i < c40R.length; i++) {
+      const [a, b] = c40R[i];
+      if (v >= a && v <= b) {
+        const t = b === a ? 0 : (v - a) / (b - a);
+        const [ta, tb] = tR[i];
+        return ta + (tb - ta) * t;
+      }
+    }
+    return v < c40R[0][0] ? tR[0][0] : tR[tR.length-1][1];
+  };
+  const round = n => Math.round(n * 2) / 2;  // 四捨五入到 0.5
+  const v1 = round(interpolate(c40Vals[0]));
+  const v2 = round(interpolate(c40Vals[1]));
+  return v1 === v2 ? `#${v1}` : `#${v1}-${v2}`;
+}
+// 依偏好格式化 grind 字串顯示
+function formatGrind(grindStr) {
+  if (!grindStr) return '—';
+  const pref = getGrinderPref();
+  if (pref === 'all') return grindStr;
+  const parts = grindStr.split('｜');
+  const level = parts[0] || '';
+  const grinders = pref === 'default' ? ['C40','K-Ultra'] : [pref];
+  const out = [];
+  for (const g of grinders) {
+    const raw = extractGrinder(grindStr, g);
+    if (raw) {
+      out.push(`${g} ${raw}`);
+    } else {
+      // fallback：用 C40 線性換算（≈ 標示這是換算）
+      const c40 = extractGrinder(grindStr, 'C40');
+      if (c40) {
+        const converted = convertGrindFromC40(c40, g);
+        if (converted) out.push(`${g} ≈ ${converted}`);
+      }
+    }
+  }
+  return out.length ? `${level}｜${out.join(' / ')}` : grindStr;
+}
+// 已渲染的 brew-item 在偏好變更時、重新填入 grind 欄位
+function refreshAllGrinds() {
+  document.querySelectorAll('.brew-item').forEach(el => {
+    const rid = el.dataset.rid;
+    const r = BREW_RECIPES[rid];
+    if (!r) return;
+    const grindEl = el.querySelector('.brew-grind');
+    if (grindEl) grindEl.textContent = '研磨：' + formatGrind(r.grind);
+  });
+}
 
 // 使用者常用粉量偏好（食譜預設 dose ── 卡片上仍可 +/- 微調）
 const DOSE_PREF_KEY = 'coffee-dose-pref-v1';
@@ -7745,6 +7923,15 @@ function bindPantryEvents() {
       if (!group) return;
       group.querySelectorAll('.seg').forEach(b => b.classList.toggle('active', b === seg));
       renderPantry();
+    });
+  }
+  // 磨豆機偏好：select 變更 → 重新格式化所有 brew-item 研磨欄位
+  const grinderSelect = document.getElementById('grinder-pref-select');
+  if (grinderSelect) {
+    grinderSelect.value = getGrinderPref();
+    grinderSelect.addEventListener('change', e => {
+      setGrinderPref(e.target.value);
+      refreshAllGrinds();
     });
   }
   // 常用粉量偏好：點 seg → 存偏好 + 重新渲染豆櫃

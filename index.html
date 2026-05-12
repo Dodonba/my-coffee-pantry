@@ -347,7 +347,7 @@
 
     /* ==== Chapter nav 緊縮 ==== */
     .chapter-nav { padding: 10px 14px; gap: 5px; }
-    .chapter-nav a { padding: 7px 13px; font-size: 13px; letter-spacing: 0.5px; }
+    .chapter-nav a, .nav-dropdown-trigger.info-tab { padding: 0 13px; min-height: 34px; font-size: 13px; letter-spacing: 0.5px; }
 
     /* ==== 推薦工具 ==== */
     .tool-container { padding: 20px 16px; }
@@ -428,7 +428,7 @@
     .direction-card .title { font-size: 13px; }
     .direction-card .desc { font-size: 10.5px; }
     .flavor-tag, .radio-tag { padding: 8px 8px; font-size: 12.5px; }
-    .chapter-nav a { padding: 7px 11px; font-size: 12.5px; }
+    .chapter-nav a, .nav-dropdown-trigger.info-tab { padding: 0 11px; min-height: 32px; font-size: 12.5px; }
   }
 
   /* === Estate cards === */
@@ -550,7 +550,11 @@
   .chapter-nav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 3px; }
   .chapter-nav a {
     flex-shrink: 0;
-    padding: 8px 16px;
+    padding: 0 16px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
     color: rgba(255,255,255,0.7);
     font-size: 13.5px;
     font-weight: 600;
@@ -567,7 +571,11 @@
   /* 章節下拉選單 ── 跟 pantry-tab / tool-tab 同等級的明顯按鈕 */
   .nav-dropdown { position: relative; flex-shrink: 0; }
   .nav-dropdown-trigger.info-tab {
-    padding: 8px 16px;
+    padding: 0 16px;
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    box-sizing: border-box;
     background: #d4b896;
     color: var(--accent-dark);
     font-size: 13.5px; font-weight: 700;
@@ -723,9 +731,17 @@
   }
   .rec-card .match-flavors {
     margin: 8px 0;
-    font-size: 13px;
-    color: var(--accent);
+    display: flex; flex-wrap: wrap; gap: 5px;
+  }
+  .rec-card .match-flavors .match-chip {
+    display: inline-block;
+    background: rgba(180,130,80,0.15);
+    color: var(--accent-dark);
+    padding: 3px 9px;
+    border-radius: 12px;
+    font-size: 12.5px;
     font-weight: 600;
+    border: 1px solid rgba(180,130,80,0.3);
   }
   .rec-card .notes {
     font-size: 14px;
@@ -1201,6 +1217,61 @@
     margin-left: auto;
   }
   .today-pick-msg strong { color: var(--accent-dark); }
+  /* 上次喝摘要：日期 / 沖法 / 評價 */
+  .last-brew {
+    font-size: 12.5px; color: var(--text-soft);
+    margin: 6px 0; padding: 5px 9px;
+    background: rgba(180,130,80,0.07);
+    border-left: 3px solid rgba(180,130,80,0.4);
+    border-radius: 0 4px 4px 0;
+  }
+  .last-brew strong { color: var(--accent-dark); }
+  /* 今日決策面板：早晨打開立刻決定喝哪支 */
+  .today-decision {
+    background: linear-gradient(135deg, #6e9b6e 0%, #4a7d4a 100%);
+    border-radius: 8px; padding: 18px 22px;
+    margin: 10px 0 12px; color: white;
+    box-shadow: 0 4px 14px rgba(74,125,74,0.25);
+  }
+  .today-decision-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+  .today-decision-badge {
+    background: rgba(255,255,255,0.22); padding: 3px 10px; border-radius: 12px;
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+  }
+  .today-decision-name {
+    margin: 0; color: white; font-size: 20px; font-weight: 700;
+    border: none; padding: 0;
+  }
+  .today-decision-why {
+    margin: 4px 0 12px; font-size: 13px;
+    color: rgba(255,255,255,0.88);
+    display: flex; flex-wrap: wrap; gap: 4px 12px;
+  }
+  .today-decision-brew {
+    background: rgba(255,255,255,0.13); border-radius: 6px;
+    padding: 10px 14px; margin-bottom: 12px;
+  }
+  .today-decision-recipe-name { font-size: 14px; font-weight: 700; margin-bottom: 6px; }
+  .today-decision-params { display: flex; flex-wrap: wrap; gap: 6px; }
+  .today-decision-params .param-pill {
+    background: rgba(255,255,255,0.18); padding: 3px 9px;
+    border-radius: 4px; font-size: 12.5px;
+  }
+  .today-decision-params .param-pill strong { color: white; font-weight: 700; }
+  .today-decision-cta {
+    width: 100%; padding: 11px 20px;
+    background: white; color: #4a7d4a;
+    border: none; border-radius: 6px;
+    font-size: 15px; font-weight: 700; letter-spacing: 1px;
+    cursor: pointer; font-family: inherit;
+    transition: filter 0.15s, transform 0.08s;
+  }
+  .today-decision-cta:hover { filter: brightness(1.05); transform: translateY(-1px); }
+  @media (max-width: 720px) {
+    .today-decision { padding: 14px 16px; }
+    .today-decision-name { font-size: 17px; }
+    .today-decision-cta { padding: 12px 16px; font-size: 14.5px; min-height: 44px; }
+  }
   /* 今天推這個 badge（豆卡頂部） */
   .today-pick-badge {
     display: inline-block;
@@ -1805,6 +1876,33 @@
     margin-bottom: 8px; padding-bottom: 8px;
   }
   .bean-dialog .pick-other-grid { display: grid; gap: 8px; padding-bottom: 8px; }
+  /* 進階欄位摺疊區：預設只露 5 個基本欄位、其他點開才填 */
+  .bean-dialog .bean-advanced {
+    border: 1px dashed var(--border);
+    border-radius: 5px;
+    padding: 2px 12px;
+    background: var(--bg-soft);
+    margin-top: 6px;
+  }
+  .bean-dialog .bean-advanced > summary {
+    cursor: pointer; font-size: 13px; color: var(--text-soft);
+    padding: 9px 0; user-select: none;
+    font-weight: 600; list-style: none;
+  }
+  .bean-dialog .bean-advanced > summary::-webkit-details-marker { display: none; }
+  .bean-dialog .bean-advanced > summary:hover { color: var(--accent-dark); }
+  .bean-dialog .bean-advanced[open] > summary {
+    border-bottom: 1px dashed var(--border);
+    margin-bottom: 10px; padding-bottom: 9px;
+  }
+  .bean-dialog .bean-advanced-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px;
+    padding-bottom: 10px;
+  }
+  .bean-dialog .bean-advanced-inner > .full { grid-column: 1 / -1; }
+  @media (max-width: 720px) {
+    .bean-dialog .bean-advanced-inner { grid-template-columns: 1fr; }
+  }
   .bean-dialog .mode-hint {
     margin: 8px 0 0; font-size: 12px; color: var(--text-soft);
     font-weight: 400; line-height: 1.5;
@@ -1999,7 +2097,7 @@
     <span class="badge">產地 / 品種 / 處理法</span>
     <span class="badge">完整履歷 + 居家沖煮</span>
   </div>
-  <div class="meta" style="margin-top: 22px;">最終更新：2026-05-13 00:15</div>
+  <div class="meta" style="margin-top: 22px;">最終更新：2026-05-12 23:59 v2</div>
 </header>
 
 <nav class="chapter-nav">
@@ -2062,7 +2160,7 @@
         <button id="export-pantry-btn" type="button">📥 匯出備份</button>
         <button id="import-pantry-btn" type="button">📤 匯入備份</button>
         <button id="clear-pantry-btn"  type="button">🗑 清除全部</button>
-        <a id="feedback-link" class="feedback-link" href="https://docs.google.com/forms/d/e/1FAIpQLSepvQh0_5d4vNliDg3A-tY9Rdu4WoMDwKgJJXN2RhyrRhBuOA/viewform" target="_blank" rel="noopener">💬 給意見 / 分享豆袋</a>
+        <a id="feedback-link" class="feedback-link" href="https://docs.google.com/forms/d/e/1FAIpQLSewkJSWd20qn1GPMY-CozMY5dmzwzolwV1QSlChutbPlt8IaA/viewform" target="_blank" rel="noopener">💬 給意見 / 分享豆袋</a>
         <input type="file" id="import-pantry-file" accept="application/json,.json" hidden>
       </div>
     </div>
@@ -2090,6 +2188,7 @@
       </div>
       <span class="today-pick-msg" id="today-pick-msg"></span>
     </div>
+    <div class="today-decision" id="today-decision" hidden></div>
     <div class="pantry-filter-bar" id="pantry-filter-bar">
       <span class="label">篩選：</span>
       <div class="seg-group" data-filter-key="kind">
@@ -5690,59 +5789,8 @@ Outstanding clarity.
     <h3 id="bean-dialog-title">新增豆子</h3>
     <input type="hidden" name="id">
     <div class="form-grid">
+      <!-- ===== BASIC（永遠顯示）：5 個最常填的欄位 ===== -->
       <label class="full">豆名 <span class="req">*</span><input name="name" required maxlength="80" placeholder="如：衣索比亞 Yirgacheffe G1"></label>
-
-      <!-- 莊園 / 品種：選豆模式（單豆下拉 vs 配方豆 chip 多選） -->
-      <div class="full pick-block">
-        <div class="pick-header">
-          <p class="pick-title">莊園 / 品種</p>
-          <div class="pick-mode-toggle" id="pick-mode-toggle" role="tablist">
-            <button type="button" class="seg active" data-mode="single">☕ 單豆</button>
-            <button type="button" class="seg" data-mode="blend">🎨 配方豆 Blend</button>
-          </div>
-        </div>
-
-        <!-- 單豆模式：產區 / 品種 / 莊園 三個下拉 + 摺疊手填區 -->
-        <div class="field-mode-single">
-          <div class="single-pick-grid">
-            <label>產區（國家・區域）
-              <select name="regionSingle"></select>
-            </label>
-            <label>品種
-              <select name="varietySingle"></select>
-            </label>
-            <label class="full">莊園（可不填）
-              <select name="estateSingle"></select>
-            </label>
-          </div>
-          <details class="pick-other-fold">
-            <summary>▾ 不在清單裡？點開手動填寫（會自動學習，下次直接出現在下拉）</summary>
-            <div class="pick-other-grid">
-              <label class="full">其他產區<input name="regionSingleOther" placeholder="如：哥倫比亞 Quindío"></label>
-              <label class="full">其他品種<input name="varietySingleOther" placeholder="如：Wush Wush"></label>
-              <label class="full">其他莊園<input name="estateSingleOther" placeholder="如：El Mirador"></label>
-            </div>
-          </details>
-        </div>
-
-        <!-- 配方豆模式：chip 多選 -->
-        <div class="field-mode-blend">
-          <span class="chip-label">莊園（配方豆多選）</span>
-          <div class="chip-group" id="estate-group"></div>
-          <input name="estateOther" placeholder="其他莊園（逗號分隔；下次新增豆時會自動成為 chip 選項）" style="margin-top:4px;">
-          <span class="chip-label" style="margin-top:12px;">品種（配方豆多選）</span>
-          <div class="chip-group" id="variety-group"></div>
-          <input name="varietyOther" placeholder="其他品種（逗號分隔）" style="margin-top:4px;">
-        </div>
-      </div>
-
-      <!-- 風味（移到莊園/品種下面）-->
-      <div class="full" id="blend-flavors-block">
-        <span class="chip-label">主打風味（豆袋上寫的描述、多選）── 單豆／配方豆都可填</span>
-        <div class="chip-group" id="blend-flavors-group"></div>
-        <input name="flavorOther" placeholder="其他風味（逗號分隔；下次新增豆時會自動成為 chip 選項）" style="margin-top:4px;">
-      </div>
-
       <label>烘焙度 <span class="req">*</span>
         <select name="roast" required>
           <option value="light">淺焙</option>
@@ -5767,24 +5815,82 @@ Outstanding clarity.
           <option value="blend">配方豆 / Blend（多支拼配，不知道處理法選這個）</option>
         </select>
       </label>
-      <label>店家<input name="shopName" placeholder="如：Simple Kaffa"></label>
-      <label>豆袋總重 (g)<input type="number" name="weightTotal" min="0" max="2000" step="10" placeholder="如：200"></label>
-      <label>購買價 NT$<input type="number" name="pricePerBag" min="0" max="50000" step="10" placeholder="如：780"></label>
-      <label>剩餘量 (g)<input type="number" name="gramRemaining" min="0" max="2000" step="10" placeholder="不填 → 預設＝總重"></label>
-      <label>海拔（高 = 沖法偏淺焙花果）
-        <select name="density">
-          <option value="">— 不確定 —</option>
-          <option value="high">高（&gt;1500m）</option>
-          <option value="medium">中（1300-1500m）</option>
-          <option value="low">低（&lt;1300m）</option>
-        </select>
-      </label>
-      <label class="full">備註<textarea name="notes" rows="2" placeholder="風味、價格、購買日、推薦人等"></textarea></label>
+      <label>剩餘量 (g)<input type="number" name="gramRemaining" min="0" max="2000" step="10" placeholder="如：200"></label>
 
-      <div class="full blend-only" id="blend-origins-block">
-        <span class="chip-label">主要成分產區（配方豆才會顯示，如果豆袋有寫、可不填）</span>
-        <div class="chip-group" id="blend-origins-group"></div>
-      </div>
+      <!-- ===== ADVANCED（摺疊）：莊園/品種/風味/店家/海拔/總重/購買價/備註 ===== -->
+      <details class="full bean-advanced">
+        <summary>＋ 更多資料（莊園 / 品種 / 風味 / 店家 / 海拔 / 總重 / 價格 / 備註）</summary>
+        <div class="bean-advanced-inner">
+          <!-- 莊園 / 品種 -->
+          <div class="full pick-block">
+            <div class="pick-header">
+              <p class="pick-title">莊園 / 品種</p>
+              <div class="pick-mode-toggle" id="pick-mode-toggle" role="tablist">
+                <button type="button" class="seg active" data-mode="single">☕ 單豆</button>
+                <button type="button" class="seg" data-mode="blend">🎨 配方豆 Blend</button>
+              </div>
+            </div>
+
+            <!-- 單豆模式：產區 / 品種 / 莊園 三個下拉 + 摺疊手填區 -->
+            <div class="field-mode-single">
+              <div class="single-pick-grid">
+                <label>產區（國家・區域）
+                  <select name="regionSingle"></select>
+                </label>
+                <label>品種
+                  <select name="varietySingle"></select>
+                </label>
+                <label class="full">莊園（可不填）
+                  <select name="estateSingle"></select>
+                </label>
+              </div>
+              <details class="pick-other-fold">
+                <summary>▾ 不在清單裡？點開手動填寫（會自動學習，下次直接出現在下拉）</summary>
+                <div class="pick-other-grid">
+                  <label class="full">其他產區<input name="regionSingleOther" placeholder="如：哥倫比亞 Quindío"></label>
+                  <label class="full">其他品種<input name="varietySingleOther" placeholder="如：Wush Wush"></label>
+                  <label class="full">其他莊園<input name="estateSingleOther" placeholder="如：El Mirador"></label>
+                </div>
+              </details>
+            </div>
+
+            <!-- 配方豆模式：chip 多選 -->
+            <div class="field-mode-blend">
+              <span class="chip-label">莊園（配方豆多選）</span>
+              <div class="chip-group" id="estate-group"></div>
+              <input name="estateOther" placeholder="其他莊園（逗號分隔；下次新增豆時會自動成為 chip 選項）" style="margin-top:4px;">
+              <span class="chip-label" style="margin-top:12px;">品種（配方豆多選）</span>
+              <div class="chip-group" id="variety-group"></div>
+              <input name="varietyOther" placeholder="其他品種（逗號分隔）" style="margin-top:4px;">
+            </div>
+          </div>
+
+          <!-- 風味 -->
+          <div class="full" id="blend-flavors-block">
+            <span class="chip-label">主打風味（豆袋上寫的描述、多選）── 單豆／配方豆都可填</span>
+            <div class="chip-group" id="blend-flavors-group"></div>
+            <input name="flavorOther" placeholder="其他風味（逗號分隔；下次新增豆時會自動成為 chip 選項）" style="margin-top:4px;">
+          </div>
+
+          <label>店家<input name="shopName" placeholder="如：Simple Kaffa"></label>
+          <label>豆袋總重 (g)<input type="number" name="weightTotal" min="0" max="2000" step="10" placeholder="如：200"></label>
+          <label>購買價 NT$<input type="number" name="pricePerBag" min="0" max="50000" step="10" placeholder="如：780"></label>
+          <label>海拔（高 = 沖法偏淺焙花果）
+            <select name="density">
+              <option value="">— 不確定 —</option>
+              <option value="high">高（&gt;1500m）</option>
+              <option value="medium">中（1300-1500m）</option>
+              <option value="low">低（&lt;1300m）</option>
+            </select>
+          </label>
+          <label class="full">備註<textarea name="notes" rows="2" placeholder="風味、價格、購買日、推薦人等"></textarea></label>
+
+          <div class="full blend-only" id="blend-origins-block">
+            <span class="chip-label">主要成分產區（配方豆才會顯示，如果豆袋有寫、可不填）</span>
+            <div class="chip-group" id="blend-origins-group"></div>
+          </div>
+        </div>
+      </details>
     </div>
     <div class="dialog-actions">
       <button type="button" data-act="cancel">取消</button>
@@ -6966,12 +7072,14 @@ function recommend() {
     const varietyChip = (b.variety && b.variety.length) ? `<div class="variety">🌱 ${b.variety.join(' / ')}</div>` : '';
     const tipText = b.brewProfile && BREW_TIPS[b.brewProfile] ? BREW_TIPS[b.brewProfile] : '';
     const tipBlock = tipText ? `<div class="brew-tip"><strong>🎚 微調建議：</strong>${tipText}</div>` : '';
+    const userTotal = flavors.length;
+    const matchPct = userTotal > 0 ? Math.round(b.matches.length / userTotal * 100) : 0;
     return `
     <div class="rec-card">
-      <h4>${b.name} <span class="match-score">${b.matches.length} 個相符</span></h4>
+      <h4>${b.name} <span class="match-score">相符度 ${matchPct}%（${b.matches.length}/${userTotal}）</span></h4>
       <div class="origin">${b.origin}</div>
       ${varietyChip}
-      <div class="match-flavors">${b.matches.map(f => FLAVOR_LABELS[f] || f).join(' · ')}</div>
+      <div class="match-flavors">${b.matches.map(f => `<span class="match-chip">✓ ${escapeHtml(labelOf(f))}</span>`).join('')}</div>
       <div class="rec-reason">💡 ${dirText}你選的 <strong>${flavorList}</strong> 都命中。${b.notes}</div>
       ${tipBlock}
       <div class="brews">
@@ -7276,6 +7384,55 @@ function updateTodayPickMsg(topBean, state, matched) {
   }
 }
 
+// ===== 今日決策面板（早晨打開立刻看到喝哪支、怎麼沖、按一鍵開始）=====
+function renderTodayDecision(topBean, state) {
+  const el = document.getElementById('today-decision');
+  if (!el) return;
+  if (!topBean || (topBean._todayScore || 0) < TODAY_PICK_THRESHOLD) { el.hidden = true; return; }
+  // 預設挑沖法：使用者偏好（最近 5 次熱/冰）→ 否則熱沖
+  const best = getBestBrews(topBean.brewProfile, topBean.roast);
+  const preferred = getPreferredKind(topBean);
+  const recipeId = (preferred === 'cold' && best.cold) ? best.cold : (best.hot || best.cold);
+  const recipe = BREW_RECIPES[recipeId];
+  if (!recipe) { el.hidden = true; return; }
+  const dose = preferredDose(recipe);
+  const water = (recipe.scalable && recipe.baseRatio) ? Math.round(dose * recipe.baseRatio) : null;
+  // 推薦理由（最多 3 條）
+  const reasons = [];
+  const stateKey = state.mood + '-' + state.schedule;
+  const stateProfile = TODAY_STATE_PROFILES[stateKey];
+  if (stateProfile && (stateProfile.favored[topBean.brewProfile] || 0) >= 3) {
+    reasons.push(`配合「${stateProfile.desc}」`);
+  }
+  const fresh = getBeanFreshness(topBean.roastDate);
+  if (fresh && fresh.stage === 'peak') reasons.push('正在適飲期 ★');
+  else if (fresh && fresh.stage === 'almost-ready') reasons.push('接近適飲');
+  else if (fresh && fresh.stage === 'fading') reasons.push('過適飲、優先消耗');
+  if (topBean.gramRemaining != null && topBean.gramRemaining > 0 && topBean.gramRemaining <= 50) {
+    reasons.push('快喝完了');
+  }
+  const grindShort = formatGrind(recipe.grind).split('｜')[1] || formatGrind(recipe.grind);
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="today-decision-header">
+      <span class="today-decision-badge">⭐ 今天推這支</span>
+      <h3 class="today-decision-name">${escapeHtml(topBean.name)}</h3>
+    </div>
+    ${reasons.length ? `<div class="today-decision-why">${reasons.map(r => `<span>· ${escapeHtml(r)}</span>`).join('')}</div>` : ''}
+    <div class="today-decision-brew">
+      <div class="today-decision-recipe-name">🫖 ${escapeHtml(recipe.name)}</div>
+      <div class="today-decision-params">
+        <span class="param-pill"><strong>${dose}</strong>g 粉</span>
+        ${water ? `<span class="param-pill"><strong>${water}</strong>g 水</span>` : ''}
+        ${recipe.baseRatio ? `<span class="param-pill">1:${recipe.baseRatio}</span>` : ''}
+        <span class="param-pill">${escapeHtml(recipe.temp || '—')}</span>
+        <span class="param-pill">${escapeHtml(grindShort)}</span>
+      </div>
+    </div>
+    <button type="button" class="today-decision-cta" data-bean-id="${escapeHtml(topBean.id)}" data-recipe-id="${escapeHtml(recipeId)}">🎯 開始沖煮這支</button>
+  `;
+}
+
 // ===== 豆櫃 render =====
 function renderPantry() {
   const list = document.getElementById('pantry-list');
@@ -7285,6 +7442,7 @@ function renderPantry() {
   if (p.beans.length === 0) {
     list.innerHTML = `<div class="empty-pantry">豆櫃還是空的 ☕<br><span style="font-size:13px;">按上方「＋ 新增豆子」開始記錄手上的豆，<br>或先到 <a href="#tool" style="color:var(--accent);">推薦器</a> 找想喝的風味再加進來</span></div>`;
     updateTodayPickMsg(null);
+    renderTodayDecision(null);
     if (countEl) countEl.textContent = '';
     return;
   }
@@ -7306,10 +7464,12 @@ function renderPantry() {
   if (filtered.length === 0) {
     list.innerHTML = `<div class="empty-pantry filtered">符合「${escapeHtml(filter)}」的豆子是 0 支 ☕<br><span style="font-size:13px;">試試其他篩選條件，或先 ＋ 新增更多豆子</span></div>`;
     updateTodayPickMsg(scored[0], state, matched);
+    renderTodayDecision(matched ? scored[0] : null, state);
     return;
   }
   list.innerHTML = filtered.map(b => renderBeanCard(b, b.id === topId)).join('');
   updateTodayPickMsg(scored[0], state, matched);
+  renderTodayDecision(matched ? scored[0] : null, state);
 }
 
 function renderBeanCard(b, isTodayPick) {
@@ -7403,6 +7563,14 @@ function renderBeanCard(b, isTodayPick) {
         return o ? `<span class="chip readonly">${o.label}</span>` : '';
       }).join('')}</div>` : ''}
       ${b.notes ? `<div class="bean-notes">「${escapeHtml(b.notes)}」</div>` : ''}
+      ${(() => {
+        const last = b.brewLog && b.brewLog[0];
+        if (!last) return '';
+        const rec = last.recipe && BREW_RECIPES[last.recipe] ? BREW_RECIPES[last.recipe].name : (last.recipe || '');
+        const rating = last.rating && DIAGNOSIS[last.rating] ? (DIAGNOSIS[last.rating].label || '').replace(/^\S+\s+/, '') : '';
+        const dose = last.dose ? ` · ${last.dose}g` : '';
+        return `<div class="last-brew">⏱ 上次喝：<strong>${escapeHtml(last.date || '')}</strong> · ${escapeHtml(rec)}${dose}${rating ? ` · ${escapeHtml(rating)}` : ''}</div>`;
+      })()}
       ${(() => {
         const a = analyzeRecentLogs(b);
         if (!a) return '';
@@ -7805,6 +7973,20 @@ function openBeanDialog(beanToEdit) {
     title.textContent = '新增豆子';
     form.elements.id.value = '';
   }
+  // 編輯既有豆時、若進階欄位有資料就自動展開摺疊區
+  const adv = form.querySelector('.bean-advanced');
+  if (adv) {
+    const hasAdvData = !!(beanToEdit && (
+      beanToEdit.origin ||
+      (beanToEdit.variety && beanToEdit.variety.length) ||
+      (beanToEdit.estates && beanToEdit.estates.length) ||
+      (beanToEdit.blendFlavors && beanToEdit.blendFlavors.length) ||
+      (beanToEdit.blendOrigins && beanToEdit.blendOrigins.length) ||
+      beanToEdit.shopName || beanToEdit.weightTotal ||
+      beanToEdit.pricePerBag || beanToEdit.density || beanToEdit.notes
+    ));
+    adv.open = hasAdvData;
+  }
   toggleBlendOnly(form.elements.process.value === 'blend');
   if (typeof dialog.showModal === 'function') dialog.showModal();
   else dialog.setAttribute('open', '');
@@ -7925,6 +8107,38 @@ function bindPantryEvents() {
       renderPantry();
     });
   }
+  // 今日決策「開始沖煮這支」按鈕 → 跳到該豆卡、預選沖法、展開 brew section
+  document.getElementById('today-decision')?.addEventListener('click', e => {
+    const btn = e.target.closest('.today-decision-cta');
+    if (!btn) return;
+    const beanId = btn.dataset.beanId;
+    const recipeId = btn.dataset.recipeId;
+    if (!beanId) return;
+    // 切到「全部」filter 確保卡片顯示
+    const filterBar = document.getElementById('pantry-filter-bar');
+    const allBtn = filterBar?.querySelector('.seg[data-value="all"]');
+    const activeBtn = filterBar?.querySelector('.seg.active');
+    if (allBtn && activeBtn !== allBtn) {
+      activeBtn?.classList.remove('active');
+      allBtn.classList.add('active');
+      renderPantry();
+    }
+    // 用 rAF 等 DOM 更新後再操作
+    requestAnimationFrame(() => {
+      const card = document.querySelector('.pantry-bean-card[data-bean-id="' + CSS.escape(beanId) + '"]');
+      if (!card) return;
+      if (recipeId) {
+        card.dataset.selectedRecipe = recipeId;
+        card.querySelectorAll('.brew-suggest').forEach(el =>
+          el.classList.toggle('selected', el.dataset.recipeId === recipeId));
+        updateBrewCta(card, recipeId);
+      }
+      const openBrew = card.querySelector('[data-section="brew"]');
+      if (!openBrew) expandBeanSection(card, 'brew');
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
   // 磨豆機偏好：select 變更 → 重新格式化所有 brew-item 研磨欄位
   const grinderSelect = document.getElementById('grinder-pref-select');
   if (grinderSelect) {

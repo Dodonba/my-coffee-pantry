@@ -1,0 +1,14 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.swp
+.vscode/
+.idea/
+
+# 工作檔 / archive（用本機保留就好，不上 GitHub）
+*.bak
+*.backup
+*_old.html
+*_archive.*
+咖啡豆烘焙履歷講義.html

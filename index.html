@@ -6275,7 +6275,7 @@ const BREW_RECIPES = {
     {t:"1:10",      a:"繼續注水至 {water}g", water:320, type:"pour"},
     {t:"2:30-3:00", a:"目標流乾（圓錐紙偏 V60、波浪紙偏 Kalita）", type:"finish"},
   ]},
-  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中｜C40 #24-26 / K-Ultra #6.9-7.6 / EK43 #6-7", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。總液 = 熱水 160g + 下壺冰 80g ≈ 1:12（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
+  "switch-chacha": {name:"Hario Switch｜CHACHA 冰沖", grind:"中｜C40 #24-26 / K-Ultra #6.9-7.6 / EK43 #6-7", temp:"92°C", baseDose:20, baseRatio:12, scalable:true, doseRange:[10,30], time:"依流速彈性", why:"關閥浸泡再開閥滴濾、下壺冰塊瞬間鎖香。日曬淺焙首選老岩泥 Switch（蓄熱放大甜感、研磨取細端 K-Ultra #6.9）。總液 = 熱水 160g + 下壺冰 80g ≈ 1:12（飲用杯內冰塊只調節溫度、不計入比例）", steps:[
     {t:"準備",       a:"下壺先放冰塊 {water}g（這部分計入總液比例）", water:80, type:"setup-ice"},
     {t:"準備",       a:"飲用杯另備冰塊約 50g（出杯時融入、不計入萃取比例）", type:"setup-ice"},
     {t:"0:00",       a:"[關／開閥可選] 第一段注水至 {water}g（淺焙開閥、中焙以上關閥）", water:50, type:"pour"},
@@ -6320,7 +6320,7 @@ const BREW_RECIPES = {
     {t:"10-25 秒",    a:"穩定流出細水流（淺米色）", type:"observe"},
     {t:"25-35 秒",    a:"流速變淡白、達到 1:2（36-42g）即停", type:"observe"},
   ]},
-  "iced-v60": {name:"日式急冷 V60｜Flash Brew", grind:"中細｜C40 #18 / K-Ultra #5.4", temp:"95°C", baseDose:20, baseRatio:16, scalable:true, doseRange:[10,30], time:"2:00-2:30", why:"冰塊鎖香氣，淺中焙花果調首選（總液 = 熱水 + 冰塊 1:16）", steps:[
+  "iced-v60": {name:"日式急冷 V60｜Flash Brew", grind:"中細｜C40 #18-19 / K-Ultra #5.4（V60 NEO 用 #5.8 防後段塞）", temp:"95°C", baseDose:20, baseRatio:16, scalable:true, doseRange:[10,30], time:"2:00-2:30", why:"冰塊鎖香氣，淺中焙花果調首選（總液 = 熱水 + 冰塊 1:16）。濾杯配對：水洗淺焙首選 Alpha 凹肋（減少旁通、高萃取高甜感）#5.4；V60 NEO 萬用 #5.8、160g 後貼壁輕注防塞", steps:[
     {t:"準備",       a:"下壺先放冰塊 {water}g", water:120, type:"setup-ice"},
     {t:"0:00-0:10",  a:"注水 {water}g 悶蒸", water:60, type:"bloom"},
     {t:"0:10-0:15",  a:"輕搖濾杯讓粉床平整", type:"agitation"},
@@ -6336,6 +6336,27 @@ const BREW_RECIPES = {
     {t:"0:10",  a:"用湯匙繞圈攪拌 5-10 秒，讓粉均勻浸潤", type:"agitation"},
     {t:"1:30",  a:"[開閥] 讓水全部流下、沖過冰塊（1:30 開閥避免浸泡過久出澀）", type:"valve"},
     {t:"2:00",  a:"目標流乾、搖晃下壺融冰，倒入飲用杯", type:"finish"},
+  ]},
+  "switch-anaerobic-ice": {name:"Switch｜厭氧低溫浸泡冰沖", grind:"中｜C40 #21-22 / K-Ultra #6.5", temp:"88-90°C", baseDose:20, baseRatio:14, scalable:true, doseRange:[12,25], time:"2:00", why:"厭氧/特殊處理豆專用：低溫關閥浸泡馴住發酵雜味、開閥沖過冰塊急冷鎖香。裝樹脂濾杯（V60 NEO）蓄熱最低、讓 88°C 自然緩降。總液 = 熱水 150g + 下壺冰 130g ≈ 1:14", steps:[
+    {t:"準備", a:"下壺先放冰塊 {water}g（計入總液比例）", water:130, type:"setup-ice"},
+    {t:"0:00", a:"[關閥] 一次注滿 88-90°C 熱水至 {water}g", water:150, type:"pour"},
+    {t:"0:10", a:"輕攪 3 秒即停（厭氧豆減少擾動、防拉出藥感）", type:"agitation"},
+    {t:"1:30", a:"[開閥] 讓水全部流下、沖過冰塊", type:"valve"},
+    {t:"2:00", a:"目標流乾、搖勻下壺，倒入飲用杯", type:"finish"},
+  ]},
+  "iced-sanwen": {name:"山文62 急冷｜厭氧透亮版", grind:"中細｜C40 #19 / K-Ultra #5.7（乾淨明亮可再細至 #5.4）", temp:"88-90°C", baseDose:20, baseRatio:15, scalable:true, doseRange:[15,20], time:"2:15", why:"山文62 快流速+防堵=快進快出，厭氧香氣透亮、藥感留不下。與 Switch 浸泡版同題兩解：浸泡圓潤穩、山文透亮尖。總液 = 熱水 190g + 下壺冰 110g ≈ 1:15", steps:[
+    {t:"準備", a:"下壺先放冰塊 {water}g", water:110, type:"setup-ice"},
+    {t:"0:00", a:"悶蒸注水 {water}g，之後全程不搖不攪", water:45, type:"bloom"},
+    {t:"0:40", a:"小水流注至 {water}g", water:120, type:"pour"},
+    {t:"1:15", a:"注至 {water}g（總熱水）", water:190, type:"pour"},
+    {t:"2:15", a:"目標流乾，搖勻下壺出杯", type:"finish"},
+  ]},
+  "iced-orea-o1": {name:"OREA O1 Steel 急冷｜特殊處理小杯", grind:"中細｜C40 #17-18 / K-Ultra #5.4（快流底座 #5.0-5.2）", temp:"88-92°C", baseDose:15, baseRatio:16, scalable:true, doseRange:[10,16], time:"2:00", why:"平底均勻萃取+雙層鋼保溫穩定，把特殊處理豆的複雜層次攤開。官方粉量上限 16g 勿超過。總液 = 熱水 150g + 下壺冰 90g = 1:16", steps:[
+    {t:"準備", a:"下壺先放冰塊 {water}g", water:90, type:"setup-ice"},
+    {t:"0:00", a:"悶蒸注水 {water}g", water:40, type:"bloom"},
+    {t:"0:35", a:"中心小圈注至 {water}g（官方速率約 5 g/s）", water:95, type:"pour"},
+    {t:"1:10", a:"注至 {water}g（總熱水）", water:150, type:"pour"},
+    {t:"2:00", a:"流乾出杯", type:"finish"},
   ]},
   "cold-brew": {name:"Cold Brew 冷萃", grind:"粗｜C40 #32-40 / K-Ultra #9.5-10 / EK43 #10-11", temp:"4°C 冷藏", baseDose:20, baseRatio:10, scalable:true, doseRange:[15,100], time:"12-16 小時", why:"低酸甜厚，可線性放大批量；冷藏可保存 7-10 天", steps:[
     {t:"準備",       a:"{dose}g 粉（粗研磨）+ {water}g 冷水放入瓶罐／壺", water:200, type:"setup"},
@@ -6400,7 +6421,7 @@ const BREWS_BY_PROFILE_ROAST = {
     _default:       { hot:'v60-hoffmann',  hotAlt:'v60-wendelboe', cold:'iced-v60' },
   },
   fruity_natural: {
-    light:          { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-fast-ice' },
+    light:          { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-chacha' },
     'medium-light': { hot:'v60',           hotAlt:'switch-chacha', cold:'switch-chacha' },
     medium:         { hot:'v60-46',        hotAlt:'kalita',        cold:'iced-v60' },
     _default:       { hot:'v60',           hotAlt:'switch-chacha', cold:'switch-chacha' },
@@ -6411,9 +6432,9 @@ const BREWS_BY_PROFILE_ROAST = {
     _default:       { hot:'v60-hoffmann',  hotAlt:'origami',       cold:'iced-v60' },
   },
   anaerobic_intense: {
-    light:          { hot:'v60-wolfl',     hotAlt:'v60-hoffmann',  cold:'switch-fast-ice' },
-    'medium-light': { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-fast-ice' },
-    _default:       { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-fast-ice' },
+    light:          { hot:'v60-wolfl',     hotAlt:'v60-hoffmann',  cold:'switch-anaerobic-ice', coldAlt:'iced-sanwen' },
+    'medium-light': { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-anaerobic-ice', coldAlt:'iced-sanwen' },
+    _default:       { hot:'v60-wolfl',     hotAlt:'switch-chacha', cold:'switch-anaerobic-ice', coldAlt:'iced-sanwen' },
   },
   high_acidity_kenya: {
     light:          { hot:'v60',           hotAlt:'kalita',        cold:'iced-v60' },
@@ -6473,6 +6494,9 @@ function deriveColdAlt(cold) {
   if (cold === 'iced-v60')         return 'switch-fast-ice'; // 急冷 ↔ Switch 浸泡冰
   if (cold === 'switch-fast-ice')  return 'iced-v60';      // Switch 浸泡 ↔ 急冷
   if (cold === 'switch-chacha')    return 'switch-fast-ice'; // CHACHA ↔ Switch 浸泡
+  if (cold === 'switch-anaerobic-ice') return 'iced-sanwen'; // 厭氧浸泡穩 ↔ 山文滴濾亮
+  if (cold === 'iced-sanwen')      return 'switch-anaerobic-ice';
+  if (cold === 'iced-orea-o1')     return 'iced-v60';
   return 'cold-brew';
 }
 function getBestBrews(profile, roast) {
